@@ -53,6 +53,19 @@ public class DateRangePickerView : NSControl {
 	}
 	
 	func segmentDidChange(sender: NSSegmentedControl) {
+		// The left and right buttons shift the start and end dates by
+		// their difference plus one, so that the new and old date ranges do not overlap.
+		let dayDifference = endDate.drp_daysSince(startDate) + 1
+		switch (sender.selectedSegment) {
+		case 0:
+			startDate = startDate.drp_addDays(-dayDifference)!
+			endDate = endDate.drp_addDays(-dayDifference)!
+		case 2:
+			startDate = startDate.drp_addDays(dayDifference)!
+			endDate = endDate.drp_addDays(dayDifference)!
+		default:
+			break
+		}
 	}
 	
 	func updateSegmentedControl() {
@@ -70,12 +83,7 @@ public class DateRangePickerView : NSControl {
 		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = .Momentary
 		
 		endDate = NSDate()
-		
-		let calendar = NSCalendar.currentCalendar()
-		let components = NSDateComponents()
-		components.weekOfYear = 1
-		components.hour = 12
-		startDate = calendar.dateByAddingUnit(.Day, value: -7, toDate: endDate, options: [])!
+		startDate = endDate.drp_addDays(-6)!
 		
 		super.init(coder: coder)
 		segmentedControl.target = self
