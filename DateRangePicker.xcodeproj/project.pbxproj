@@ -1,0 +1,394 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		65F770EB1BEE162A0007D80E /* DateRangePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 65F770EA1BEE162A0007D80E /* DateRangePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		65F770F21BEE162A0007D80E /* DateRangePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F770E71BEE162A0007D80E /* DateRangePicker.framework */; };
+		65F770F71BEE162A0007D80E /* DateRangePickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F770F61BEE162A0007D80E /* DateRangePickerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		65F770F31BEE162A0007D80E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65F770DE1BEE162A0007D80E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65F770E61BEE162A0007D80E;
+			remoteInfo = DateRangePicker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		65F770E71BEE162A0007D80E /* DateRangePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DateRangePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65F770EA1BEE162A0007D80E /* DateRangePicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateRangePicker.h; sourceTree = "<group>"; };
+		65F770EC1BEE162A0007D80E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65F770F11BEE162A0007D80E /* DateRangePickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DateRangePickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65F770F61BEE162A0007D80E /* DateRangePickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangePickerTests.swift; sourceTree = "<group>"; };
+		65F770F81BEE162A0007D80E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		65F770E31BEE162A0007D80E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65F770EE1BEE162A0007D80E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65F770F21BEE162A0007D80E /* DateRangePicker.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		65F770DD1BEE162A0007D80E = {
+			isa = PBXGroup;
+			children = (
+				65F770E91BEE162A0007D80E /* DateRangePicker */,
+				65F770F51BEE162A0007D80E /* DateRangePickerTests */,
+				65F770E81BEE162A0007D80E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		65F770E81BEE162A0007D80E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65F770E71BEE162A0007D80E /* DateRangePicker.framework */,
+				65F770F11BEE162A0007D80E /* DateRangePickerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65F770E91BEE162A0007D80E /* DateRangePicker */ = {
+			isa = PBXGroup;
+			children = (
+				65F770EA1BEE162A0007D80E /* DateRangePicker.h */,
+				65F770EC1BEE162A0007D80E /* Info.plist */,
+			);
+			path = DateRangePicker;
+			sourceTree = "<group>";
+		};
+		65F770F51BEE162A0007D80E /* DateRangePickerTests */ = {
+			isa = PBXGroup;
+			children = (
+				65F770F61BEE162A0007D80E /* DateRangePickerTests.swift */,
+				65F770F81BEE162A0007D80E /* Info.plist */,
+			);
+			path = DateRangePickerTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		65F770E41BEE162A0007D80E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65F770EB1BEE162A0007D80E /* DateRangePicker.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		65F770E61BEE162A0007D80E /* DateRangePicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65F770FB1BEE162A0007D80E /* Build configuration list for PBXNativeTarget "DateRangePicker" */;
+			buildPhases = (
+				65F770E21BEE162A0007D80E /* Sources */,
+				65F770E31BEE162A0007D80E /* Frameworks */,
+				65F770E41BEE162A0007D80E /* Headers */,
+				65F770E51BEE162A0007D80E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DateRangePicker;
+			productName = DateRangePicker;
+			productReference = 65F770E71BEE162A0007D80E /* DateRangePicker.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		65F770F01BEE162A0007D80E /* DateRangePickerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65F770FE1BEE162A0007D80E /* Build configuration list for PBXNativeTarget "DateRangePickerTests" */;
+			buildPhases = (
+				65F770ED1BEE162A0007D80E /* Sources */,
+				65F770EE1BEE162A0007D80E /* Frameworks */,
+				65F770EF1BEE162A0007D80E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				65F770F41BEE162A0007D80E /* PBXTargetDependency */,
+			);
+			name = DateRangePickerTests;
+			productName = DateRangePickerTests;
+			productReference = 65F770F11BEE162A0007D80E /* DateRangePickerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		65F770DE1BEE162A0007D80E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "Daniel Alm";
+				TargetAttributes = {
+					65F770E61BEE162A0007D80E = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					65F770F01BEE162A0007D80E = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = 65F770E11BEE162A0007D80E /* Build configuration list for PBXProject "DateRangePicker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 65F770DD1BEE162A0007D80E;
+			productRefGroup = 65F770E81BEE162A0007D80E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				65F770E61BEE162A0007D80E /* DateRangePicker */,
+				65F770F01BEE162A0007D80E /* DateRangePickerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		65F770E51BEE162A0007D80E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65F770EF1BEE162A0007D80E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		65F770E21BEE162A0007D80E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65F770ED1BEE162A0007D80E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65F770F71BEE162A0007D80E /* DateRangePickerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		65F770F41BEE162A0007D80E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65F770E61BEE162A0007D80E /* DateRangePicker */;
+			targetProxy = 65F770F31BEE162A0007D80E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		65F770F91BEE162A0007D80E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		65F770FA1BEE162A0007D80E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		65F770FC1BEE162A0007D80E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = DateRangePicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		65F770FD1BEE162A0007D80E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = DateRangePicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		65F770FF1BEE162A0007D80E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = DateRangePickerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePickerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		65F771001BEE162A0007D80E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = DateRangePickerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePickerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		65F770E11BEE162A0007D80E /* Build configuration list for PBXProject "DateRangePicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65F770F91BEE162A0007D80E /* Debug */,
+				65F770FA1BEE162A0007D80E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		65F770FB1BEE162A0007D80E /* Build configuration list for PBXNativeTarget "DateRangePicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65F770FC1BEE162A0007D80E /* Debug */,
+				65F770FD1BEE162A0007D80E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		65F770FE1BEE162A0007D80E /* Build configuration list for PBXNativeTarget "DateRangePickerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65F770FF1BEE162A0007D80E /* Debug */,
+				65F771001BEE162A0007D80E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 65F770DE1BEE162A0007D80E /* Project object */;
+}
