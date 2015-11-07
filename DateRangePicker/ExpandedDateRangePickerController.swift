@@ -8,9 +8,40 @@
 
 import Cocoa
 
+extension DateRange {
+	func buildMenuItem() -> NSMenuItem {
+		switch (self) {
+		case Custom:
+			fallthrough
+		case PastDays(_):
+			fallthrough
+		case CurrentCalendarUnit(_):
+			return NSMenuItem(title: title, action: nil, keyEquivalent: "")
+		case None:
+			return NSMenuItem.separatorItem()
+		}
+	}
+}
+
 class ExpandedDateRangePickerController: NSViewController {
 	dynamic var startDate: NSDate
 	dynamic var endDate: NSDate
+	
+	@IBOutlet var presetRangeSelector: NSPopUpButton?
+	let presetRanges: [DateRange] = [
+		.Custom,
+		.None,
+		.PastDays(7),
+		.PastDays(15),
+		.PastDays(30),
+		.PastDays(90),
+		.PastDays(365),
+		.None,
+		.CurrentCalendarUnit(.WeekOfYear),
+		.CurrentCalendarUnit(.Month),
+		.CurrentCalendarUnit(.Quarter),
+		.CurrentCalendarUnit(.Year)
+	]
 	
 	init(startDate: NSDate, endDate: NSDate) {
 		self.startDate = startDate
@@ -28,6 +59,14 @@ class ExpandedDateRangePickerController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+		
+		guard let menu = presetRangeSelector?.menu else { return }
+		for range in presetRanges {
+			menu.addItem(range.buildMenuItem())
+		}
     }
+	
+	@IBAction func presetRangeSelected(sender: NSPopUpButton) {
+		print(presetRanges[sender.indexOfSelectedItem])
+	}
 }

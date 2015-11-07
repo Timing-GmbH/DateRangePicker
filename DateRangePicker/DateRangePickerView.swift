@@ -39,9 +39,7 @@ public class DateRangePickerView : NSControl {
 	}
 	
 	public var dateRangeString: String {
-		get {
-			return "\(dateFormatter.stringFromDate(startDate)) - \(dateFormatter.stringFromDate(endDate))"
-		}
+		return "\(dateFormatter.stringFromDate(startDate)) - \(dateFormatter.stringFromDate(endDate))"
 	}
 	
 	override public func layout() {
