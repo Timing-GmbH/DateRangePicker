@@ -14,15 +14,36 @@ public class DateRangePickerView : NSControl {
 	let dateFormatter = NSDateFormatter()
 	var dateRangePickerController: ExpandedDateRangePickerController?
 	
-	public var startDate: NSDate {
-		didSet {
-			dateRangePickerController?.startDate = startDate
-			updateSegmentedControl()
+	// Provided for Objective-C interoperability
+	dynamic var startDate: NSDate {
+		get {
+			return dateRange.startDate!
+		}
+		
+		set {
+			dateRange = DateRange.Custom(newValue, endDate)
 		}
 	}
-	public var endDate: NSDate {
+	dynamic var endDate: NSDate {
+		get {
+			return dateRange.endDate!
+		}
+		
+		set {
+			dateRange = DateRange.Custom(startDate, newValue)
+		}
+	}
+	
+	var dateRange: DateRange {
+		willSet {
+			self.willChangeValueForKey("endDate")
+			self.willChangeValueForKey("startDate")
+		}
+		
 		didSet {
-			dateRangePickerController?.endDate = endDate
+			self.didChangeValueForKey("endDate")
+			self.didChangeValueForKey("startDate")
+			dateRangePickerController?.dateRange = dateRange
 			updateSegmentedControl()
 		}
 	}
@@ -63,8 +84,7 @@ public class DateRangePickerView : NSControl {
 		segmentedControl.autoresizingMask = [.ViewNotSizable]
 		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = .Momentary
 		
-		endDate = NSDate()
-		startDate = endDate.drp_addDays(-6)!
+		dateRange = .PastDays(7)
 		
 		super.init(coder: coder)
 		segmentedControl.target = self
@@ -79,17 +99,17 @@ public class DateRangePickerView : NSControl {
 		let dayDifference = endDate.drp_daysSince(startDate) + 1
 		switch (sender.selectedSegment) {
 		case 0:
-			endDate = endDate.drp_addDays(-dayDifference)!
-			startDate = startDate.drp_addDays(-dayDifference)!
+			// TODO: Switching with a particular day unit selected (e.g. month) should actually switch by that unit
+			// instead of a fixed number of days.
+			dateRange = .Custom(startDate.drp_addDays(-dayDifference)!, endDate.drp_addDays(-dayDifference)!)
 		case 1:
 			let popover = NSPopover()
 			popover.behavior = .Semitransient
-			dateRangePickerController = ExpandedDateRangePickerController(startDate: startDate, endDate: endDate)
+			dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
 			popover.contentViewController = dateRangePickerController
 			popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
 		case 2:
-			endDate = endDate.drp_addDays(dayDifference)!
-			startDate = startDate.drp_addDays(dayDifference)!
+			dateRange = .Custom(startDate.drp_addDays(dayDifference)!, endDate.drp_addDays(dayDifference)!)
 		default:
 			break
 		}

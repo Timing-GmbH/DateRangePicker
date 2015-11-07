@@ -11,11 +11,7 @@ import Cocoa
 extension DateRange {
 	func buildMenuItem() -> NSMenuItem {
 		switch (self) {
-		case Custom:
-			fallthrough
-		case PastDays(_):
-			fallthrough
-		case CurrentCalendarUnit(_):
+		case Custom, PastDays(_), CurrentCalendarUnit(_):
 			return NSMenuItem(title: title, action: nil, keyEquivalent: "")
 		case None:
 			return NSMenuItem.separatorItem()
@@ -24,12 +20,8 @@ extension DateRange {
 }
 
 class ExpandedDateRangePickerController: NSViewController {
-	dynamic var startDate: NSDate
-	dynamic var endDate: NSDate
-	
-	@IBOutlet var presetRangeSelector: NSPopUpButton?
 	let presetRanges: [DateRange] = [
-		.Custom,
+		.Custom(NSDate(), NSDate()),
 		.None,
 		.PastDays(7),
 		.PastDays(15),
@@ -42,17 +34,49 @@ class ExpandedDateRangePickerController: NSViewController {
 		.CurrentCalendarUnit(.Quarter),
 		.CurrentCalendarUnit(.Year)
 	]
+	@IBOutlet var presetRangeSelector: NSPopUpButton?
 	
-	init(startDate: NSDate, endDate: NSDate) {
-		self.startDate = startDate
-		self.endDate = endDate
+	// These are needed for the bindings with NSDatePicker
+	dynamic var startDate: NSDate {
+		get {
+			return dateRange.startDate!
+		}
+		
+		set {
+			dateRange = DateRange.Custom(newValue, endDate)
+		}
+	}
+	dynamic var endDate: NSDate {
+		get {
+			return dateRange.endDate!
+		}
+		
+		set {
+			dateRange = DateRange.Custom(startDate, newValue)
+		}
+	}
+	
+	var dateRange: DateRange {
+		willSet {
+			self.willChangeValueForKey("endDate")
+			self.willChangeValueForKey("startDate")
+		}
+		
+		didSet {
+			self.didChangeValueForKey("endDate")
+			self.didChangeValueForKey("startDate")
+			presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
+		}
+	}
+	
+	init(dateRange: DateRange) {
+		self.dateRange = dateRange
 		super.init(nibName: ExpandedDateRangePickerController.className(),
 			bundle: NSBundle(forClass: ExpandedDateRangePickerController.self))!
 	}
 	
 	required init?(coder: NSCoder) {
-		startDate = NSDate()
-		endDate = NSDate()
+		dateRange = .None
 		super.init(coder: coder)
 		assert(false, "This initializer should not be used.")
 	}
@@ -67,6 +91,12 @@ class ExpandedDateRangePickerController: NSViewController {
     }
 	
 	@IBAction func presetRangeSelected(sender: NSPopUpButton) {
-		print(presetRanges[sender.indexOfSelectedItem])
+		let selectedRange = presetRanges[sender.indexOfSelectedItem]
+		switch (selectedRange) {
+		case .Custom, .None:
+			dateRange = DateRange.Custom(startDate, endDate)
+		case .PastDays, .CurrentCalendarUnit:
+			dateRange = selectedRange
+		}
 	}
 }

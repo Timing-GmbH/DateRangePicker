@@ -131,11 +131,11 @@
 			children = (
 				65F770EA1BEE162A0007D80E /* DateRangePicker.h */,
 				65F770EC1BEE162A0007D80E /* Info.plist */,
+				65F771591BEE79A30007D80E /* DateRange.swift */,
 				65F771221BEE16760007D80E /* DateRangePickerView.swift */,
 				65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */,
 				65F7714E1BEE54CA0007D80E /* ExpandedDateRangePickerController.xib */,
 				65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */,
-				65F771591BEE79A30007D80E /* DateRange.swift */,
 			);
 			path = DateRangePicker;
 			sourceTree = "<group>";

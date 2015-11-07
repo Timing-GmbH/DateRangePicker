@@ -8,8 +8,8 @@
 
 import Foundation
 
-public enum DateRange {
-	case Custom
+public enum DateRange: Equatable {
+	case Custom(NSDate, NSDate)
 	case PastDays(Int)
 	case CurrentCalendarUnit(NSCalendarUnit)
 	case None
@@ -29,6 +29,47 @@ public enum DateRange {
 		case None:
 			return ""
 		}
+	}
+	
+	var startDate: NSDate? {
+		switch(self) {
+		case Custom(let startDate, _):
+			return startDate
+		case None:
+			return nil
+		case PastDays(let pastDays):
+			return NSDate().drp_addDays(-pastDays)
+		case CurrentCalendarUnit(let calendarUnit):
+			return NSDate().drp_beginningOfCalendarUnit(calendarUnit)
+		}
+	}
+	
+	var endDate: NSDate? {
+		switch(self) {
+		case Custom(_, let endDate):
+			return endDate
+		case None:
+			return nil
+		case PastDays(_):
+			return NSDate()
+		case CurrentCalendarUnit(let calendarUnit):
+			return NSDate().drp_endOfCalendarUnit(calendarUnit)
+		}
+	}
+}
+
+public func ==(lhs: DateRange, rhs: DateRange) -> Bool {
+	switch (lhs, rhs) {
+	case (.Custom(let ls, let le), .Custom(let rs, let re)):
+		return ls == rs && le == re
+	case (.PastDays(let ld), .PastDays(let rd)):
+		return ld == rd
+	case (.CurrentCalendarUnit(let lu), .CurrentCalendarUnit(let ru)):
+		return lu == ru
+	case (.None, .None):
+		return true
+	default:
+		return false
 	}
 }
 
