@@ -18,6 +18,8 @@
 		65F771241BEE188F0007D80E /* DateRangePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F770E71BEE162A0007D80E /* DateRangePicker.framework */; };
 		65F7714A1BEE4B140007D80E /* NSDate_DateRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */; };
 		65F7714C1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7714B1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift */; };
+		65F7714F1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */; };
+		65F771501BEE54CA0007D80E /* ExpandedDateRangePickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65F7714E1BEE54CA0007D80E /* ExpandedDateRangePickerController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		65F771221BEE16760007D80E /* DateRangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRangePickerView.swift; sourceTree = "<group>"; };
 		65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDate_DateRangePicker.swift; sourceTree = "<group>"; };
 		65F7714B1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDate_DateRangePickerTest.swift; sourceTree = "<group>"; };
+		65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedDateRangePickerController.swift; sourceTree = "<group>"; };
+		65F7714E1BEE54CA0007D80E /* ExpandedDateRangePickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandedDateRangePickerController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,8 @@
 				65F770EA1BEE162A0007D80E /* DateRangePicker.h */,
 				65F770EC1BEE162A0007D80E /* Info.plist */,
 				65F771221BEE16760007D80E /* DateRangePickerView.swift */,
+				65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */,
+				65F7714E1BEE54CA0007D80E /* ExpandedDateRangePickerController.xib */,
 				65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */,
 			);
 			path = DateRangePicker;
@@ -298,6 +304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F771501BEE54CA0007D80E /* ExpandedDateRangePickerController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +340,7 @@
 			files = (
 				65F7714A1BEE4B140007D80E /* NSDate_DateRangePicker.swift in Sources */,
 				65F771231BEE16760007D80E /* DateRangePickerView.swift in Sources */,
+				65F7714F1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
