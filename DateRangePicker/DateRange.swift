@@ -18,13 +18,13 @@ public enum DateRange: Equatable {
 	
 	public var title: String {
 		switch (self) {
-		case .Custom:
+		case Custom:
 			return NSLocalizedString("Custom", comment: "Title for a custom date range.")
-		case .PastDays(let pastDays):
+		case PastDays(let pastDays):
 			return String(format: NSLocalizedString(
 				"Past %d days", comment: "Title for a date range spanning the past %d days."),
 				pastDays)
-		case .CalendarUnit(let offset, let unit):
+		case CalendarUnit(let offset, let unit):
 			switch (offset) {
 			case _ where offset > 0:
 				// TODO: These currently do not use proper plural forms for the unit.
@@ -40,33 +40,33 @@ public enum DateRange: Equatable {
 					"This %@", comment: "Title for a current date range based on a calendar unit."),
 					unit.drp_Name ?? "")
 			}
-		case .None:
+		case None:
 			return NSLocalizedString("None", comment: "Title for a nonexistent date range.")
 		}
 	}
 	
 	public var startDate: NSDate? {
 		switch(self) {
-		case .Custom(let startDate, _):
+		case Custom(let startDate, _):
 			return startDate.drp_beginningOfCalendarUnit(.Day)
-		case .PastDays(let pastDays):
+		case PastDays(let pastDays):
 			return NSDate().drp_addCalendarUnits(-pastDays, .Day)?.drp_beginningOfCalendarUnit(.Day)
-		case .CalendarUnit(let offset, let unit):
+		case CalendarUnit(let offset, let unit):
 			return NSDate().drp_addCalendarUnits(offset, unit)?.drp_beginningOfCalendarUnit(unit)
-		case .None:
+		case None:
 			return nil
 		}
 	}
 	
 	public var endDate: NSDate? {
 		switch(self) {
-		case .Custom(_, let endDate):
+		case Custom(_, let endDate):
 			return endDate.drp_endOfCalendarUnit(.Day)
-		case .PastDays(_):
+		case PastDays(_):
 			return NSDate().drp_endOfCalendarUnit(.Day)
-		case .CalendarUnit(let offset, let unit):
+		case CalendarUnit(let offset, let unit):
 			return NSDate().drp_addCalendarUnits(offset, unit)?.drp_endOfCalendarUnit(unit)
-		case .None:
+		case None:
 			return nil
 		}
 	}
@@ -81,16 +81,61 @@ public enum DateRange: Equatable {
 	
 	public func moveBy(steps: Int) -> DateRange {
 		switch (self) {
-		case .Custom, .PastDays:
-			guard let startDate = startDate else { return .None }
-			guard let endDate = endDate else { return .None }
+		case Custom, PastDays:
+			guard let startDate = startDate else { return None }
+			guard let endDate = endDate else { return None }
 			// Add one to the distance between start and end date so that for steps = 1, the date ranges do not overlap.
 			let dayDifference = endDate.drp_daysSince(startDate) + 1
-			return .Custom(startDate.drp_addCalendarUnits(dayDifference * steps, .Day)!, endDate.drp_addCalendarUnits(dayDifference * steps, .Day)!)
-		case .CalendarUnit(let offset, let unit):
-			return .CalendarUnit(offset + steps, unit)
-		case .None:
+			return Custom(startDate.drp_addCalendarUnits(dayDifference * steps, .Day)!, endDate.drp_addCalendarUnits(dayDifference * steps, .Day)!)
+		case CalendarUnit(let offset, let unit):
+			return CalendarUnit(offset + steps, unit)
+		case None:
 			return self
+		}
+	}
+	
+	// Ugly workaround for serialization because enums can't support NSCoding.
+	public func toData() -> NSData {
+		let data = NSMutableData()
+		let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
+		switch (self) {
+		case Custom(let startDate, let endDate):
+			archiver.encodeObject("Custom", forKey: "case")
+			archiver.encodeObject(startDate, forKey: "startDate")
+			archiver.encodeObject(endDate, forKey: "endDate")
+		case PastDays(let pastDays):
+			archiver.encodeObject("PastDays", forKey: "case")
+			archiver.encodeInteger(pastDays, forKey: "pastDays")
+		case CalendarUnit(let offset, let unit):
+			archiver.encodeObject("CalendarUnit", forKey: "case")
+			archiver.encodeInteger(offset, forKey: "offset")
+			archiver.encodeInteger(Int(unit.rawValue), forKey: "unit")
+		case None:
+			archiver.encodeObject("None", forKey: "case")
+		}
+		archiver.finishEncoding()
+		return data
+	}
+	
+	public static func fromData(data: NSData) -> DateRange? {
+		let unarchiver = NSKeyedUnarchiver(forReadingWithData: data)
+		guard let caseName = unarchiver.decodeObjectForKey("case") as? String else { return nil }
+		switch caseName {
+		case "Custom":
+			guard let startDate = unarchiver.decodeObjectForKey("startDate") as? NSDate else { return nil }
+			guard let endDate = unarchiver.decodeObjectForKey("endDate") as? NSDate else { return nil }
+			return Custom(startDate, endDate)
+		case "PastDays":
+			if (!unarchiver.containsValueForKey("pastDays")) { return nil }
+			return PastDays(unarchiver.decodeIntegerForKey("pastDays"))
+		case "CalendarUnit":
+			if (!unarchiver.containsValueForKey("offset")) { return nil }
+			if (!unarchiver.containsValueForKey("unit")) { return nil }
+			return CalendarUnit(unarchiver.decodeIntegerForKey("offset"), NSCalendarUnit(rawValue: UInt(unarchiver.decodeIntegerForKey("unit"))))
+		case "None":
+			return None
+		default:
+			return nil
 		}
 	}
 }

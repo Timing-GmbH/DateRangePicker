@@ -91,4 +91,21 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(DateRange.CalendarUnit(-1, .Quarter), DateRange.CalendarUnit(1, .Quarter).moveBy(-2))
 		XCTAssertEqual(DateRange.None, DateRange.None.moveBy(-2))
 	}
+	
+	func testToFromData() {
+		let startDate = dateFromString("2015-06-15")
+		let endDate = dateFromString("2015-06-17")
+		
+		var dateRange = DateRange.Custom(startDate, endDate)
+		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
+		
+		dateRange = DateRange.PastDays(30)
+		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
+		
+		dateRange = DateRange.CalendarUnit(-7, .Quarter)
+		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
+		
+		dateRange = DateRange.None
+		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
+	}
 }
