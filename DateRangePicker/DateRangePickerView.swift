@@ -9,7 +9,7 @@
 import Foundation
 
 @IBDesignable
-public class DateRangePickerView : NSControl {
+public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerDelegate {
 	let segmentedControl: NSSegmentedControl
 	let dateFormatter = NSDateFormatter()
 	var dateRangePickerController: ExpandedDateRangePickerController?
@@ -43,7 +43,9 @@ public class DateRangePickerView : NSControl {
 		didSet {
 			self.didChangeValueForKey("endDate")
 			self.didChangeValueForKey("startDate")
-			dateRangePickerController?.dateRange = dateRange
+			if (dateRangePickerController?.dateRange != dateRange) {
+				dateRangePickerController?.dateRange = dateRange
+			}
 			updateSegmentedControl()
 		}
 	}
@@ -101,6 +103,7 @@ public class DateRangePickerView : NSControl {
 			let popover = NSPopover()
 			popover.behavior = .Semitransient
 			dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
+			dateRangePickerController?.delegate = self
 			popover.contentViewController = dateRangePickerController
 			popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
 		case 2:
@@ -112,5 +115,9 @@ public class DateRangePickerView : NSControl {
 	
 	private func updateSegmentedControl() {
 		segmentedControl.setLabel(dateRangeString, forSegment: 1)
+	}
+	
+	public func expandedDateRangePickerController(controller: ExpandedDateRangePickerController, didSetDateRange dateRange: DateRange) {
+		self.dateRange = dateRange
 	}
 }

@@ -19,7 +19,11 @@ extension DateRange {
 	}
 }
 
-class ExpandedDateRangePickerController: NSViewController {
+public protocol ExpandedDateRangePickerControllerDelegate: class {
+	func expandedDateRangePickerController(controller: ExpandedDateRangePickerController, didSetDateRange dateRange: DateRange)
+}
+
+public class ExpandedDateRangePickerController: NSViewController {
 	let presetRanges: [DateRange] = [
 		.Custom(NSDate(), NSDate()),
 		.None,
@@ -37,7 +41,7 @@ class ExpandedDateRangePickerController: NSViewController {
 	@IBOutlet var presetRangeSelector: NSPopUpButton?
 	
 	// These are needed for the bindings with NSDatePicker
-	dynamic var startDate: NSDate {
+	public dynamic var startDate: NSDate {
 		get {
 			return dateRange.startDate!
 		}
@@ -46,7 +50,7 @@ class ExpandedDateRangePickerController: NSViewController {
 			dateRange = DateRange.Custom(newValue, endDate)
 		}
 	}
-	dynamic var endDate: NSDate {
+	public dynamic var endDate: NSDate {
 		get {
 			return dateRange.endDate!
 		}
@@ -56,7 +60,7 @@ class ExpandedDateRangePickerController: NSViewController {
 		}
 	}
 	
-	var dateRange: DateRange {
+	public var dateRange: DateRange {
 		willSet {
 			self.willChangeValueForKey("endDate")
 			self.willChangeValueForKey("startDate")
@@ -66,28 +70,32 @@ class ExpandedDateRangePickerController: NSViewController {
 			self.didChangeValueForKey("endDate")
 			self.didChangeValueForKey("startDate")
 			presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
+			delegate?.expandedDateRangePickerController(self, didSetDateRange: dateRange)
 		}
 	}
 	
-	init(dateRange: DateRange) {
+	public weak var delegate: ExpandedDateRangePickerControllerDelegate?
+	
+	public init(dateRange: DateRange) {
 		self.dateRange = dateRange
 		super.init(nibName: ExpandedDateRangePickerController.className(),
 			bundle: NSBundle(forClass: ExpandedDateRangePickerController.self))!
 	}
 	
-	required init?(coder: NSCoder) {
+	public required init?(coder: NSCoder) {
 		dateRange = .None
 		super.init(coder: coder)
 		assert(false, "This initializer should not be used.")
 	}
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 		
 		guard let menu = presetRangeSelector?.menu else { return }
 		for range in presetRanges {
 			menu.addItem(range.buildMenuItem())
 		}
+		presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
     }
 	
 	@IBAction func presetRangeSelected(sender: NSPopUpButton) {
