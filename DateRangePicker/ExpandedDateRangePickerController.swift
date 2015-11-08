@@ -11,7 +11,7 @@ import Cocoa
 extension DateRange {
 	func buildMenuItem() -> NSMenuItem {
 		switch (self) {
-		case Custom, PastDays(_), CurrentCalendarUnit(_):
+		case Custom, PastDays, CalendarUnit:
 			return NSMenuItem(title: title, action: nil, keyEquivalent: "")
 		case None:
 			return NSMenuItem.separatorItem()
@@ -29,10 +29,10 @@ class ExpandedDateRangePickerController: NSViewController {
 		.PastDays(90),
 		.PastDays(365),
 		.None,
-		.CurrentCalendarUnit(.WeekOfYear),
-		.CurrentCalendarUnit(.Month),
-		.CurrentCalendarUnit(.Quarter),
-		.CurrentCalendarUnit(.Year)
+		.CalendarUnit(0, .WeekOfYear),
+		.CalendarUnit(0, .Month),
+		.CalendarUnit(0, .Quarter),
+		.CalendarUnit(0, .Year)
 	]
 	@IBOutlet var presetRangeSelector: NSPopUpButton?
 	
@@ -95,7 +95,7 @@ class ExpandedDateRangePickerController: NSViewController {
 		switch (selectedRange) {
 		case .Custom, .None:
 			dateRange = DateRange.Custom(startDate, endDate)
-		case .PastDays, .CurrentCalendarUnit:
+		case .PastDays, .CalendarUnit:
 			dateRange = selectedRange
 		}
 	}

@@ -94,14 +94,9 @@ public class DateRangePickerView : NSControl {
 	}
 	
 	func segmentDidChange(sender: NSSegmentedControl) {
-		// The left and right buttons shift the start and end dates by
-		// their difference plus one, so that the new and old date ranges do not overlap.
-		let dayDifference = endDate.drp_daysSince(startDate) + 1
 		switch (sender.selectedSegment) {
 		case 0:
-			// TODO: Switching with a particular day unit selected (e.g. month) should actually switch by that unit
-			// instead of a fixed number of days.
-			dateRange = .Custom(startDate.drp_addDays(-dayDifference)!, endDate.drp_addDays(-dayDifference)!)
+			dateRange = dateRange.previous()
 		case 1:
 			let popover = NSPopover()
 			popover.behavior = .Semitransient
@@ -109,7 +104,7 @@ public class DateRangePickerView : NSControl {
 			popover.contentViewController = dateRangePickerController
 			popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
 		case 2:
-			dateRange = .Custom(startDate.drp_addDays(dayDifference)!, endDate.drp_addDays(dayDifference)!)
+			dateRange = dateRange.next()
 		default:
 			break
 		}

@@ -23,11 +23,18 @@ class NSDate_DateRangePickerTest: XCTestCase {
 		return dateFormatter.dateFromString(dateString)!
 	}
 	
-	func testAddDays() {
-		XCTAssertEqual(dateFromString("2015-06-10"), dateFromString("2015-06-03").drp_addDays(7))
-		XCTAssertEqual(dateFromString("2015-06-10"), dateFromString("2015-06-17").drp_addDays(-7))
-		XCTAssertEqual(dateFromString("2015-10-25"), dateFromString("2015-10-18").drp_addDays(7))
-		XCTAssertEqual(dateFromString("2015-07-03"), dateFromString("2015-06-26").drp_addDays(7))
+	func testAddCalendarUnits() {
+		XCTAssertEqual(dateFromString("2022-06-03"), dateFromString("2015-06-03").drp_addCalendarUnits(7, .Year))
+		XCTAssertEqual(dateFromString("2008-06-03"), dateFromString("2015-06-03").drp_addCalendarUnits(-7, .Year))
+		
+		XCTAssertEqual(dateFromString("2017-03-03"), dateFromString("2015-06-03").drp_addCalendarUnits(7, .Quarter))
+		XCTAssertEqual(dateFromString("2013-09-03"), dateFromString("2015-06-03").drp_addCalendarUnits(-7, .Quarter))
+		
+		XCTAssertEqual(dateFromString("2016-01-03"), dateFromString("2015-06-03").drp_addCalendarUnits(7, .Month))
+		XCTAssertEqual(dateFromString("2014-11-03"), dateFromString("2015-06-03").drp_addCalendarUnits(-7, .Month))
+		
+		XCTAssertEqual(dateFromString("2015-06-10"), dateFromString("2015-06-03").drp_addCalendarUnits(7, .Day))
+		XCTAssertEqual(dateFromString("2015-05-27"), dateFromString("2015-06-03").drp_addCalendarUnits(-7, .Day))
 	}
 	
 	func testDaysSince() {

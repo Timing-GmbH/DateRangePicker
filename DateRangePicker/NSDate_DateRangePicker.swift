@@ -9,10 +9,20 @@
 import Foundation
 
 public extension NSDate {
-	// Adds the given number of calendar days to the receiver.
-	public func drp_addDays(days: Int) -> NSDate? {
-		let calendar = NSCalendar.currentCalendar()
-		return calendar.dateByAddingUnit(.Day, value: days, toDate: self, options: [])
+	public func drp_addCalendarUnits(count: Int, _ unit: NSCalendarUnit, calendar: NSCalendar) -> NSDate? {
+		let advancedDate: NSDate?
+		if (unit == .Quarter) {
+			// There seems to be a bug where adding one quarter to a date in the 3rd quarter does not return the
+			// corresponding date in the 4th quarter. As a workaround, we add 3 months instead.
+			advancedDate = calendar.dateByAddingUnit(.Month, value: 3 * count, toDate: self, options: [])
+		} else {
+			advancedDate = calendar.dateByAddingUnit(unit, value: count, toDate: self, options: [])
+		}
+		return advancedDate
+	}
+	
+	public func drp_addCalendarUnits(count: Int, _ unit: NSCalendarUnit) -> NSDate? {
+		return drp_addCalendarUnits(count, unit, calendar: NSCalendar.currentCalendar())
 	}
 	
 	public func drp_beginningOfCalendarUnit(unit: NSCalendarUnit, calendar: NSCalendar) -> NSDate? {
@@ -27,15 +37,7 @@ public extension NSDate {
 	
 	public func drp_endOfCalendarUnit(unit: NSCalendarUnit, calendar: NSCalendar) -> NSDate? {
 		guard let startDate = drp_beginningOfCalendarUnit(unit, calendar: NSCalendar.currentCalendar()) else { return nil }
-		let advancedDate: NSDate?
-		if (unit == .Quarter) {
-			// There seems to be a bug where adding one quarter to a date in the 3rd quarter does not return the
-			// corresponding date in the 4th quarter. As a workaround, we add 3 months instead.
-			advancedDate = calendar.dateByAddingUnit(.Month, value: 3, toDate: startDate, options: [])
-		} else {
-			advancedDate = calendar.dateByAddingUnit(unit, value: 1, toDate: startDate, options: [])
-		}
-		return advancedDate?.dateByAddingTimeInterval(-1)
+		return startDate.drp_addCalendarUnits(1, unit, calendar: calendar)?.dateByAddingTimeInterval(-1)
 	}
 	
 	public func drp_endOfCalendarUnit(unit: NSCalendarUnit) -> NSDate? {
