@@ -108,4 +108,22 @@ class DateRangeTest: XCTestCase {
 		dateRange = DateRange.None
 		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
 	}
+	
+	func testRestrictToDates() {
+		let startDate = dateFromString("2015-06-15")
+		let endDate = dateFromString("2015-06-17")
+		
+		let dateRange = DateRange.Custom(startDate, endDate)
+		XCTAssertEqual(dateRange, dateRange.restrictToDates(dateFromString("2015-06-01"), dateFromString("2015-07-01")))
+		
+		XCTAssertEqual(DateRange.Custom(dateFromString("2015-06-16"), endDate),
+			dateRange.restrictToDates(dateFromString("2015-06-16"), dateFromString("2015-07-01")))
+		XCTAssertEqual(DateRange.Custom(dateFromString("2015-06-18"), dateFromString("2015-06-18")),
+			dateRange.restrictToDates(dateFromString("2015-06-18"), dateFromString("2015-07-01")))
+		
+		XCTAssertEqual(DateRange.Custom(startDate, dateFromString("2015-06-16")),
+			dateRange.restrictToDates(dateFromString("2015-06-01"), dateFromString("2015-06-16")))
+		XCTAssertEqual(DateRange.Custom(dateFromString("2015-06-14"), dateFromString("2015-06-14")),
+			dateRange.restrictToDates(dateFromString("2015-06-01"), dateFromString("2015-06-14")))
+	}
 }

@@ -138,6 +138,27 @@ public enum DateRange: Equatable {
 			return nil
 		}
 	}
+	
+	public func restrictToDates(minDate: NSDate?, _ maxDate: NSDate?) -> DateRange {
+		guard let startDate = startDate else { return None }
+		guard let endDate = endDate else { return None }
+		
+		var adjustedStartDate = startDate
+		var adjustedEndDate = endDate
+		if let minDate = minDate?.drp_beginningOfCalendarUnit(.Day) {
+			adjustedStartDate = minDate.laterDate(adjustedStartDate)
+			adjustedEndDate = minDate.laterDate(adjustedEndDate)
+		}
+		if let maxDate = maxDate?.drp_endOfCalendarUnit(.Day) {
+			adjustedStartDate = maxDate.earlierDate(adjustedStartDate)
+			adjustedEndDate = maxDate.earlierDate(adjustedEndDate)
+		}
+		if startDate != adjustedStartDate || endDate != adjustedEndDate {
+			return Custom(adjustedStartDate, adjustedEndDate)
+		}
+		
+		return self
+	}
 }
 
 public func ==(lhs: DateRange, rhs: DateRange) -> Bool {
