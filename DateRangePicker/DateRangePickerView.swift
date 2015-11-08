@@ -14,6 +14,16 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	let dateFormatter = NSDateFormatter()
 	var dateRangePickerController: ExpandedDateRangePickerController?
 	
+	var segmentStyle: NSSegmentStyle {
+		get {
+			return segmentedControl.segmentStyle
+		}
+		
+		set {
+			segmentedControl.segmentStyle = newValue
+		}
+	}
+	
 	// Provided for Objective-C interoperability
 	dynamic var startDate: NSDate {
 		get {
@@ -78,7 +88,6 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	
 	required public init?(coder: NSCoder) {
 		segmentedControl = NSSegmentedControl()
-		segmentedControl.segmentStyle = .TexturedRounded
 		segmentedControl.segmentCount = 3
 		segmentedControl.setLabel("◀", forSegment: 0)
 		segmentedControl.setLabel("▶", forSegment: 2)

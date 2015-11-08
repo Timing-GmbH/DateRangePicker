@@ -658,7 +658,7 @@
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <toolbar key="toolbar" implicitIdentifier="FA2E06F6-0924-4027-853D-4791129EF492" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="7Oo-6f-bhc">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="F62D88C7-3193-4734-ABE5-4C5D884FA698" label="Custom View" paletteLabel="Custom View" tag="-1" id="Mqe-89-LIg">
+                                <toolbarItem implicitItemIdentifier="F62D88C7-3193-4734-ABE5-4C5D884FA698" label="Date Range" paletteLabel="Date Range" tag="-1" id="Mqe-89-LIg">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="247" height="24"/>
                                     <size key="maxSize" width="247" height="24"/>
@@ -690,14 +690,56 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="DateRangePickerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="187"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K8Y-q5-ivW" customClass="DateRangePickerView" customModule="DateRangePicker">
+                                <rect key="frame" x="97" y="144" width="287" height="23"/>
+                                <animations/>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hnr-ND-CVb" customClass="DateRangePickerView" customModule="DateRangePicker">
+                                <rect key="frame" x="97" y="113" width="287" height="23"/>
+                                <animations/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="segmentStyle">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6at-O5-hBX" customClass="DateRangePickerView" customModule="DateRangePicker">
+                                <rect key="frame" x="97" y="82" width="287" height="23"/>
+                                <animations/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="segmentStyle">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iKv-gt-Sek" customClass="DateRangePickerView" customModule="DateRangePicker">
+                                <rect key="frame" x="97" y="51" width="287" height="23"/>
+                                <animations/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="segmentStyle">
+                                        <integer key="value" value="6"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9mz-w2-0RG" customClass="DateRangePickerView" customModule="DateRangePicker">
+                                <rect key="frame" x="97" y="20" width="287" height="23"/>
+                                <animations/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="segmentStyle">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                        </subviews>
                         <animations/>
                     </view>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="613.5"/>
         </scene>
     </scenes>
 </document>
