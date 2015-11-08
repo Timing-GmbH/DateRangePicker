@@ -21,6 +21,7 @@
 		65F7714F1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */; };
 		65F771501BEE54CA0007D80E /* ExpandedDateRangePickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65F7714E1BEE54CA0007D80E /* ExpandedDateRangePickerController.xib */; };
 		65F7715A1BEE79A30007D80E /* DateRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F771591BEE79A30007D80E /* DateRange.swift */; };
+		65F7715C1BEF62F70007D80E /* DateRangeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F7715B1BEF62F70007D80E /* DateRangeTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedDateRangePickerController.swift; sourceTree = "<group>"; };
 		65F7714E1BEE54CA0007D80E /* ExpandedDateRangePickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandedDateRangePickerController.xib; sourceTree = "<group>"; };
 		65F771591BEE79A30007D80E /* DateRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRange.swift; sourceTree = "<group>"; };
+		65F7715B1BEF62F70007D80E /* DateRangeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRangeTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 		65F770F51BEE162A0007D80E /* DateRangePickerTests */ = {
 			isa = PBXGroup;
 			children = (
+				65F7715B1BEF62F70007D80E /* DateRangeTest.swift */,
 				65F7714B1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift */,
 				65F770F81BEE162A0007D80E /* Info.plist */,
 			);
@@ -353,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65F7714C1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift in Sources */,
+				65F7715C1BEF62F70007D80E /* DateRangeTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
