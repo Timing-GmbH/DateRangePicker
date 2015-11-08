@@ -105,22 +105,31 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	// MARK: - Initializers
-	required public init?(coder: NSCoder) {
-		segmentedControl = NSSegmentedControl()
+	private func sharedInit() {
 		segmentedControl.segmentCount = 3
 		segmentedControl.setLabel("◀", forSegment: 0)
 		segmentedControl.setLabel("▶", forSegment: 2)
 		segmentedControl.action = "segmentDidChange:"
 		segmentedControl.autoresizingMask = [.ViewNotSizable]
 		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = .Momentary
-		
-		_dateRange = .PastDays(7)
-		
-		super.init(coder: coder)
 		segmentedControl.target = self
 		self.addSubview(segmentedControl)
 		
 		self.dateStyle = .MediumStyle
+	}
+	
+	override public init(frame frameRect: NSRect) {
+		segmentedControl = NSSegmentedControl()
+		_dateRange = .PastDays(7)
+		super.init(frame: frameRect)
+		sharedInit()
+	}
+	
+	required public init?(coder: NSCoder) {
+		segmentedControl = NSSegmentedControl()
+		_dateRange = .PastDays(7)
+		super.init(coder: coder)
+		sharedInit()
 	}
 	
 	// MARK: - Internal
