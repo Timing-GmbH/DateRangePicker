@@ -20,7 +20,7 @@ extension DateRange {
 }
 
 public protocol ExpandedDateRangePickerControllerDelegate: class {
-	func expandedDateRangePickerController(controller: ExpandedDateRangePickerController, didSetDateRange dateRange: DateRange)
+	func expandedDateRangePickerControllerDidChangeDateRange(controller: ExpandedDateRangePickerController)
 }
 
 public class ExpandedDateRangePickerController: NSViewController {
@@ -39,6 +39,24 @@ public class ExpandedDateRangePickerController: NSViewController {
 		.CalendarUnit(0, .Year)
 	]
 	@IBOutlet var presetRangeSelector: NSPopUpButton?
+	
+	private var _dateRange: DateRange
+	public var dateRange: DateRange {
+		get {
+			return _dateRange
+		}
+		
+		set {
+			self.willChangeValueForKey("endDate")
+			self.willChangeValueForKey("startDate")
+			_dateRange = newValue.restrictToDates(minDate, maxDate)
+			self.didChangeValueForKey("endDate")
+			self.didChangeValueForKey("startDate")
+
+			presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
+			delegate?.expandedDateRangePickerControllerDidChangeDateRange(self)
+		}
+	}
 	
 	// These are needed for the bindings with NSDatePicker
 	public dynamic var startDate: NSDate {
@@ -60,30 +78,30 @@ public class ExpandedDateRangePickerController: NSViewController {
 		}
 	}
 	
-	public var dateRange: DateRange {
-		willSet {
-			self.willChangeValueForKey("endDate")
-			self.willChangeValueForKey("startDate")
-		}
-		
+	// Can be used for restricting the selectable dates to a specific range.
+	public dynamic var minDate: NSDate? {
 		didSet {
-			self.didChangeValueForKey("endDate")
-			self.didChangeValueForKey("startDate")
-			presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
-			delegate?.expandedDateRangePickerController(self, didSetDateRange: dateRange)
+			// Enforces the new date range restriction
+			dateRange = _dateRange
+		}
+	}
+	public dynamic var maxDate: NSDate? {
+		didSet {
+			// Enforces the new date range restriction
+			dateRange = _dateRange
 		}
 	}
 	
 	public weak var delegate: ExpandedDateRangePickerControllerDelegate?
 	
 	public init(dateRange: DateRange) {
-		self.dateRange = dateRange
+		_dateRange = dateRange
 		super.init(nibName: ExpandedDateRangePickerController.className(),
 			bundle: NSBundle(forClass: ExpandedDateRangePickerController.self))!
 	}
 	
 	public required init?(coder: NSCoder) {
-		dateRange = .None
+		_dateRange = .None
 		super.init(coder: coder)
 		assert(false, "This initializer should not be used.")
 	}

@@ -31,7 +31,8 @@
                     </datePickerCell>
                     <connections>
                         <binding destination="-2" name="maxValue" keyPath="endDate" id="8U4-Xp-Srw"/>
-                        <binding destination="-2" name="value" keyPath="startDate" previousBinding="8U4-Xp-Srw" id="jxT-pF-j7f"/>
+                        <binding destination="-2" name="minValue" keyPath="minDate" previousBinding="8U4-Xp-Srw" id="DJa-3a-CL5"/>
+                        <binding destination="-2" name="value" keyPath="startDate" previousBinding="DJa-3a-CL5" id="WUN-9R-YdI"/>
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDu-C9-U0X">
@@ -48,7 +49,8 @@
                     </datePickerCell>
                     <connections>
                         <binding destination="-2" name="maxValue" keyPath="endDate" id="txe-il-VcF"/>
-                        <binding destination="-2" name="value" keyPath="startDate" previousBinding="txe-il-VcF" id="XN3-mD-Wt0"/>
+                        <binding destination="-2" name="minValue" keyPath="minDate" previousBinding="txe-il-VcF" id="tcK-0V-gpC"/>
+                        <binding destination="-2" name="value" keyPath="startDate" previousBinding="tcK-0V-gpC" id="nhU-uZ-jcv"/>
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
@@ -64,23 +66,8 @@
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                     </datePickerCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="endDate" id="bSn-y6-AC6"/>
-                    </connections>
-                </datePicker>
-                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
-                    <rect key="frame" x="167" y="176" width="142" height="27"/>
-                    <animations/>
-                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="jeJ-ON-TL7">
-                        <font key="font" metaFont="system"/>
-                        <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                            <!--1982-02-12 08:00:00 -0800-->
-                            <timeZone key="timeZone" name="US/Pacific"/>
-                        </calendarDate>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                    </datePickerCell>
-                    <connections>
-                        <binding destination="-2" name="value" keyPath="endDate" id="Sbc-kZ-KKn"/>
+                        <binding destination="-2" name="value" keyPath="endDate" previousBinding="pJ4-69-kqo" id="yIX-Tl-BCJ"/>
+                        <binding destination="-2" name="maxValue" keyPath="maxDate" id="pJ4-69-kqo"/>
                     </connections>
                 </datePicker>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5J-7O-GaA">
@@ -104,6 +91,23 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
+                    <rect key="frame" x="167" y="176" width="142" height="27"/>
+                    <animations/>
+                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="jeJ-ON-TL7">
+                        <font key="font" metaFont="system"/>
+                        <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
+                            <!--1982-02-12 08:00:00 -0800-->
+                            <timeZone key="timeZone" name="US/Pacific"/>
+                        </calendarDate>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                    </datePickerCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="endDate" previousBinding="z8H-Ip-gnA" id="e2i-GH-Vc9"/>
+                        <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
+                    </connections>
+                </datePicker>
             </subviews>
             <animations/>
             <point key="canvasLocation" x="404" y="491"/>
