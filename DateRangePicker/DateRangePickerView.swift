@@ -58,7 +58,22 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
-	// Provided for Objective-C interoperability
+	public var dateStyle: NSDateFormatterStyle {
+		get {
+			return dateFormatter.dateStyle
+		}
+		
+		set {
+			dateFormatter.dateStyle = newValue
+			updateSegmentedControl()
+		}
+	}
+	
+	public var dateRangeString: String {
+		return "\(dateFormatter.stringFromDate(startDate)) - \(dateFormatter.stringFromDate(endDate))"
+	}
+	
+	// MARK: - Objective-C interoperability
 	public dynamic var startDate: NSDate {
 		get {
 			return dateRange.startDate!
@@ -78,19 +93,16 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
-	public var dateStyle: NSDateFormatterStyle {
-		get {
-			return dateFormatter.dateStyle
-		}
-		
-		set {
-			dateFormatter.dateStyle = newValue
-			updateSegmentedControl()
-		}
+	public func setStartDate(startDate: NSDate, endDate: NSDate) {
+		_dateRange = .Custom(startDate, endDate)
 	}
 	
-	public var dateRangeString: String {
-		return "\(dateFormatter.stringFromDate(startDate)) - \(dateFormatter.stringFromDate(endDate))"
+	public func dateRangeAsData() -> NSData {
+		return dateRange.toData()
+	}
+	public func loadDateRangeFromData(data: NSData) {
+		guard let newRange = DateRange.fromData(data) else { return }
+		dateRange = newRange
 	}
 	
 	// MARK: - Other properties
