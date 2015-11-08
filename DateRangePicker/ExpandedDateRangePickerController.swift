@@ -88,8 +88,8 @@ public class ExpandedDateRangePickerController: NSViewController {
 		assert(false, "This initializer should not be used.")
 	}
 
-    public override func viewDidLoad() {
-        super.viewDidLoad()
+	public override func awakeFromNib() {
+        super.awakeFromNib()
 		
 		guard let menu = presetRangeSelector?.menu else { return }
 		for range in presetRanges {
