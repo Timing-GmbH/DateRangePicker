@@ -11,7 +11,7 @@ import Foundation
 public extension NSDate {
 	public func drp_addCalendarUnits(count: Int, _ unit: NSCalendarUnit, calendar: NSCalendar) -> NSDate? {
 		let advancedDate: NSDate?
-		if (unit == .Quarter) {
+		if unit == .Quarter {
 			// There seems to be a bug where adding one quarter to a date in the 3rd quarter does not return the
 			// corresponding date in the 4th quarter. As a workaround, we add 3 months instead.
 			advancedDate = calendar.dateByAddingUnit(.Month, value: 3 * count, toDate: self, options: [])

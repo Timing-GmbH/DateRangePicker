@@ -126,11 +126,11 @@ public enum DateRange: Equatable {
 			guard let endDate = unarchiver.decodeObjectForKey("endDate") as? NSDate else { return nil }
 			return Custom(startDate, endDate)
 		case "PastDays":
-			if (!unarchiver.containsValueForKey("pastDays")) { return nil }
+			if !unarchiver.containsValueForKey("pastDays") { return nil }
 			return PastDays(unarchiver.decodeIntegerForKey("pastDays"))
 		case "CalendarUnit":
-			if (!unarchiver.containsValueForKey("offset")) { return nil }
-			if (!unarchiver.containsValueForKey("unit")) { return nil }
+			if !unarchiver.containsValueForKey("offset") { return nil }
+			if !unarchiver.containsValueForKey("unit") { return nil }
 			return CalendarUnit(unarchiver.decodeIntegerForKey("offset"), NSCalendarUnit(rawValue: UInt(unarchiver.decodeIntegerForKey("unit"))))
 		case "None":
 			return None

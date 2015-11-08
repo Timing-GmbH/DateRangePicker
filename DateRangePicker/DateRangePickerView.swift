@@ -53,7 +53,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		didSet {
 			self.didChangeValueForKey("endDate")
 			self.didChangeValueForKey("startDate")
-			if (dateRangePickerController?.dateRange != dateRange) {
+			if dateRangePickerController?.dateRange != dateRange {
 				dateRangePickerController?.dateRange = dateRange
 			}
 			updateSegmentedControl()
