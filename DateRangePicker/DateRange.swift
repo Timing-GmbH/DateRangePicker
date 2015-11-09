@@ -17,31 +17,25 @@ public enum DateRange: Equatable {
 	case None
 	
 	public var title: String {
-		switch (self) {
+		switch self {
 		case Custom:
-			return NSLocalizedString("Custom", comment: "Title for a custom date range.")
+			return NSLocalizedString("Custom", bundle: getBundle(), comment: "Title for a custom date range.")
 		case PastDays(let pastDays):
 			return String(format: NSLocalizedString(
-				"Past %d days", comment: "Title for a date range spanning the past %d days."),
+				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
 				pastDays)
 		case CalendarUnit(let offset, let unit):
-			switch (offset) {
-			case _ where offset > 0:
-				// TODO: These currently do not use proper plural forms for the unit.
-				return String(format: NSLocalizedString(
-					"%d %@ in the future", comment: "Title for a future date range based on a calendar unit."),
-					offset, unit.drp_Name ?? "")
-			case _ where offset < 0:
-				return String(format: NSLocalizedString(
-					"%d %@ ago", comment: "Title for a past date range based on a calendar unit."),
-					-offset, unit.drp_Name ?? "")
-			default: // offset == 0
-				return String(format: NSLocalizedString(
-					"This %@", comment: "Title for a current date range based on a calendar unit."),
-					unit.drp_Name ?? "")
+			if offset != 0 { return "" }  // Currently neither needed nor supported
+			switch unit {
+				// Seems like OptionSetTypes do not support enum-style .Day (yet?)...
+			case _ where unit == .WeekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
+			case _ where unit == .Month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
+			case _ where unit == .Quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
+			case _ where unit == .Year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
+			default: return ""  // Currently neither needed nor supported
 			}
 		case None:
-			return NSLocalizedString("None", comment: "Title for a nonexistent date range.")
+			return NSLocalizedString("None", bundle: getBundle(), comment: "Title for a nonexistent date range.")
 		}
 	}
 	
@@ -80,7 +74,7 @@ public enum DateRange: Equatable {
 	}
 	
 	public func moveBy(steps: Int) -> DateRange {
-		switch (self) {
+		switch self {
 		case Custom, PastDays:
 			guard let startDate = startDate else { return None }
 			guard let endDate = endDate else { return None }
@@ -98,7 +92,7 @@ public enum DateRange: Equatable {
 	public func toData() -> NSData {
 		let data = NSMutableData()
 		let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
-		switch (self) {
+		switch self {
 		case Custom(let startDate, let endDate):
 			archiver.encodeObject("Custom", forKey: "case")
 			archiver.encodeObject(startDate, forKey: "startDate")
@@ -173,29 +167,5 @@ public func ==(lhs: DateRange, rhs: DateRange) -> Bool {
 		return true
 	default:
 		return false
-	}
-}
-
-extension NSCalendarUnit: Hashable {
-	public var hashValue: Int {
-		get {
-			return Int(rawValue)
-		}
-	}
-}
-
-public extension NSCalendarUnit {
-	static let drp_Names: [NSCalendarUnit:String] = [
-		.Day: NSLocalizedString("Day", comment: "Calendar Unit: Day."),
-		.WeekOfYear: NSLocalizedString("Week", comment: "Calendar Unit: Week of Year."),
-		.Month: NSLocalizedString("Month", comment: "Calendar Unit: Month."),
-		.Quarter: NSLocalizedString("Quarter", comment: "Calendar Unit: Quarter."),
-		.Year: NSLocalizedString("Year", comment: "Calendar Unit: Year.")
-	]
-	
-	var drp_Name: String? {
-		get {
-			return NSCalendarUnit.drp_Names[self]
-		}
 	}
 }

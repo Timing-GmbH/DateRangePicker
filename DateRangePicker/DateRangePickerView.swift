@@ -157,7 +157,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	func segmentDidChange(sender: NSSegmentedControl) {
-		switch (sender.selectedSegment) {
+		switch sender.selectedSegment {
 		case 0:
 			dateRange = dateRange.previous()
 		case 1:

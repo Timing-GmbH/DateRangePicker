@@ -10,7 +10,7 @@ import Cocoa
 
 extension DateRange {
 	func buildMenuItem() -> NSMenuItem {
-		switch (self) {
+		switch self {
 		case Custom, PastDays, CalendarUnit:
 			return NSMenuItem(title: title, action: nil, keyEquivalent: "")
 		case None:
@@ -118,7 +118,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 	
 	@IBAction func presetRangeSelected(sender: NSPopUpButton) {
 		let selectedRange = presetRanges[sender.indexOfSelectedItem]
-		switch (selectedRange) {
+		switch selectedRange {
 		case .Custom, .None:
 			dateRange = DateRange.Custom(startDate, endDate)
 		case .PastDays, .CalendarUnit:
