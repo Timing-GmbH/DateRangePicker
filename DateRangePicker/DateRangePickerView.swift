@@ -97,6 +97,8 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		_dateRange = .Custom(startDate, endDate)
 	}
 	
+	// In Objective-C, the DateRange type isn't available. In order to still persist the picker's
+	// date range (e.g. between launches), you can use these functions instead.
 	public func dateRangeAsData() -> NSData {
 		return dateRange.toData()
 	}
