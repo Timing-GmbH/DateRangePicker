@@ -20,7 +20,6 @@ public extension NSDate {
 		}
 		return advancedDate
 	}
-	
 	public func drp_addCalendarUnits(count: Int, _ unit: NSCalendarUnit) -> NSDate? {
 		return drp_addCalendarUnits(count, unit, calendar: NSCalendar.currentCalendar())
 	}
@@ -30,7 +29,6 @@ public extension NSDate {
 		calendar.rangeOfUnit(unit, startDate: &reducedDate, interval: nil, forDate: self)
 		return reducedDate
 	}
-	
 	public func drp_beginningOfCalendarUnit(unit: NSCalendarUnit) -> NSDate? {
 		return drp_beginningOfCalendarUnit(unit, calendar: NSCalendar.currentCalendar())
 	}
@@ -39,18 +37,16 @@ public extension NSDate {
 		guard let startDate = drp_beginningOfCalendarUnit(unit, calendar: NSCalendar.currentCalendar()) else { return nil }
 		return startDate.drp_addCalendarUnits(1, unit, calendar: calendar)?.dateByAddingTimeInterval(-1)
 	}
-	
 	public func drp_endOfCalendarUnit(unit: NSCalendarUnit) -> NSDate? {
 		return drp_endOfCalendarUnit(unit, calendar: NSCalendar.currentCalendar())
 	}
 	
+	// Returns the number of calendar days between the argument and the receiver.
 	public func drp_daysSince(since: NSDate, calendar: NSCalendar) -> Int {
 		let fromDate = since.drp_beginningOfCalendarUnit(.Day, calendar: calendar)!
 		let toDate = self.drp_beginningOfCalendarUnit(.Day, calendar: calendar)!
 		return calendar.components(.Day, fromDate: fromDate, toDate: toDate, options: []).day
 	}
-	
-	// Returns the number of calendar days since the argument and the receiver.
 	public func drp_daysSince(since: NSDate) -> Int {
 		return drp_daysSince(since, calendar: NSCalendar.currentCalendar())
 	}
