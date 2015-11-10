@@ -189,12 +189,11 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	private func updateSegmentedControl() {
 		segmentedControl.setLabel(dateRangeString, forSegment: 1)
 		
-		// Only enable the previous/next buttons if they do not fall outside the date restrictions,
-		// i.e. if the outer value of the corresponding date range changes.
-		let previousAllowed = dateRange.previous().restrictToDates(minDate, maxDate).startDate != dateRange.startDate
+		// Only enable the previous/next buttons if they do not touch outside the date restrictions range already.
+		let previousAllowed = minDate != nil ? dateRange.startDate != minDate?.drp_beginningOfCalendarUnit(.Day) : true
 		segmentedControl.setEnabled(previousAllowed, forSegment: 0)
 		
-		let nextAllowed = dateRange.next().restrictToDates(minDate, maxDate).endDate != dateRange.endDate
+		let nextAllowed = maxDate != nil ? dateRange.endDate != maxDate?.drp_endOfCalendarUnit(.Day) : true
 		segmentedControl.setEnabled(nextAllowed, forSegment: 2)
 		
 		// Display the middle segment as selected while the expanded date range popover is being shown.
