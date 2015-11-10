@@ -125,7 +125,6 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		segmentedControl.setLabel("▶", forSegment: 2)
 		segmentedControl.action = "segmentDidChange:"
 		segmentedControl.autoresizingMask = [.ViewNotSizable]
-		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = .Momentary
 		segmentedControl.target = self
 		self.addSubview(segmentedControl)
 		
@@ -172,6 +171,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 			popover.contentViewController = dateRangePickerController
 			popover.delegate = self
 			popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
+			updateSegmentedControl()
 		case 2:
 			dateRange = dateRange.next()
 		default:
@@ -189,6 +189,10 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		
 		let nextAllowed = dateRange.next().restrictToDates(minDate, maxDate).endDate != dateRange.endDate
 		segmentedControl.setEnabled(nextAllowed, forSegment: 2)
+		
+		// Display the middle segment as selected while the expanded date range popover is being shown.
+		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = dateRangePickerController != nil ? .SelectOne : .Momentary
+		segmentedControl.selectedSegment = dateRangePickerController != nil ? 1 : -1
 	}
 	
 	// MARK: - ExpandedDateRangePickerControllerDelegate
@@ -199,10 +203,11 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	// MARK: - NSPopoverDelegate
-	public func popoverDidClose(notification: NSNotification) {
+	public func popoverWillClose(notification: NSNotification) {
 		guard let popover = notification.object as? NSPopover else { return }
 		if popover.contentViewController === dateRangePickerController {
 			dateRangePickerController = nil
+			updateSegmentedControl()
 		}
 	}
 }
