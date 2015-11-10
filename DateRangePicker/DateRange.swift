@@ -16,7 +16,7 @@ public enum DateRange: Equatable {
 	case CalendarUnit(Int, NSCalendarUnit)
 	case None
 	
-	public var title: String {
+	public var title: String? {
 		switch self {
 		case Custom:
 			return NSLocalizedString("Custom", bundle: getBundle(), comment: "Title for a custom date range.")
@@ -25,14 +25,20 @@ public enum DateRange: Equatable {
 				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
 				pastDays)
 		case CalendarUnit(let offset, let unit):
-			if offset != 0 { return "" }  // Currently neither needed nor supported
+			if offset != 0 {
+				NSLog("DateRange.title currently not supported for .CalendarUnit with offset != 0")
+				return nil
+			}
 			switch unit {
-				// Seems like OptionSetTypes do not support enum-style .Day (yet?)...
+				// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
 			case _ where unit == .WeekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
 			case _ where unit == .Month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
 			case _ where unit == .Quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
 			case _ where unit == .Year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
-			default: return ""  // Currently neither needed nor supported
+			default:
+				// Currently neither needed nor supported
+				NSLog("DateRange.title currently not supported for .CalendarUnit with unit %d", unit.rawValue)
+				return nil
 			}
 		case None:
 			return NSLocalizedString("None", bundle: getBundle(), comment: "Title for a nonexistent date range.")

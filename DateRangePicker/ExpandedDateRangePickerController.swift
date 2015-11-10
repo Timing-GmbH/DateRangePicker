@@ -8,17 +8,6 @@
 
 import Cocoa
 
-extension DateRange {
-	func buildMenuItem() -> NSMenuItem {
-		switch self {
-		case Custom, PastDays, CalendarUnit:
-			return NSMenuItem(title: title, action: nil, keyEquivalent: "")
-		case None:
-			return NSMenuItem.separatorItem()
-		}
-	}
-}
-
 public protocol ExpandedDateRangePickerControllerDelegate: class {
 	func expandedDateRangePickerControllerDidChangeDateRange(controller: ExpandedDateRangePickerController)
 }
@@ -52,7 +41,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 			_dateRange = newValue.restrictToDates(minDate, maxDate)
 			self.didChangeValueForKey("endDate")
 			self.didChangeValueForKey("startDate")
-
+			
 			presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
 			delegate?.expandedDateRangePickerControllerDidChangeDateRange(self)
 		}
@@ -105,16 +94,25 @@ public class ExpandedDateRangePickerController: NSViewController {
 		super.init(coder: coder)
 		assert(false, "This initializer should not be used.")
 	}
-
+	
 	public override func awakeFromNib() {
-        super.awakeFromNib()
+		super.awakeFromNib()
 		
 		guard let menu = presetRangeSelector?.menu else { return }
 		for range in presetRanges {
-			menu.addItem(range.buildMenuItem())
+			let menuItem: NSMenuItem
+			switch range {
+			case .None:
+				menuItem = NSMenuItem.separatorItem()
+			default:
+				guard let title = range.title else { continue }
+				menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+			}
+			
+			menu.addItem(menuItem)
 		}
 		presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
-    }
+	}
 	
 	@IBAction func presetRangeSelected(sender: NSPopUpButton) {
 		let selectedRange = presetRanges[sender.indexOfSelectedItem]
