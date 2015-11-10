@@ -20,11 +20,9 @@ class DateRangeTest: XCTestCase {
 	func testTitle() {
 		XCTAssertEqual("Custom", DateRange.Custom(NSDate(), NSDate()).title)
 		
-		XCTAssertEqual("Past 7 days", DateRange.PastDays(7).title)
+		XCTAssertEqual("Past 7 Days", DateRange.PastDays(7).title)
 		
 		XCTAssertEqual("This Quarter", DateRange.CalendarUnit(0, .Quarter).title)
-		XCTAssertEqual("1 Quarter ago", DateRange.CalendarUnit(-1, .Quarter).title)
-		XCTAssertEqual("1 Quarter in the future", DateRange.CalendarUnit(1, .Quarter).title)
 		
 		XCTAssertEqual("None", DateRange.None.title)
 	}
