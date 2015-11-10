@@ -118,6 +118,22 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
+	// MARK: - Methods
+	public func displayExpandedDatePicker() {
+		if dateRangePickerController != nil { return }
+		
+		let popover = NSPopover()
+		popover.behavior = .Semitransient
+		dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
+		dateRangePickerController?.minDate = minDate
+		dateRangePickerController?.maxDate = maxDate
+		dateRangePickerController?.delegate = self
+		popover.contentViewController = dateRangePickerController
+		popover.delegate = self
+		popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
+		updateSegmentedControl()
+	}
+	
 	// MARK: - Initializers
 	private func sharedInit() {
 		segmentedControl.segmentCount = 3
@@ -162,16 +178,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		case 0:
 			dateRange = dateRange.previous()
 		case 1:
-			let popover = NSPopover()
-			popover.behavior = .Semitransient
-			dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
-			dateRangePickerController?.minDate = minDate
-			dateRangePickerController?.maxDate = maxDate
-			dateRangePickerController?.delegate = self
-			popover.contentViewController = dateRangePickerController
-			popover.delegate = self
-			popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
-			updateSegmentedControl()
+			displayExpandedDatePicker()
 		case 2:
 			dateRange = dateRange.next()
 		default:
