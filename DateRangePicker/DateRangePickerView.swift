@@ -162,7 +162,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	// MARK: - Internal
-	override public func layout() {
+	override public func resizeSubviewsWithOldSize(size: CGSize) {
 		let sideButtonWidth: CGFloat = 22
 		// Magic number to avoid the segmented control overflowing out of its bounds.
 		let unusedControlWidth: CGFloat = 8
@@ -170,7 +170,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		segmentedControl.setWidth(self.bounds.size.width - 2 * sideButtonWidth - unusedControlWidth, forSegment:1)
 		segmentedControl.setWidth(sideButtonWidth, forSegment:2)
 		segmentedControl.frame = self.bounds
-		super.layout()
+		super.resizeSubviewsWithOldSize(size)
 	}
 	
 	func segmentDidChange(sender: NSSegmentedControl) {
