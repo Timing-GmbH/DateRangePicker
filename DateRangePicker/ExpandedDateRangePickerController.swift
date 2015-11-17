@@ -85,7 +85,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 	
 	public init(dateRange: DateRange) {
 		_dateRange = dateRange
-		super.init(nibName: ExpandedDateRangePickerController.className(),
+		super.init(nibName: "ExpandedDateRangePickerController",
 			bundle: NSBundle(forClass: ExpandedDateRangePickerController.self))!
 	}
 	
