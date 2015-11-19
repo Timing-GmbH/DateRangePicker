@@ -16,6 +16,38 @@ public enum DateRange: Equatable {
 	case CalendarUnit(Int, NSCalendarUnit)
 	case None
 	
+	// MARK: - Core properties
+	public var startDate: NSDate? {
+		switch(self) {
+		case Custom(let startDate, _):
+			return startDate.drp_beginningOfCalendarUnit(.Day)
+		case PastDays(let pastDays):
+			return NSDate().drp_addCalendarUnits(-pastDays, .Day)?.drp_beginningOfCalendarUnit(.Day)
+		case CalendarUnit(let offset, let unit):
+			return NSDate().drp_addCalendarUnits(offset, unit)?.drp_beginningOfCalendarUnit(unit)
+		case None:
+			return nil
+		}
+	}
+	
+	public var endDate: NSDate? {
+		switch(self) {
+		case Custom(_, let endDate):
+			return endDate.drp_endOfCalendarUnit(.Day)
+		case PastDays(_):
+			return NSDate().drp_endOfCalendarUnit(.Day)
+		case CalendarUnit(let offset, let unit):
+			return NSDate().drp_addCalendarUnits(offset, unit)?.drp_endOfCalendarUnit(unit)
+		case None:
+			return nil
+		}
+	}
+	
+	// MARK: - Display-related properties and methods
+	
+	// Returns a title for this date range, suitable for use in e.g. a menu.
+	// Returns "Custom" and "None" for the corresponding cases.
+	// Note: Some cases of CalendarUnit are not yet supported.
 	public var title: String? {
 		switch self {
 		case Custom:
@@ -49,32 +81,31 @@ public enum DateRange: Equatable {
 		}
 	}
 	
-	public var startDate: NSDate? {
-		switch(self) {
-		case Custom(let startDate, _):
-			return startDate.drp_beginningOfCalendarUnit(.Day)
-		case PastDays(let pastDays):
-			return NSDate().drp_addCalendarUnits(-pastDays, .Day)?.drp_beginningOfCalendarUnit(.Day)
-		case CalendarUnit(let offset, let unit):
-			return NSDate().drp_addCalendarUnits(offset, unit)?.drp_beginningOfCalendarUnit(unit)
-		case None:
-			return nil
+	// Returns a human-readable description of this date range.
+	// If no "pretty" description (e.g. "Past 7 Days", "This Week", "October 2015") is available,
+	// returns either a single date (if startDate.day == endDate.day) or a date range in the form of
+	// "Formatted Start Date - Formatted End Date" (e.g. "05.10.15 - 10.03.15").
+	public func dateRangeDescription(dateFormatter: NSDateFormatter) -> String {
+		switch self {
+		case Custom: break
+		case CalendarUnit(let offset, let unit) where unit == .Month && offset != 0:
+			// Special case: A month, but not the current one. E.g. "October 2015".
+			let monthDayFormat = NSDateFormatter.dateFormatFromTemplate("MMMM y", options:0, locale: NSLocale.currentLocale())
+			let fullMonthDateFormatter = NSDateFormatter()
+			fullMonthDateFormatter.timeStyle = .NoStyle
+			fullMonthDateFormatter.dateFormat = monthDayFormat
+			return fullMonthDateFormatter.stringFromDate(endDate!)
+		case PastDays: fallthrough
+		case CalendarUnit: fallthrough
+		case None: if let title = title { return title }
 		}
+		if startDate!.drp_beginningOfCalendarUnit(.Day) == endDate!.drp_beginningOfCalendarUnit(.Day) {
+			return dateFormatter.stringFromDate(endDate!)
+		}
+		return "\(dateFormatter.stringFromDate(startDate!)) - \(dateFormatter.stringFromDate(endDate!))"
 	}
 	
-	public var endDate: NSDate? {
-		switch(self) {
-		case Custom(_, let endDate):
-			return endDate.drp_endOfCalendarUnit(.Day)
-		case PastDays(_):
-			return NSDate().drp_endOfCalendarUnit(.Day)
-		case CalendarUnit(let offset, let unit):
-			return NSDate().drp_addCalendarUnits(offset, unit)?.drp_endOfCalendarUnit(unit)
-		case None:
-			return nil
-		}
-	}
-	
+	// MARK: - Obtaining related ranges
 	public func previous() -> DateRange {
 		return moveBy(-1)
 	}
@@ -96,6 +127,27 @@ public enum DateRange: Equatable {
 		case None:
 			return self
 		}
+	}
+	
+	public func restrictToDates(minDate: NSDate?, _ maxDate: NSDate?) -> DateRange {
+		guard let startDate = startDate else { return None }
+		guard let endDate = endDate else { return None }
+		
+		var adjustedStartDate = startDate
+		var adjustedEndDate = endDate
+		if let minDate = minDate?.drp_beginningOfCalendarUnit(.Day) {
+			adjustedStartDate = minDate.laterDate(adjustedStartDate)
+			adjustedEndDate = minDate.laterDate(adjustedEndDate)
+		}
+		if let maxDate = maxDate?.drp_endOfCalendarUnit(.Day) {
+			adjustedStartDate = maxDate.earlierDate(adjustedStartDate)
+			adjustedEndDate = maxDate.earlierDate(adjustedEndDate)
+		}
+		if startDate != adjustedStartDate || endDate != adjustedEndDate {
+			return Custom(adjustedStartDate, adjustedEndDate)
+		}
+		
+		return self
 	}
 	
 	// Ugly workaround for serialization because enums can't support NSCoding.
@@ -141,27 +193,6 @@ public enum DateRange: Equatable {
 		default:
 			return nil
 		}
-	}
-	
-	public func restrictToDates(minDate: NSDate?, _ maxDate: NSDate?) -> DateRange {
-		guard let startDate = startDate else { return None }
-		guard let endDate = endDate else { return None }
-		
-		var adjustedStartDate = startDate
-		var adjustedEndDate = endDate
-		if let minDate = minDate?.drp_beginningOfCalendarUnit(.Day) {
-			adjustedStartDate = minDate.laterDate(adjustedStartDate)
-			adjustedEndDate = minDate.laterDate(adjustedEndDate)
-		}
-		if let maxDate = maxDate?.drp_endOfCalendarUnit(.Day) {
-			adjustedStartDate = maxDate.earlierDate(adjustedStartDate)
-			adjustedEndDate = maxDate.earlierDate(adjustedEndDate)
-		}
-		if startDate != adjustedStartDate || endDate != adjustedEndDate {
-			return Custom(adjustedStartDate, adjustedEndDate)
-		}
-		
-		return self
 	}
 }
 

@@ -70,7 +70,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	public var dateRangeString: String {
-		return "\(dateFormatter.stringFromDate(startDate)) - \(dateFormatter.stringFromDate(endDate))"
+		return dateRange.dateRangeDescription(dateFormatter)
 	}
 	
 	// MARK: - Objective-C interoperability
