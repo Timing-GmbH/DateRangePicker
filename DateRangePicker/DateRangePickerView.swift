@@ -15,7 +15,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	private var dateRangePickerController: ExpandedDateRangePickerController?
 	
 	// MARK: - Date properties
-	private var _dateRange: DateRange
+	private var _dateRange: DateRange  // Should almost never be accessed directly
 	public var dateRange: DateRange {
 		get {
 			return _dateRange
@@ -94,7 +94,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	public func setStartDate(startDate: NSDate, endDate: NSDate) {
-		_dateRange = .Custom(startDate, endDate)
+		dateRange = .Custom(startDate, endDate)
 	}
 	
 	// In Objective-C, the DateRange type isn't available. In order to still persist the picker's
