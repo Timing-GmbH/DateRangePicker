@@ -25,12 +25,16 @@ public enum DateRange: Equatable {
 				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
 				pastDays)
 		case CalendarUnit(let offset, let unit):
+			if offset == -1 && unit == .Day {
+				return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
+			}
 			if offset != 0 {
 				NSLog("DateRange.title currently not supported for .CalendarUnit with offset != 0")
 				return nil
 			}
 			switch unit {
 				// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
+			case _ where unit == .Day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
 			case _ where unit == .WeekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
 			case _ where unit == .Month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
 			case _ where unit == .Quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")

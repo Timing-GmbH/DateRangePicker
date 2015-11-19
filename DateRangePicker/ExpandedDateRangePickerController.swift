@@ -22,6 +22,8 @@ public class ExpandedDateRangePickerController: NSViewController {
 		.PastDays(90),
 		.PastDays(365),
 		.None,
+		.CalendarUnit(0, .Day),
+		.CalendarUnit(-1, .Day),
 		.CalendarUnit(0, .WeekOfYear),
 		.CalendarUnit(0, .Month),
 		.CalendarUnit(0, .Quarter),
