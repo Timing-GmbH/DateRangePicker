@@ -163,6 +163,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	
 	// MARK: - Internal
 	override public func resizeSubviewsWithOldSize(size: CGSize) {
+		// It would be nice to use Auto Layout instead, but that doesn't play nicely with views in a toolbar.
 		let sideButtonWidth: CGFloat = 22
 		// Magic number to avoid the segmented control overflowing out of its bounds.
 		let unusedControlWidth: CGFloat = 8
