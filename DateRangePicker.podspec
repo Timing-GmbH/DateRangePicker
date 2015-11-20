@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
     s.screenshots           = 'https://raw.githubusercontent.com/MrMage/DateRangePicker/master/Screenshots/Popover.png', 'https://raw.githubusercontent.com/MrMage/DateRangePicker/master/Screenshots/ControlVariants.png', 'https://raw.githubusercontent.com/MrMage/DateRangePicker/master/Screenshots/Menu.png'
 
     s.author                = { 'Daniel Alm' => 'DateRangePicker@danielalm.de' }
-    s.license               = { :type => 'ISC (simplified BSD)', :file => 'LICENSE.txt' }
+    s.license               = { :type => 'ISC (simplified BSD)', :file => 'LICENSE' }
     s.social_media_url      = 'https://twitter.com/daniel_a_a'
     s.platforms             = { :osx => '10.9' }
 
