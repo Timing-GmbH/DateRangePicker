@@ -76,7 +76,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	// MARK: - Objective-C interoperability
 	public dynamic var startDate: NSDate {
 		get {
-			return dateRange.startDate!
+			return dateRange.startDate
 		}
 		
 		set {
@@ -85,7 +85,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	public dynamic var endDate: NSDate {
 		get {
-			return dateRange.endDate!
+			return dateRange.endDate
 		}
 		
 		set {

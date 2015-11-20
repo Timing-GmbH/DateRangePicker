@@ -13,15 +13,15 @@ public protocol ExpandedDateRangePickerControllerDelegate: class {
 }
 
 public class ExpandedDateRangePickerController: NSViewController {
-	let presetRanges: [DateRange] = [
+	let presetRanges: [DateRange?] = [
 		.Custom(NSDate(), NSDate()),
-		.None,
+		nil,
 		.PastDays(7),
 		.PastDays(15),
 		.PastDays(30),
 		.PastDays(90),
 		.PastDays(365),
-		.None,
+		nil,
 		.CalendarUnit(0, .Day),
 		.CalendarUnit(-1, .Day),
 		.CalendarUnit(0, .WeekOfYear),
@@ -52,7 +52,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 	// These are needed for the bindings with NSDatePicker
 	public dynamic var startDate: NSDate {
 		get {
-			return dateRange.startDate!
+			return dateRange.startDate
 		}
 		
 		set {
@@ -61,7 +61,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 	}
 	public dynamic var endDate: NSDate {
 		get {
-			return dateRange.endDate!
+			return dateRange.endDate
 		}
 		
 		set {
@@ -92,7 +92,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 	}
 	
 	public required init?(coder: NSCoder) {
-		_dateRange = .None
+		_dateRange = .PastDays(0)
 		super.init(coder: coder)
 		assert(false, "This initializer should not be used.")
 	}
@@ -103,23 +103,21 @@ public class ExpandedDateRangePickerController: NSViewController {
 		guard let menu = presetRangeSelector?.menu else { return }
 		for range in presetRanges {
 			let menuItem: NSMenuItem
-			switch range {
-			case .None:
-				menuItem = NSMenuItem.separatorItem()
-			default:
+			if let range = range {
 				guard let title = range.title else { continue }
 				menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+			} else {
+				menuItem = NSMenuItem.separatorItem()
 			}
-			
 			menu.addItem(menuItem)
 		}
 		presetRangeSelector?.selectItemAtIndex(presetRanges.indexOf({ $0 == dateRange }) ?? 0)
 	}
 	
 	@IBAction func presetRangeSelected(sender: NSPopUpButton) {
-		let selectedRange = presetRanges[sender.indexOfSelectedItem]
+		guard let selectedRange = presetRanges[sender.indexOfSelectedItem] else { return }
 		switch selectedRange {
-		case .Custom, .None:
+		case .Custom:
 			dateRange = DateRange.Custom(startDate, endDate)
 		case .PastDays, .CalendarUnit:
 			dateRange = selectedRange

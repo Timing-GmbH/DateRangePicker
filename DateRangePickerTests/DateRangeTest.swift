@@ -23,8 +23,6 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual("Past 7 Days", DateRange.PastDays(7).title)
 		
 		XCTAssertEqual("This Quarter", DateRange.CalendarUnit(0, .Quarter).title)
-		
-		XCTAssertEqual("None", DateRange.None.title)
 	}
 	
 	func testStartEndDates() {
@@ -52,10 +50,6 @@ class DateRangeTest: XCTestCase {
 		dateRange = DateRange.CalendarUnit(1, .Quarter)
 		XCTAssertEqual(NSDate().drp_addCalendarUnits(1, .Quarter)!.drp_beginningOfCalendarUnit(.Quarter), dateRange.startDate)
 		XCTAssertEqual(NSDate().drp_addCalendarUnits(1, .Quarter)!.drp_endOfCalendarUnit(.Quarter), dateRange.endDate)
-		
-		dateRange = DateRange.None
-		XCTAssertEqual(nil, DateRange.None.startDate)
-		XCTAssertEqual(nil, DateRange.None.endDate)
 	}
 	
 	func testEqual() {
@@ -73,8 +67,6 @@ class DateRangeTest: XCTestCase {
 		XCTAssertNotEqual(DateRange.CalendarUnit(8, .Quarter), DateRange.CalendarUnit(7, .Quarter))
 		XCTAssertNotEqual(DateRange.CalendarUnit(7, .Day), DateRange.CalendarUnit(7, .Quarter))
 		XCTAssertNotEqual(DateRange.CalendarUnit(1, .WeekOfYear), DateRange.CalendarUnit(7, .Day))
-		
-		XCTAssertEqual(DateRange.None, DateRange.None)
 	}
 	
 	func testMoveBy() {
@@ -87,7 +79,6 @@ class DateRangeTest: XCTestCase {
 			DateRange.PastDays(30).moveBy(-2))
 		
 		XCTAssertEqual(DateRange.CalendarUnit(-1, .Quarter), DateRange.CalendarUnit(1, .Quarter).moveBy(-2))
-		XCTAssertEqual(DateRange.None, DateRange.None.moveBy(-2))
 	}
 	
 	func testToFromData() {
@@ -101,9 +92,6 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
 		
 		dateRange = DateRange.CalendarUnit(-7, .Quarter)
-		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
-		
-		dateRange = DateRange.None
 		XCTAssertEqual(dateRange, DateRange.fromData(dateRange.toData()))
 	}
 	
