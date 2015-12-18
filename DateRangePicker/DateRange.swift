@@ -55,10 +55,9 @@ public enum DateRange: Equatable {
 			if offset == -1 && unit == .Day {
 				return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
 			}
-			if offset != 0 {
-				NSLog("DateRange.title currently not supported for .CalendarUnit with offset != 0")
-				return nil
-			}
+			
+			if offset != 0 { return nil } // Not yet supported/needed.
+			
 			switch unit {
 				// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
 			case _ where unit == .Day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
@@ -66,10 +65,7 @@ public enum DateRange: Equatable {
 			case _ where unit == .Month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
 			case _ where unit == .Quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
 			case _ where unit == .Year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
-			default:
-				// Currently neither needed nor supported
-				NSLog("DateRange.title currently not supported for .CalendarUnit with unit %d", unit.rawValue)
-				return nil
+			default: return nil // Not yet supported/needed.
 			}
 		}
 	}
