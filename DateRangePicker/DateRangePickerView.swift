@@ -161,6 +161,13 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		sharedInit()
 	}
 	
+	// MARK: - NSControl
+	// Without this, the control's target and action are not being set on Mavericks.
+	// (See http://stackoverflow.com/questions/3889043/nscontrol-subclass-cant-read-the-target)
+	override public class func cellClass() -> AnyClass? {
+		return NSActionCell.self
+	}
+	
 	// MARK: - Internal
 	override public func resizeSubviewsWithOldSize(size: CGSize) {
 		// It would be nice to use Auto Layout instead, but that doesn't play nicely with views in a toolbar.
