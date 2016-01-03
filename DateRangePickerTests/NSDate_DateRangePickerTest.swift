@@ -35,6 +35,8 @@ class NSDate_DateRangePickerTest: XCTestCase {
 		
 		XCTAssertEqual(dateFromString("2015-06-10"), dateFromString("2015-06-03").drp_addCalendarUnits(7, .Day))
 		XCTAssertEqual(dateFromString("2015-05-27"), dateFromString("2015-06-03").drp_addCalendarUnits(-7, .Day))
+		
+		XCTAssertEqual(dateFromString("2016-01-06"), dateFromString("2015-12-30").drp_addCalendarUnits(7, .Day))
 	}
 	
 	func testDaysSince() {
