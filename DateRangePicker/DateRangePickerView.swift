@@ -40,6 +40,15 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
+	@objc public func dayChanged(notification: NSNotification) {
+		// If the current date ranged is specified in a relative fashion,
+		// it might change on actual day changes, so make sure to notify any observers.
+		self.willChangeValueForKey("endDate")
+		self.willChangeValueForKey("startDate")
+		self.didChangeValueForKey("endDate")
+		self.didChangeValueForKey("startDate")
+	}
+	
 	// Can be used for restricting the selectable dates to a specific range.
 	public dynamic var minDate: NSDate? {
 		didSet {
@@ -145,6 +154,8 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		self.addSubview(segmentedControl)
 		
 		self.dateStyle = .MediumStyle
+		
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "dayChanged:", name: NSCalendarDayChangedNotification, object: nil)
 	}
 	
 	override public init(frame frameRect: NSRect) {
@@ -159,6 +170,10 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		_dateRange = .PastDays(7)
 		super.init(coder: coder)
 		sharedInit()
+	}
+	
+	deinit {
+		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
 	
 	// MARK: - NSControl
