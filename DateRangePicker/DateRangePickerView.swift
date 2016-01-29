@@ -6,7 +6,7 @@
 //  Copyright © 2015 Daniel Alm. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 @IBDesignable
 public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerDelegate, NSPopoverDelegate {
