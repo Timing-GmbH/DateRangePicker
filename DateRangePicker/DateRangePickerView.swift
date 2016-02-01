@@ -105,6 +105,10 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	public func setStartDate(startDate: NSDate, endDate: NSDate) {
 		dateRange = .Custom(startDate, endDate)
 	}
+
+	@IBAction public func selectToday(sender: AnyObject?) {
+		self.dateRange = DateRange.CalendarUnit(0, .Day)
+	}
 	
 	// In Objective-C, the DateRange type isn't available. In order to still persist the picker's
 	// date range (e.g. between launches), you can use these functions instead.
