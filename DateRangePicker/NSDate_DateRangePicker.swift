@@ -31,11 +31,15 @@ public extension NSDate {
 		guard let startDate = drp_beginningOfCalendarUnit(unit, calendar: NSCalendar.currentCalendar()) else { return nil }
 		return startDate.drp_addCalendarUnits(1, unit, calendar: calendar)?.dateByAddingTimeInterval(-1)
 	}
+
+	public func drp_calendarUnitsSince(since: NSDate, unit: NSCalendarUnit, calendar: NSCalendar = NSCalendar.currentCalendar()) -> Int {
+		let fromDate = since.drp_beginningOfCalendarUnit(unit, calendar: calendar)!
+		let toDate = self.drp_beginningOfCalendarUnit(unit, calendar: calendar)!
+		return calendar.components(unit, fromDate: fromDate, toDate: toDate, options: []).valueForComponent(unit)
+	}
 	
 	// Returns the number of calendar days between the argument and the receiver.
 	public func drp_daysSince(since: NSDate, calendar: NSCalendar = NSCalendar.currentCalendar()) -> Int {
-		let fromDate = since.drp_beginningOfCalendarUnit(.Day, calendar: calendar)!
-		let toDate = self.drp_beginningOfCalendarUnit(.Day, calendar: calendar)!
-		return calendar.components(.Day, fromDate: fromDate, toDate: toDate, options: []).day
+		return self.drp_calendarUnitsSince(since, unit: .Day, calendar: calendar)
 	}
 }
