@@ -152,14 +152,14 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		segmentedControl.segmentCount = 3
 		segmentedControl.setLabel("◀", forSegment: 0)
 		segmentedControl.setLabel("▶", forSegment: 2)
-		segmentedControl.action = "segmentDidChange:"
+		segmentedControl.action = #selector(segmentDidChange(_:))
 		segmentedControl.autoresizingMask = [.ViewNotSizable]
 		segmentedControl.target = self
 		self.addSubview(segmentedControl)
 		
 		self.dateStyle = .MediumStyle
 		
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "dayChanged:", name: NSCalendarDayChangedNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dayChanged(_:)), name: NSCalendarDayChangedNotification, object: nil)
 	}
 	
 	override public init(frame frameRect: NSRect) {
