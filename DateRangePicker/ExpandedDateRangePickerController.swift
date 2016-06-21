@@ -92,9 +92,7 @@ public class ExpandedDateRangePickerController: NSViewController {
 	}
 	
 	public required init?(coder: NSCoder) {
-		_dateRange = .PastDays(0)
-		super.init(coder: coder)
-		assert(false, "This initializer should not be used.")
+        return nil
 	}
 	
 	public override func awakeFromNib() {
