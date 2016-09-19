@@ -22,8 +22,8 @@ class ViewController: NSViewController {
 		restrictedToFifteenDaysAroundTodayPickerView?.minDate = NSDate().drp_addCalendarUnits(-15, .Day)
 		restrictedToFifteenDaysAroundTodayPickerView?.maxDate = NSDate().drp_addCalendarUnits(15, .Day)
 		
-		restrictedToThisYearPickerView?.minDate = NSDate().drp_beginningOfCalendarUnit(.Year)
-		restrictedToThisYearPickerView?.maxDate = NSDate().drp_endOfCalendarUnit(.Year)
+		restrictedToThisYearPickerView?.minDate = NSDate().drp_beginning(ofCalendarUnit: .Year)
+		restrictedToThisYearPickerView?.maxDate = NSDate().drp_end(ofCalendarUnit: .Year)
 		restrictedToThisYearPickerView?.dateRange = .CalendarUnit(0, .Month)
 	}
 	

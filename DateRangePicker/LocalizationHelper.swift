@@ -8,6 +8,6 @@
 
 import Foundation
 
-func getBundle() -> NSBundle {
-	return NSBundle(forClass: DateRangePickerView.self)
+func getBundle() -> Bundle {
+	return Bundle(for: DateRangePickerView.self)
 }

@@ -9,26 +9,26 @@
 import Cocoa
 
 @IBDesignable
-public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerDelegate, NSPopoverDelegate {
-	private let segmentedControl: NSSegmentedControl
-	private let dateFormatter = NSDateFormatter()
-	private var dateRangePickerController: ExpandedDateRangePickerController?
+open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDelegate, NSPopoverDelegate {
+	fileprivate let segmentedControl: NSSegmentedControl
+	fileprivate let dateFormatter = DateFormatter()
+	fileprivate var dateRangePickerController: ExpandedDateRangePickerController?
 	
 	// MARK: - Date properties
-	private var _dateRange: DateRange  // Should almost never be accessed directly
-	public var dateRange: DateRange {
+	fileprivate var _dateRange: DateRange  // Should almost never be accessed directly
+	open var dateRange: DateRange {
 		get {
 			return _dateRange
 		}
 
 		set {
-			let restrictedValue = newValue.restrictToDates(minDate, maxDate)
+			let restrictedValue = newValue.restrictTo(minDate: minDate, maxDate: maxDate)
 			if _dateRange != restrictedValue {
-				self.willChangeValueForKey("endDate")
-				self.willChangeValueForKey("startDate")
+				self.willChangeValue(forKey: "endDate")
+				self.willChangeValue(forKey: "startDate")
 				_dateRange = restrictedValue
-				self.didChangeValueForKey("endDate")
-				self.didChangeValueForKey("startDate")
+				self.didChangeValue(forKey: "endDate")
+				self.didChangeValue(forKey: "startDate")
 				
 				if dateRangePickerController?.dateRange != dateRange {
 					dateRangePickerController?.dateRange = dateRange
@@ -40,17 +40,17 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
-	@objc public func dayChanged(notification: NSNotification) {
+	@objc open func dayChanged(_ notification: Notification) {
 		// If the current date ranged is specified in a relative fashion,
 		// it might change on actual day changes, so make sure to notify any observers.
-		self.willChangeValueForKey("endDate")
-		self.willChangeValueForKey("startDate")
-		self.didChangeValueForKey("endDate")
-		self.didChangeValueForKey("startDate")
+		self.willChangeValue(forKey: "endDate")
+		self.willChangeValue(forKey: "startDate")
+		self.didChangeValue(forKey: "endDate")
+		self.didChangeValue(forKey: "startDate")
 	}
 	
 	// Can be used for restricting the selectable dates to a specific range.
-	public dynamic var minDate: NSDate? {
+	open dynamic var minDate: Date? {
 		didSet {
 			dateRangePickerController?.minDate = minDate
 			// Enforces the new date range restriction
@@ -58,7 +58,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 			updateSegmentedControl()
 		}
 	}
-	public dynamic var maxDate: NSDate? {
+	open dynamic var maxDate: Date? {
 		didSet {
 			dateRangePickerController?.maxDate = maxDate
 			// Enforces the new date range restriction
@@ -67,7 +67,7 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
-	public var dateStyle: NSDateFormatterStyle {
+	open var dateStyle: DateFormatter.Style {
 		get {
 			return dateFormatter.dateStyle
 		}
@@ -78,50 +78,50 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
-	public var dateRangeString: String {
-		return dateRange.dateRangeDescription(dateFormatter)
+	open var dateRangeString: String {
+		return dateRange.dateRangeDescription(withFormatter: dateFormatter)
 	}
 	
 	// MARK: - Objective-C interoperability
-	public dynamic var startDate: NSDate {
+	open dynamic var startDate: Date {
 		get {
 			return dateRange.startDate
 		}
 		
 		set {
-			dateRange = DateRange.Custom(newValue, endDate)
+			dateRange = DateRange.custom(newValue, endDate)
 		}
 	}
-	public dynamic var endDate: NSDate {
+	open dynamic var endDate: Date {
 		get {
 			return dateRange.endDate
 		}
 		
 		set {
-			dateRange = DateRange.Custom(startDate, newValue)
+			dateRange = DateRange.custom(startDate, newValue)
 		}
 	}
 	
-	public func setStartDate(startDate: NSDate, endDate: NSDate) {
-		dateRange = .Custom(startDate, endDate)
+	open func setStartDate(_ startDate: Date, endDate: Date) {
+		dateRange = .custom(startDate, endDate)
 	}
 
-	@IBAction public func selectToday(sender: AnyObject?) {
-		self.dateRange = DateRange.CalendarUnit(0, .Day)
+	@IBAction open func selectToday(_ sender: AnyObject?) {
+		self.dateRange = DateRange.calendarUnit(0, .day)
 	}
 	
 	// In Objective-C, the DateRange type isn't available. In order to still persist the picker's
 	// date range (e.g. between launches), you can use these functions instead.
-	public func dateRangeAsData() -> NSData {
-		return dateRange.toData()
+	open func dateRangeAsData() -> Data {
+		return dateRange.toData() as Data
 	}
-	public func loadDateRangeFromData(data: NSData) {
-		guard let newRange = DateRange.fromData(data) else { return }
+	open func loadDateRangeFromData(_ data: Data) {
+		guard let newRange = DateRange.from(data: data) else { return }
 		dateRange = newRange
 	}
 	
 	// MARK: - Other properties
-	public var segmentStyle: NSSegmentStyle {
+	open var segmentStyle: NSSegmentStyle {
 		get {
 			return segmentedControl.segmentStyle
 		}
@@ -132,63 +132,63 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 	}
 	
 	// MARK: - Methods
-	public func displayExpandedDatePicker() {
+	open func displayExpandedDatePicker() {
 		if dateRangePickerController != nil { return }
 		
 		let popover = NSPopover()
-		popover.behavior = .Semitransient
+		popover.behavior = .semitransient
 		dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
 		dateRangePickerController?.minDate = minDate
 		dateRangePickerController?.maxDate = maxDate
 		dateRangePickerController?.delegate = self
 		popover.contentViewController = dateRangePickerController
 		popover.delegate = self
-		popover.showRelativeToRect(self.bounds, ofView: self, preferredEdge: .MinY)
+		popover.show(relativeTo: self.bounds, of: self, preferredEdge: .minY)
 		updateSegmentedControl()
 	}
 	
 	// MARK: - Initializers
-	private func sharedInit() {
+	fileprivate func sharedInit() {
 		segmentedControl.segmentCount = 3
 		segmentedControl.setLabel("◀", forSegment: 0)
 		segmentedControl.setLabel("▶", forSegment: 2)
 		segmentedControl.action = #selector(segmentDidChange(_:))
-		segmentedControl.autoresizingMask = [.ViewNotSizable]
+		segmentedControl.autoresizingMask = NSAutoresizingMaskOptions()
 		segmentedControl.target = self
 		self.addSubview(segmentedControl)
 		
-		self.dateStyle = .MediumStyle
+		self.dateStyle = .medium
 		
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dayChanged(_:)), name: NSCalendarDayChangedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(dayChanged(_:)), name: NSNotification.Name.NSCalendarDayChanged, object: nil)
 	}
 	
 	override public init(frame frameRect: NSRect) {
 		segmentedControl = NSSegmentedControl()
-		_dateRange = .PastDays(7)
+		_dateRange = .pastDays(7)
 		super.init(frame: frameRect)
 		sharedInit()
 	}
 	
 	required public init?(coder: NSCoder) {
 		segmentedControl = NSSegmentedControl()
-		_dateRange = .PastDays(7)
+		_dateRange = .pastDays(7)
 		super.init(coder: coder)
 		sharedInit()
 	}
 	
 	deinit {
-		NSNotificationCenter.defaultCenter().removeObserver(self)
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 	// MARK: - NSControl
 	// Without this, the control's target and action are not being set on Mavericks.
 	// (See http://stackoverflow.com/questions/3889043/nscontrol-subclass-cant-read-the-target)
-	override public class func cellClass() -> AnyClass? {
+	override open class func cellClass() -> AnyClass? {
 		return NSActionCell.self
 	}
 	
 	// MARK: - Internal
-	override public func resizeSubviewsWithOldSize(size: CGSize) {
+	override open func resizeSubviews(withOldSize size: CGSize) {
 		// It would be nice to use Auto Layout instead, but that doesn't play nicely with views in a toolbar.
 		let sideButtonWidth: CGFloat = 22
 		// Magic number to avoid the segmented control overflowing out of its bounds.
@@ -197,10 +197,10 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		segmentedControl.setWidth(self.bounds.size.width - 2 * sideButtonWidth - unusedControlWidth, forSegment:1)
 		segmentedControl.setWidth(sideButtonWidth, forSegment:2)
 		segmentedControl.frame = self.bounds
-		super.resizeSubviewsWithOldSize(size)
+		super.resizeSubviews(withOldSize: size)
 	}
 	
-	func segmentDidChange(sender: NSSegmentedControl) {
+	func segmentDidChange(_ sender: NSSegmentedControl) {
 		switch sender.selectedSegment {
 		case 0:
 			dateRange = dateRange.previous()
@@ -213,30 +213,30 @@ public class DateRangePickerView : NSControl, ExpandedDateRangePickerControllerD
 		}
 	}
 	
-	private func updateSegmentedControl() {
+	fileprivate func updateSegmentedControl() {
 		segmentedControl.setLabel(dateRangeString, forSegment: 1)
 		
 		// Only enable the previous/next buttons if they do not touch outside the date restrictions range already.
-		let previousAllowed = minDate != nil ? dateRange.startDate != minDate?.drp_beginningOfCalendarUnit(.Day) : true
+		let previousAllowed = minDate != nil ? dateRange.startDate != minDate?.drp_beginning(ofCalendarUnit: .day) : true
 		segmentedControl.setEnabled(previousAllowed, forSegment: 0)
 		
-		let nextAllowed = maxDate != nil ? dateRange.endDate != maxDate?.drp_endOfCalendarUnit(.Day) : true
+		let nextAllowed = maxDate != nil ? dateRange.endDate != maxDate?.drp_end(ofCalendarUnit: .day) : true
 		segmentedControl.setEnabled(nextAllowed, forSegment: 2)
 		
 		// Display the middle segment as selected while the expanded date range popover is being shown.
-		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = dateRangePickerController != nil ? .SelectOne : .Momentary
+		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = dateRangePickerController != nil ? .selectOne : .momentary
 		segmentedControl.selectedSegment = dateRangePickerController != nil ? 1 : -1
 	}
 	
 	// MARK: - ExpandedDateRangePickerControllerDelegate
-	public func expandedDateRangePickerControllerDidChangeDateRange(controller: ExpandedDateRangePickerController) {
+	open func expandedDateRangePickerControllerDidChangeDateRange(_ controller: ExpandedDateRangePickerController) {
 		if controller === dateRangePickerController {
 			self.dateRange = controller.dateRange
 		}
 	}
 	
 	// MARK: - NSPopoverDelegate
-	public func popoverWillClose(notification: NSNotification) {
+	open func popoverWillClose(_ notification: Notification) {
 		guard let popover = notification.object as? NSPopover else { return }
 		if popover.contentViewController === dateRangePickerController {
 			dateRangePickerController = nil
