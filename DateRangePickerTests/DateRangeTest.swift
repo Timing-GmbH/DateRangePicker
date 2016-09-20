@@ -76,9 +76,13 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(DateRange.custom(dateFromString("2015-06-09"), dateFromString("2015-06-11")), DateRange.custom(startDate, endDate).moveBy(steps: -2))
 		
 		XCTAssertEqual(DateRange.custom(Date().drp_addCalendarUnits(-92, unit: .day)!, Date().drp_addCalendarUnits(-62, unit: .day)!),
-			DateRange.pastDays(30).moveBy(steps: -2))
+		               DateRange.pastDays(30).moveBy(steps: -2))
 		
 		XCTAssertEqual(DateRange.calendarUnit(-1, .quarter), DateRange.calendarUnit(1, .quarter).moveBy(steps: -2))
+	}
+	
+	func testMoveByWithTodaysEndDateConvertsToPastDays() {
+		XCTAssertEqual(DateRange.pastDays(30), DateRange.pastDays(30).moveBy(steps: -2).moveBy(steps: 2))
 	}
 	
 	func testToFromData() {

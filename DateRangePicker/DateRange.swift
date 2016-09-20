@@ -107,7 +107,12 @@ public enum DateRange: Equatable {
 		case .custom, .pastDays:
 			// Add one to the distance between start and end date so that for steps = 1, the date ranges do not overlap.
 			let dayDifference = endDate.drp_daysSince(startDate) + 1
-			return .custom(startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!, endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!)
+			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
+			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
+			if newEndDate == NSDate().drp_end(ofCalendarUnit: .day)! as Date {
+				return .pastDays(dayDifference - 1)
+			}
+			return .custom(newStartDate, newEndDate)
 		case .calendarUnit(let offset, let unit):
 			return .calendarUnit(offset + steps, unit)
 		}
