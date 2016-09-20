@@ -47,24 +47,24 @@ public extension Date {
 
 // Required for backwards compatibility with Objective-C.
 public extension NSDate {
-	public func drp_addCalendarUnits(_ count: Int, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Date? {
-		return (self as Date).drp_addCalendarUnits(count, unit: unit, calendar: calendar)
+	public func drp_addCalendarUnits(_ count: Int, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> NSDate? {
+		return (self as Date).drp_addCalendarUnits(count, unit: unit, calendar: calendar) as NSDate?
 	}
 	
-	public func drp_beginning(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Date? {
-		return (self as Date).drp_beginning(ofCalendarUnit: unit, calendar: calendar)
+	public func drp_beginning(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> NSDate? {
+		return (self as Date).drp_beginning(ofCalendarUnit: unit, calendar: calendar) as NSDate?
 	}
 	
-	public func drp_end(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Date? {
-		return (self as Date).drp_end(ofCalendarUnit: unit, calendar: calendar)
+	public func drp_end(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> NSDate? {
+		return (self as Date).drp_end(ofCalendarUnit: unit, calendar: calendar) as NSDate?
 	}
 	
-	public func drp_calendarUnits(since: Date, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int {
+	public func drp_calendarUnits(since: NSDate, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int {
 		return (self as Date).drp_calendarUnits(since: since as Date, unit: unit, calendar: calendar)
 	}
 	
 	// Returns the number of calendar days between the argument and the receiver.
-	public func drp_daysSince(_ since: Date, calendar: Calendar = Calendar.current) -> Int {
+	public func drp_daysSince(_ since: NSDate, calendar: Calendar = Calendar.current) -> Int {
 		return (self as Date).drp_daysSince(since as Date, calendar: calendar)
 	}
 }
