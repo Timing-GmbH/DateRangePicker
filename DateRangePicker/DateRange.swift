@@ -9,32 +9,32 @@
 import Foundation
 
 public enum DateRange: Equatable {
-	case Custom(NSDate, NSDate)
-	case PastDays(Int)
+	case custom(Date, Date)
+	case pastDays(Int)
 	// Spans the given calendar unit around the current date, adjusted by unit * first argument.
 	// E.g. .CalendarUnit(0, .Quarter) means this quarter, .CalendarUnit(-1, .Quarter) last quarter.
-	case CalendarUnit(Int, NSCalendarUnit)
+	case calendarUnit(Int, NSCalendar.Unit)
 	
 	// MARK: - Core properties
-	public var startDate: NSDate {
+	public var startDate: Date {
 		switch(self) {
-		case Custom(let startDate, _):
-			return startDate.drp_beginningOfCalendarUnit(.Day)!
-		case PastDays(let pastDays):
-			return NSDate().drp_addCalendarUnits(-pastDays, .Day)!.drp_beginningOfCalendarUnit(.Day)!
-		case CalendarUnit(let offset, let unit):
-			return NSDate().drp_addCalendarUnits(offset, unit)!.drp_beginningOfCalendarUnit(unit)!
+		case .custom(let startDate, _):
+			return startDate.drp_beginningOfCalendarUnit(unit: .day)!
+		case .pastDays(let pastDays):
+			return Date().drp_addCalendarUnits(count: -pastDays, .day)!.drp_beginningOfCalendarUnit(unit: .day)!
+		case .calendarUnit(let offset, let unit):
+			return Date().drp_addCalendarUnits(count: offset, unit)!.drp_beginningOfCalendarUnit(unit: unit)!
 		}
 	}
 	
-	public var endDate: NSDate {
+	public var endDate: Date {
 		switch(self) {
-		case Custom(_, let endDate):
-			return endDate.drp_endOfCalendarUnit(.Day)!
-		case PastDays(_):
-			return NSDate().drp_endOfCalendarUnit(.Day)!
-		case CalendarUnit(let offset, let unit):
-			return NSDate().drp_addCalendarUnits(offset, unit)!.drp_endOfCalendarUnit(unit)!
+		case .custom(_, let endDate):
+			return endDate.drp_endOfCalendarUnit(unit: .day)!
+		case .pastDays(_):
+			return Date().drp_endOfCalendarUnit(unit: .day)!
+		case .calendarUnit(let offset, let unit):
+			return Date().drp_addCalendarUnits(count: offset, unit)!.drp_endOfCalendarUnit(unit: unit)!
 		}
 	}
 	
@@ -45,14 +45,14 @@ public enum DateRange: Equatable {
 	// Note: Some cases of CalendarUnit are not yet supported.
 	public var title: String? {
 		switch self {
-		case Custom:
+		case .custom:
 			return NSLocalizedString("Custom", bundle: getBundle(), comment: "Title for a custom date range.")
-		case PastDays(let pastDays):
+		case .pastDays(let pastDays):
 			return String(format: NSLocalizedString(
 				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
 				pastDays)
-		case CalendarUnit(let offset, let unit):
-			if offset == -1 && unit == .Day {
+		case .calendarUnit(let offset, let unit):
+			if offset == -1 && unit == .day {
 				return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
 			}
 			
@@ -60,11 +60,11 @@ public enum DateRange: Equatable {
 			
 			switch unit {
 				// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
-			case _ where unit == .Day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
-			case _ where unit == .WeekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
-			case _ where unit == .Month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
-			case _ where unit == .Quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
-			case _ where unit == .Year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
+			case _ where unit == .day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
+			case _ where unit == .weekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
+			case _ where unit == .month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
+			case _ where unit == .quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
+			case _ where unit == .year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
 			default: return nil // Not yet supported/needed.
 			}
 		}
@@ -74,23 +74,23 @@ public enum DateRange: Equatable {
 	// If no "pretty" description (e.g. "Past 7 Days", "This Week", "October 2015") is available,
 	// returns either a single date (if startDate.day == endDate.day) or a date range in the form of
 	// "Formatted Start Date - Formatted End Date" (e.g. "05.10.15 - 10.03.15").
-	public func dateRangeDescription(dateFormatter: NSDateFormatter) -> String {
+	public func dateRangeDescription(_ dateFormatter: DateFormatter) -> String {
 		switch self {
-		case Custom: break
-		case CalendarUnit(let offset, let unit) where unit == .Month && offset != 0:
+		case .custom: break
+		case .calendarUnit(let offset, let unit) where unit == .month && offset != 0:
 			// Special case: A month, but not the current one. E.g. "October 2015".
-			let monthDayFormat = NSDateFormatter.dateFormatFromTemplate("MMMM y", options:0, locale: NSLocale.currentLocale())
-			let fullMonthDateFormatter = NSDateFormatter()
-			fullMonthDateFormatter.timeStyle = .NoStyle
+			let monthDayFormat = DateFormatter.dateFormat(fromTemplate: "MMMM y", options:0, locale: Locale.current)
+			let fullMonthDateFormatter = DateFormatter()
+			fullMonthDateFormatter.timeStyle = .none
 			fullMonthDateFormatter.dateFormat = monthDayFormat
-			return fullMonthDateFormatter.stringFromDate(endDate)
-		case PastDays: fallthrough
-		case CalendarUnit: if let title = title { return title }
+			return fullMonthDateFormatter.string(from: endDate as Date)
+		case .pastDays: fallthrough
+		case .calendarUnit: if let title = title { return title }
 		}
-		if startDate.drp_beginningOfCalendarUnit(.Day) == endDate.drp_beginningOfCalendarUnit(.Day) {
-			return dateFormatter.stringFromDate(endDate)
+		if startDate.drp_beginningOfCalendarUnit(unit: .day) == endDate.drp_beginningOfCalendarUnit(unit: .day) {
+			return dateFormatter.string(from: endDate as Date)
 		}
-		return "\(dateFormatter.stringFromDate(startDate)) - \(dateFormatter.stringFromDate(endDate))"
+		return "\(dateFormatter.string(from: startDate as Date)) - \(dateFormatter.string(from: endDate as Date))"
 	}
 	
 	// MARK: - Obtaining related ranges
@@ -102,71 +102,71 @@ public enum DateRange: Equatable {
 		return moveBy(1)
 	}
 	
-	public func moveBy(steps: Int) -> DateRange {
+	public func moveBy(_ steps: Int) -> DateRange {
 		switch self {
-		case Custom, PastDays:
+		case .custom, .pastDays:
 			// Add one to the distance between start and end date so that for steps = 1, the date ranges do not overlap.
-			let dayDifference = endDate.drp_daysSince(startDate) + 1
-			return Custom(startDate.drp_addCalendarUnits(dayDifference * steps, .Day)!, endDate.drp_addCalendarUnits(dayDifference * steps, .Day)!)
-		case CalendarUnit(let offset, let unit):
-			return CalendarUnit(offset + steps, unit)
+			let dayDifference = endDate.drp_daysSince(since: startDate as NSDate) + 1
+			return .custom(startDate.drp_addCalendarUnits(count: dayDifference * steps, .day)!, endDate.drp_addCalendarUnits(count: dayDifference * steps, .day)!)
+		case .calendarUnit(let offset, let unit):
+			return .calendarUnit(offset + steps, unit)
 		}
 	}
 	
-	public func restrictToDates(minDate: NSDate?, _ maxDate: NSDate?) -> DateRange {
+	public func restrictToDates(_ minDate: NSDate?, _ maxDate: NSDate?) -> DateRange {
 		var adjustedStartDate = startDate
 		var adjustedEndDate = endDate
-		if let minDate = minDate?.drp_beginningOfCalendarUnit(.Day) {
+		if let minDate = minDate?.drp_beginningOfCalendarUnit(unit: .day) {
 			adjustedStartDate = minDate.laterDate(adjustedStartDate)
 			adjustedEndDate = minDate.laterDate(adjustedEndDate)
 		}
-		if let maxDate = maxDate?.drp_endOfCalendarUnit(.Day) {
+		if let maxDate = maxDate?.drp_endOfCalendarUnit(unit: .day) {
 			adjustedStartDate = maxDate.earlierDate(adjustedStartDate)
 			adjustedEndDate = maxDate.earlierDate(adjustedEndDate)
 		}
 		if startDate != adjustedStartDate || endDate != adjustedEndDate {
-			return Custom(adjustedStartDate, adjustedEndDate)
+			return .custom(adjustedStartDate as Date, adjustedEndDate as Date)
 		}
 		
 		return self
 	}
 	
 	// Ugly workaround for serialization because enums can't support NSCoding.
-	public func toData() -> NSData {
+	public func toData() -> Data {
 		let data = NSMutableData()
-		let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
+		let archiver = NSKeyedArchiver(forWritingWith: data)
 		switch self {
-		case Custom(let startDate, let endDate):
-			archiver.encodeObject("Custom", forKey: "case")
-			archiver.encodeObject(startDate, forKey: "startDate")
-			archiver.encodeObject(endDate, forKey: "endDate")
-		case PastDays(let pastDays):
-			archiver.encodeObject("PastDays", forKey: "case")
-			archiver.encodeInteger(pastDays, forKey: "pastDays")
-		case CalendarUnit(let offset, let unit):
-			archiver.encodeObject("CalendarUnit", forKey: "case")
-			archiver.encodeInteger(offset, forKey: "offset")
-			archiver.encodeInteger(Int(unit.rawValue), forKey: "unit")
+		case .custom(let startDate, let endDate):
+			archiver.encode("Custom", forKey: "case")
+			archiver.encode(startDate, forKey: "startDate")
+			archiver.encode(endDate, forKey: "endDate")
+		case .pastDays(let pastDays):
+			archiver.encode("PastDays", forKey: "case")
+			archiver.encode(pastDays, forKey: "pastDays")
+		case .calendarUnit(let offset, let unit):
+			archiver.encode("CalendarUnit", forKey: "case")
+			archiver.encode(offset, forKey: "offset")
+			archiver.encode(Int(unit.rawValue), forKey: "unit")
 		}
 		archiver.finishEncoding()
-		return data
+		return data as Data
 	}
 	
-	public static func fromData(data: NSData) -> DateRange? {
-		let unarchiver = NSKeyedUnarchiver(forReadingWithData: data)
-		guard let caseName = unarchiver.decodeObjectForKey("case") as? String else { return nil }
+	public static func fromData(_ data: Data) -> DateRange? {
+		let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+		guard let caseName = unarchiver.decodeObject(forKey: "case") as? String else { return nil }
 		switch caseName {
 		case "Custom":
-			guard let startDate = unarchiver.decodeObjectForKey("startDate") as? NSDate else { return nil }
-			guard let endDate = unarchiver.decodeObjectForKey("endDate") as? NSDate else { return nil }
-			return Custom(startDate, endDate)
+			guard let startDate = unarchiver.decodeObject(forKey: "startDate") as? Date else { return nil }
+			guard let endDate = unarchiver.decodeObject(forKey: "endDate") as? Date else { return nil }
+			return custom(startDate, endDate)
 		case "PastDays":
-			if !unarchiver.containsValueForKey("pastDays") { return nil }
-			return PastDays(unarchiver.decodeIntegerForKey("pastDays"))
+			if !unarchiver.containsValue(forKey: "pastDays") { return nil }
+			return pastDays(unarchiver.decodeInteger(forKey: "pastDays"))
 		case "CalendarUnit":
-			if !unarchiver.containsValueForKey("offset") { return nil }
-			if !unarchiver.containsValueForKey("unit") { return nil }
-			return CalendarUnit(unarchiver.decodeIntegerForKey("offset"), NSCalendarUnit(rawValue: UInt(unarchiver.decodeIntegerForKey("unit"))))
+			if !unarchiver.containsValue(forKey: "offset") { return nil }
+			if !unarchiver.containsValue(forKey: "unit") { return nil }
+			return calendarUnit(unarchiver.decodeInteger(forKey: "offset"), NSCalendar.Unit(rawValue: UInt(unarchiver.decodeInteger(forKey: "unit"))))
 		default:
 			return nil
 		}
@@ -175,11 +175,11 @@ public enum DateRange: Equatable {
 
 public func ==(lhs: DateRange, rhs: DateRange) -> Bool {
 	switch (lhs, rhs) {
-	case (.Custom, .Custom):
+	case (.custom, .custom):
 		return lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate
-	case (.PastDays(let ld), .PastDays(let rd)):
+	case (.pastDays(let ld), .pastDays(let rd)):
 		return ld == rd
-	case (.CalendarUnit(let lo, let lu), .CalendarUnit(let ro, let ru)):
+	case (.calendarUnit(let lo, let lu), .calendarUnit(let ro, let ru)):
 		return lo == ro && lu == ru
 	default:
 		return false
