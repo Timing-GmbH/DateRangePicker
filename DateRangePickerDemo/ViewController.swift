@@ -19,16 +19,16 @@ class ViewController: NSViewController {
 		
 		preferredContentSize = view.bounds.size
 		
-		restrictedToFifteenDaysAroundTodayPickerView?.minDate = NSDate().drp_addCalendarUnits(-15, .Day)
-		restrictedToFifteenDaysAroundTodayPickerView?.maxDate = NSDate().drp_addCalendarUnits(15, .Day)
+		restrictedToFifteenDaysAroundTodayPickerView?.minDate = NSDate().drp_addCalendarUnits(count: -15, .day)
+		restrictedToFifteenDaysAroundTodayPickerView?.maxDate = NSDate().drp_addCalendarUnits(count: 15, .day)
 		
-		restrictedToThisYearPickerView?.minDate = NSDate().drp_beginningOfCalendarUnit(.Year)
-		restrictedToThisYearPickerView?.maxDate = NSDate().drp_endOfCalendarUnit(.Year)
-		restrictedToThisYearPickerView?.dateRange = .CalendarUnit(0, .Month)
+		restrictedToThisYearPickerView?.minDate = NSDate().drp_beginningOfCalendarUnit(unit: .year)
+		restrictedToThisYearPickerView?.maxDate = NSDate().drp_endOfCalendarUnit(unit: .year)
+		restrictedToThisYearPickerView?.dateRange = .calendarUnit(0, .month)
 	}
 	
 	override func viewDidAppear() {
-		self.view.window?.titleVisibility = .Hidden
+		self.view.window?.titleVisibility = .hidden
 	}
 }
 
