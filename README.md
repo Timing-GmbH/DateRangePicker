@@ -6,6 +6,20 @@
 ![Some possible looks for the control](Screenshots/ControlVariants.png)
 ![The menu for preset date ranges](Screenshots/Menu.png)
 
+## Install
+
+### CocoaPods
+Add to Podfile:
+ ```
+pod 'DateRangePicker'
+```
+  
+### Carthage
+Add to Cartfile: 
+ ```
+github "MrMage/DateRangePicker"
+```
+
 ## Usage
 
 Just drag the date range picker onto your Storyboard or Nib. It looks particularly good in the toolbar with segmentStyle = .Separated. If you wish to center the picker in the toolbar, I can recommend using [TAAdaptiveSpaceItem](https://github.com/timothyarmes/TAAdaptiveSpaceItem).
