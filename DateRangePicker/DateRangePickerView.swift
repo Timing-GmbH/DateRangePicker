@@ -303,6 +303,8 @@ extension DateRangePickerView: NSTouchBarDelegate {
 		
 		let item = NSPopoverTouchBarItem(identifier: DateRangePickerView.touchBarItemIdentifier)
 		item.collapsedRepresentation = segment
+		item.customizationLabel = NSLocalizedString("Date Range", bundle: getBundle(),
+		                                            comment: "Customization label for the Date Range picker.")
 		
 		item.popoverTouchBar.defaultItemIdentifiers = popoverItemDateRanges.map {
 			guard let dateRange = $0 else { return NSTouchBarItemIdentifier.flexibleSpace }
