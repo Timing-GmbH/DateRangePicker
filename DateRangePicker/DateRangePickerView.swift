@@ -290,8 +290,10 @@ extension DateRangePickerView: NSTouchBarDelegate {
 	private static let popoverItemIdentifierPrefix = "de.danielalm.DateRangePicker.DateRangePickerViewPopoverTouchBar."
 	
 	fileprivate func makeTouchBarItem() -> NSTouchBarItem {
-		let segment = NSSegmentedControl(labels: ["◀", "", "▶"], trackingMode: .momentary,
+		let segment = NSSegmentedControl(labels: ["", "", ""], trackingMode: .momentary,
 		                                 target: self, action: #selector(DateRangePickerView.touchBarSegmentPressed(_:)))
+		segment.setImage(NSImage(named: NSImageNameTouchBarGoBackTemplate)!, forSegment: 0)
+		segment.setImage(NSImage(named: NSImageNameTouchBarGoForwardTemplate)!, forSegment: 2)
 		segment.setWidth(250, forSegment: 1)
 		self.touchBarSegment = segment
 		touchBarSegment?.segmentStyle = .separated
