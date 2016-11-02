@@ -294,7 +294,9 @@ extension DateRangePickerView: NSTouchBarDelegate {
 		                                 target: self, action: #selector(DateRangePickerView.touchBarSegmentPressed(_:)))
 		segment.setImage(NSImage(named: NSImageNameTouchBarGoBackTemplate)!, forSegment: 0)
 		segment.setImage(NSImage(named: NSImageNameTouchBarGoForwardTemplate)!, forSegment: 2)
+		segment.setWidth(30, forSegment: 0)
 		segment.setWidth(250, forSegment: 1)
+		segment.setWidth(30, forSegment: 2)
 		self.touchBarSegment = segment
 		touchBarSegment?.segmentStyle = .separated
 		updateSegmentedControl()
