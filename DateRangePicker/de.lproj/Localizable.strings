@@ -1,8 +1,13 @@
 "Custom" = "Eigener";
 "Past %d Days" = "Letzten %d Tage";
+"%d Days" = "%d Tage";
 "Yesterday" = "Gestern";
 "Today" = "Heute";
 "This Week" = "Diese Woche";
 "This Month" = "Dieser Monat";
 "This Quarter" = "Dieses Quartal";
 "This Year" = "Dieses Jahr";
+"Week" = "Woche";
+"Month" = "Monat";
+"Quarter" = "Quartal";
+"Year" = "Jahr";

@@ -50,7 +50,7 @@ public enum DateRange: Equatable {
 		case .pastDays(let pastDays):
 			return String(format: NSLocalizedString(
 				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
-				pastDays)
+			              pastDays)
 		case .calendarUnit(let offset, let unit):
 			if offset == -1 && unit == .day {
 				return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
@@ -59,7 +59,7 @@ public enum DateRange: Equatable {
 			if offset != 0 { return nil } // Not yet supported/needed.
 			
 			switch unit {
-				// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
+			// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
 			case _ where unit == .day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
 			case _ where unit == .weekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
 			case _ where unit == .month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
@@ -67,6 +67,28 @@ public enum DateRange: Equatable {
 			case _ where unit == .year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
 			default: return nil // Not yet supported/needed.
 			}
+		}
+	}
+	
+	// A slightly shortened variant of .title.
+	public var shortTitle: String? {
+		switch self {
+		case .pastDays(let pastDays):
+			return String(format: NSLocalizedString(
+				"%d Days", bundle: getBundle(), comment: "Shorthand title for a date range spanning the past %d days."),
+			              pastDays)
+		case .calendarUnit(let offset, let unit):
+			if offset == -1 && unit == .day { return self.title }
+			if offset != 0 { return self.title }
+			
+			switch unit {
+			case _ where unit == .weekOfYear: return NSLocalizedString("Week", bundle: getBundle(), comment: "Date Range short title for this week.")
+			case _ where unit == .month: return NSLocalizedString("Month", bundle: getBundle(), comment: "Date Range short title for this month.")
+			case _ where unit == .quarter: return NSLocalizedString("Quarter", bundle: getBundle(), comment: "Date Range short title for this quarter.")
+			case _ where unit == .year: return NSLocalizedString("Year", bundle: getBundle(), comment: "Date Range short title for this year.")
+			default: return self.title
+			}
+		case .custom: return self.title
 		}
 	}
 	

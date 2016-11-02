@@ -102,6 +102,40 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 	}
 	
+	
+	private var _touchBarItem: NSObject?
+	
+	// A touch bar item representing this date picker, with a popover menu to select different date ranges.
+	@available(OSX 10.12.1, *)
+	open var touchBarItem: NSPopoverTouchBarItem {
+		get {
+			if _touchBarItem == nil {
+				_touchBarItem = makeTouchBarItem()
+			}
+			
+			return _touchBarItem as! NSPopoverTouchBarItem
+		}
+	}
+	
+	// The date ranges available from the touch bar item popover.
+	// Needs to be set before touchBarItem is accessed.
+	open var popoverItemDateRanges: [DateRange?] = [
+		.pastDays(7),
+		.pastDays(15),
+		.pastDays(30),
+		nil,
+		.calendarUnit(0, .day),
+		.calendarUnit(-1, .day),
+		nil,
+		.calendarUnit(0, .weekOfYear),
+		.calendarUnit(0, .month),
+		.calendarUnit(0, .year)
+	]
+	
+	// The segmented control used by the touch bar item.
+	open fileprivate(set) var touchBarSegment: NSSegmentedControl?
+	
+	
 	open func setStartDate(_ startDate: Date, endDate: Date) {
 		dateRange = .custom(startDate, endDate)
 	}
@@ -214,14 +248,18 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 	
 	fileprivate func updateSegmentedControl() {
+		let dateRangeString = self.dateRangeString
 		segmentedControl.setLabel(dateRangeString, forSegment: 1)
+		touchBarSegment?.setLabel(dateRangeString, forSegment: 1)
 		
 		// Only enable the previous/next buttons if they do not touch outside the date restrictions range already.
 		let previousAllowed = minDate != nil ? dateRange.startDate != minDate?.drp_beginning(ofCalendarUnit: .day) : true
 		segmentedControl.setEnabled(previousAllowed, forSegment: 0)
+		touchBarSegment?.setEnabled(previousAllowed, forSegment: 0)
 		
 		let nextAllowed = maxDate != nil ? dateRange.endDate != maxDate?.drp_end(ofCalendarUnit: .day) : true
 		segmentedControl.setEnabled(nextAllowed, forSegment: 2)
+		touchBarSegment?.setEnabled(nextAllowed, forSegment: 2)
 		
 		// Display the middle segment as selected while the expanded date range popover is being shown.
 		(segmentedControl.cell as? NSSegmentedCell)?.trackingMode = dateRangePickerController != nil ? .selectOne : .momentary
@@ -242,5 +280,72 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 			dateRangePickerController = nil
 			updateSegmentedControl()
 		}
+	}
+}
+
+@available(OSX 10.12.1, *)
+extension DateRangePickerView: NSTouchBarDelegate {
+	public static let touchBarItemIdentifier = NSTouchBarItemIdentifier("de.danielalm.DateRangePicker.DateRangePickerViewTouchBarItem")
+	
+	private static let popoverItemIdentifierPrefix = "de.danielalm.DateRangePicker.DateRangePickerViewPopoverTouchBar."
+	
+	fileprivate func makeTouchBarItem() -> NSTouchBarItem {
+		let segment = NSSegmentedControl(labels: ["◀", "", "▶"], trackingMode: .momentary,
+		                                 target: self, action: #selector(DateRangePickerView.touchBarSegmentPressed(_:)))
+		segment.setWidth(250, forSegment: 1)
+		self.touchBarSegment = segment
+		touchBarSegment?.segmentStyle = .separated
+		updateSegmentedControl()
+		
+		let item = NSPopoverTouchBarItem(identifier: DateRangePickerView.touchBarItemIdentifier)
+		item.collapsedRepresentation = segment
+		
+		item.popoverTouchBar.defaultItemIdentifiers = popoverItemDateRanges.map {
+			guard let dateRange = $0 else { return NSTouchBarItemIdentifier.flexibleSpace }
+			// This does create very ugly identifiers, but they are sufficient for our use case.
+			return NSTouchBarItemIdentifier(DateRangePickerView.popoverItemIdentifierPrefix + String(describing: dateRange))
+		}
+		item.popoverTouchBar.delegate = self
+		
+		return item
+	}
+	
+	func touchBarSegmentPressed(_ sender: NSSegmentedControl) {
+		switch sender.selectedSegment {
+		case 0: dateRange = dateRange.previous()
+		case 1: touchBarItem.showPopover(sender)
+		case 2: dateRange = dateRange.next()
+		default: break
+		}
+	}
+	
+	public func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItemIdentifier) -> NSTouchBarItem? {
+		if identifier.rawValue.hasPrefix(DateRangePickerView.popoverItemIdentifierPrefix) {
+			let identifierSuffix = identifier.rawValue
+				.substring(from: DateRangePickerView.popoverItemIdentifierPrefix.endIndex)
+			// Not very efficient, but more than fast enough for our purposes.
+			guard let (itemIndex, dateRange) = (popoverItemDateRanges
+				.enumerated()
+				.first {
+					guard let dateRange = $0.1 else { return false }
+					return String(describing: dateRange) == identifierSuffix }),
+				let dateRangeTitle = dateRange?.shortTitle else { return nil }
+			
+			let button = NSButton(title: dateRangeTitle,
+			                      target: self, action: #selector(DateRangePickerView.popoverItemPressed(_:)))
+			button.tag = itemIndex
+			
+			let item = NSCustomTouchBarItem(identifier: identifier)
+			item.view = button
+			return item
+		}
+		return nil
+	}
+	
+	func popoverItemPressed(_ sender: NSButton) {
+		guard sender.tag >= 0 && sender.tag < popoverItemDateRanges.count,
+			let dateRange = popoverItemDateRanges[sender.tag] else { return }
+		self.dateRange = dateRange
+		touchBarItem.dismissPopover(sender)
 	}
 }
