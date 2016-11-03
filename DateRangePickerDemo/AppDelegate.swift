@@ -15,6 +15,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	func applicationDidFinishLaunching(aNotification: NSNotification) {
 		// Insert code here to initialize your application
+		if #available(OSX 10.12, *) {
+			NSWindow.allowsAutomaticWindowTabbing = false
+		} else {
+			// Fallback on earlier versions
+		}
 	}
 
 	func applicationWillTerminate(aNotification: NSNotification) {
