@@ -132,6 +132,9 @@ public enum DateRange: Equatable {
 			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
 			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
 			if newEndDate == NSDate().drp_end(ofCalendarUnit: .day)! as Date {
+				if dayDifference == 1 {
+					return .calendarUnit(0, .day) // Today
+				}
 				return .pastDays(dayDifference - 1)
 			}
 			return .custom(newStartDate, newEndDate)

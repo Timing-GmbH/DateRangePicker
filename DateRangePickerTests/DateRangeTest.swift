@@ -85,6 +85,10 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(DateRange.pastDays(30), DateRange.pastDays(30).moveBy(steps: -2).moveBy(steps: 2))
 	}
 	
+	func testMoveByWithTodaysEndDateConvertsToToday() {
+		XCTAssertEqual(DateRange.calendarUnit(0, .day), DateRange.pastDays(0).moveBy(steps: -2).moveBy(steps: 2))
+	}
+	
 	func testToFromData() {
 		let startDate = dateFromString("2015-06-15")
 		let endDate = dateFromString("2015-06-17")
