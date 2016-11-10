@@ -21,8 +21,7 @@ class ViewController: NSViewController {
 		
 		restrictedToFifteenDaysAroundTodayPickerView?.minDate = Date().drp_addCalendarUnits(-15, unit: .day)
 		restrictedToFifteenDaysAroundTodayPickerView?.maxDate = Date().drp_addCalendarUnits(15, unit: .day)
-		restrictedToFifteenDaysAroundTodayPickerView?.popover.behavior = .transient
-        
+		
 		restrictedToThisYearPickerView?.minDate = Date().drp_beginning(ofCalendarUnit: .year)
 		restrictedToThisYearPickerView?.maxDate = Date().drp_end(ofCalendarUnit: .year)
 		restrictedToThisYearPickerView?.dateRange = .calendarUnit(0, .month)
