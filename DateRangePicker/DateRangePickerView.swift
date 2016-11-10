@@ -13,7 +13,8 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	fileprivate let segmentedControl: NSSegmentedControl
 	fileprivate let dateFormatter = DateFormatter()
 	fileprivate var dateRangePickerController: ExpandedDateRangePickerController?
-	
+	open let popover: NSPopover
+    
 	// MARK: - Date properties
 	fileprivate var _dateRange: DateRange  // Should almost never be accessed directly
 	open var dateRange: DateRange {
@@ -168,9 +169,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	// MARK: - Methods
 	open func displayExpandedDatePicker() {
 		if dateRangePickerController != nil { return }
-		
-		let popover = NSPopover()
-		popover.behavior = .semitransient
+
 		dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
 		dateRangePickerController?.minDate = minDate
 		dateRangePickerController?.maxDate = maxDate
@@ -198,6 +197,8 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	
 	override public init(frame frameRect: NSRect) {
 		segmentedControl = NSSegmentedControl()
+        popover = NSPopover()
+        popover.behavior = .semitransient
 		_dateRange = .pastDays(7)
 		super.init(frame: frameRect)
 		sharedInit()
@@ -205,6 +206,8 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	
 	required public init?(coder: NSCoder) {
 		segmentedControl = NSSegmentedControl()
+        popover = NSPopover()
+        popover.behavior = .semitransient
 		_dateRange = .pastDays(7)
 		super.init(coder: coder)
 		sharedInit()
