@@ -166,11 +166,16 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 	
 	// MARK: - Methods
+	open func makePopover() -> NSPopover {
+		let popover = NSPopover()
+		popover.behavior = .semitransient
+		return popover
+	}
+	
 	open func displayExpandedDatePicker() {
 		if dateRangePickerController != nil { return }
 		
-		let popover = NSPopover()
-		popover.behavior = .semitransient
+		let popover = makePopover()
 		dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
 		dateRangePickerController?.minDate = minDate
 		dateRangePickerController?.maxDate = maxDate
