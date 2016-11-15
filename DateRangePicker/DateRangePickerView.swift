@@ -102,6 +102,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 	}
 	
+	open override var isEnabled: Bool {
+		get { return segmentedControl.isEnabled }
+		set { segmentedControl.isEnabled = newValue }
+	}
+	
 	
 	private var _touchBarItem: NSObject?
 	
