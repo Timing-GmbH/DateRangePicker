@@ -28,9 +28,11 @@ public extension Date {
 		return reducedDate as Date?
 	}
 	
-	public func drp_end(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Date? {
+	public func drp_end(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current,
+	                    adjustByOneSecond: Bool = true) -> Date? {
 		guard let startDate = drp_beginning(ofCalendarUnit: unit, calendar: Calendar.current) else { return nil }
-		return startDate.drp_addCalendarUnits(1, unit: unit, calendar: calendar)?.addingTimeInterval(-1)
+		let result = startDate.drp_addCalendarUnits(1, unit: unit, calendar: calendar)
+		return adjustByOneSecond ? result?.addingTimeInterval(-1) : result
 	}
 	
 	public func drp_calendarUnits(since: Date, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int {

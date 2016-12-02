@@ -78,6 +78,17 @@ class Date_DateRangePickerTest: XCTestCase {
 		XCTAssertEqual(dateFromStringWithTime("2015-01-31 23:59:59"), dateFromString("2015-01-01").drp_end(ofCalendarUnit: .month))
 		XCTAssertEqual(dateFromStringWithTime("2015-12-31 23:59:59"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month))
 	}
+	
+	func testEndOfCalendarUnitWithoutAdjusting() {
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-01-01").drp_end(ofCalendarUnit: .year, adjustByOneSecond: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .year, adjustByOneSecond: false))
+		
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .quarter, adjustByOneSecond: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-10-01").drp_end(ofCalendarUnit: .quarter, adjustByOneSecond: false))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 00:00:00"), dateFromString("2015-01-01").drp_end(ofCalendarUnit: .month, adjustByOneSecond: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month, adjustByOneSecond: false))
+	}
 }
 
 class NSDate_DateRangePickerTest: XCTestCase {
