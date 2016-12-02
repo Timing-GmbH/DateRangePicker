@@ -11,7 +11,7 @@ import Cocoa
 @IBDesignable
 open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDelegate, NSPopoverDelegate {
 	fileprivate let segmentedControl: NSSegmentedControl
-	fileprivate let dateFormatter = DateFormatter()
+	open let dateFormatter = DateFormatter()
 	fileprivate var dateRangePickerController: ExpandedDateRangePickerController?
 	
 	// MARK: - Date properties
@@ -67,6 +67,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 	}
 	
+	@available(*, deprecated, message: "Use .dateFormatter directly instead")
 	open var dateStyle: DateFormatter.Style {
 		get {
 			return dateFormatter.dateStyle
@@ -201,7 +202,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		segmentedControl.target = self
 		self.addSubview(segmentedControl)
 		
-		self.dateStyle = .medium
+		self.dateFormatter.dateStyle = .medium
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(dayChanged(_:)), name: NSNotification.Name.NSCalendarDayChanged, object: nil)
 	}
