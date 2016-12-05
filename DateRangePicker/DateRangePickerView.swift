@@ -205,6 +205,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		self.dateFormatter.dateStyle = .medium
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(dayChanged(_:)), name: NSNotification.Name.NSCalendarDayChanged, object: nil)
+		
+		// Required to display the proper title from the beginning, even if .dateRange is not changed before displaying
+		// the control.
+		updateSegmentedControl()
 	}
 	
 	override public init(frame frameRect: NSRect) {
