@@ -112,6 +112,7 @@ public enum DateRange: Equatable {
 		if startDate.drp_beginning(ofCalendarUnit: .day) == endDate.drp_beginning(ofCalendarUnit: .day) {
 			return dateFormatter.string(from: endDate)
 		}
+		//! TODO: Use DateIntervalFormatter here.
 		return "\(dateFormatter.string(from: startDate)) \u{2013} \(dateFormatter.string(from: endDate))"  // en dash
 	}
 	
