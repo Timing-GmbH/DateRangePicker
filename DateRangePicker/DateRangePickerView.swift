@@ -112,7 +112,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	private var _touchBarItem: NSObject?
 	
 	// A touch bar item representing this date picker, with a popover menu to select different date ranges.
-	@available(OSX 10.12.1, *)
+	@available(OSX 10.12.2, *)
 	open var touchBarItem: NSPopoverTouchBarItem {
 		get {
 			if _touchBarItem == nil {
@@ -298,7 +298,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 }
 
-@available(OSX 10.12.1, *)
+@available(OSX 10.12.2, *)
 extension DateRangePickerView: NSTouchBarDelegate {
 	public static let touchBarItemIdentifier = NSTouchBarItemIdentifier("de.danielalm.DateRangePicker.DateRangePickerViewTouchBarItem")
 	
