@@ -171,6 +171,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 	}
 	
+	// If true, segmented control's height will be fixed and its vertical offset adjusted
+	// to hopefully align it with other buttons in the toolbar.
+	@IBInspectable open var optimizeForToolbarDisplay: Bool = false
+	
 	// MARK: - Methods
 	open func makePopover() -> NSPopover {
 		let popover = NSPopover()
@@ -209,6 +213,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		// Required to display the proper title from the beginning, even if .dateRange is not changed before displaying
 		// the control.
 		updateSegmentedControl()
+		updateSegmentedControlFrame()
 	}
 	
 	override public init(frame frameRect: NSRect) {
@@ -236,16 +241,28 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		return NSActionCell.self
 	}
 	
-	// MARK: - Internal
-	override open func resizeSubviews(withOldSize size: CGSize) {
+	open func updateSegmentedControlFrame() {
 		// It would be nice to use Auto Layout instead, but that doesn't play nicely with views in a toolbar.
 		let sideButtonWidth: CGFloat = 22
 		// Magic number to avoid the segmented control overflowing out of its bounds.
 		let unusedControlWidth: CGFloat = 8
-		segmentedControl.setWidth(sideButtonWidth, forSegment:0)
-		segmentedControl.setWidth(self.bounds.size.width - 2 * sideButtonWidth - unusedControlWidth, forSegment:1)
-		segmentedControl.setWidth(sideButtonWidth, forSegment:2)
-		segmentedControl.frame = self.bounds
+		segmentedControl.setWidth(sideButtonWidth, forSegment: 0)
+		segmentedControl.setWidth(self.bounds.size.width - 2 * sideButtonWidth - unusedControlWidth, forSegment: 1)
+		segmentedControl.setWidth(sideButtonWidth, forSegment: 2)
+		var segmentedControlFrame = self.bounds
+		// Ensure that the segmented control is large enough to not be clipped.
+		if optimizeForToolbarDisplay {
+			segmentedControlFrame.size.height = 25
+			if NSScreen.main()?.backingScaleFactor == 2 {
+				segmentedControlFrame.origin.y = -0.5
+			}
+		}
+		segmentedControl.frame = segmentedControlFrame
+	}
+	
+	// MARK: - Internal
+	override open func resizeSubviews(withOldSize size: CGSize) {
+		updateSegmentedControlFrame()
 		super.resizeSubviews(withOldSize: size)
 	}
 	
