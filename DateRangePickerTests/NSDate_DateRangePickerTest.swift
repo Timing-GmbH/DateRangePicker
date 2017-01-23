@@ -122,6 +122,23 @@ class Date_DateRangePickerTest: XCTestCase {
 		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month, calendar: calendar, adjustByOneSecond: false))
 	}
 	
+	func testEndOfCalendarUnitWithoutReturningNext() {
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2016-01-01").drp_end(ofCalendarUnit: .year, calendar: calendar, adjustByOneSecond: false, returnNextIfAtBoundary: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2015-12-31").drp_end(ofCalendarUnit: .year, calendar: calendar, adjustByOneSecond: false, returnNextIfAtBoundary: false))
+		
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2015-12-31").drp_end(ofCalendarUnit: .quarter, calendar: calendar, adjustByOneSecond: false, returnNextIfAtBoundary: false))
+		XCTAssertEqual(dateFromStringWithTime("2015-10-01 00:00:00"),
+		               dateFromString("2015-10-01").drp_end(ofCalendarUnit: .quarter, calendar: calendar, adjustByOneSecond: false, returnNextIfAtBoundary: false))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromString("2015-01-01").drp_end(ofCalendarUnit: .month, calendar: calendar, adjustByOneSecond: false, returnNextIfAtBoundary: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month, calendar: calendar, adjustByOneSecond: false, returnNextIfAtBoundary: false))
+	}
+	
 	func testAddingHoursWithDST() {
 		XCTAssertEqual(dateFromStringWithTime("2016-03-27 01:10:00"),
 		               dateFromStringWithTime("2016-03-27 00:10:00").drp_addCalendarUnits(1, unit: .hour, calendar: calendar))
