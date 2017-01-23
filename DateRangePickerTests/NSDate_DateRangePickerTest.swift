@@ -122,7 +122,7 @@ class Date_DateRangePickerTest: XCTestCase {
 		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month, calendar: calendar, adjustByOneSecond: false))
 	}
 	
-	func testAddingUnitsWithDST() {
+	func testAddingHoursWithDST() {
 		XCTAssertEqual(dateFromStringWithTime("2016-03-27 01:10:00"),
 		               dateFromStringWithTime("2016-03-27 00:10:00").drp_addCalendarUnits(1, unit: .hour, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2016-03-27 03:10:00"),
@@ -151,6 +151,46 @@ class Date_DateRangePickerTest: XCTestCase {
 		               dateFromStringWithTime("2016-10-30 03:10:00").drp_addCalendarUnits(-1, unit: .hour, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2016-10-30 03:10:00"),
 		               dateFromStringWithTime("2016-10-30 04:10:00").drp_addCalendarUnits(-1, unit: .hour, calendar: calendar))
+		
+		
+		XCTAssertEqual(isoDate("2016-10-30T00:10:00.000Z"),
+		               isoDate("2016-10-29T23:10:00.000Z").drp_addCalendarUnits(1, unit: .hour, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T01:10:00.000Z"),
+		               isoDate("2016-10-30T00:10:00.000Z").drp_addCalendarUnits(1, unit: .hour, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T02:10:00.000Z"),
+		               isoDate("2016-10-30T01:10:00.000Z").drp_addCalendarUnits(1, unit: .hour, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T03:10:00.000Z"),
+		               isoDate("2016-10-30T02:10:00.000Z").drp_addCalendarUnits(1, unit: .hour, calendar: calendar))
+		
+		
+		XCTAssertEqual(isoDate("2016-10-29T23:10:00.000Z"),
+		               isoDate("2016-10-30T00:10:00.000Z").drp_addCalendarUnits(-1, unit: .hour, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T00:10:00.000Z"),
+		               isoDate("2016-10-30T01:10:00.000Z").drp_addCalendarUnits(-1, unit: .hour, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T01:10:00.000Z"),
+		               isoDate("2016-10-30T02:10:00.000Z").drp_addCalendarUnits(-1, unit: .hour, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T02:10:00.000Z"),
+		               isoDate("2016-10-30T03:10:00.000Z").drp_addCalendarUnits(-1, unit: .hour, calendar: calendar))
+	}
+	
+	func testAddingDaysWithDST() {
+		XCTAssertEqual(dateFromStringWithTime("2016-03-27 01:10:00"),
+		               dateFromStringWithTime("2016-03-26 01:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-03-27 02:10:00"),
+		               dateFromStringWithTime("2016-03-26 02:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-03-27 03:10:00"),
+		               dateFromStringWithTime("2016-03-26 03:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-03-27 04:10:00"),
+		               dateFromStringWithTime("2016-03-26 04:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2016-10-30 01:10:00"),
+		               dateFromStringWithTime("2016-10-29 01:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		XCTAssertEqual(isoDate("2016-10-30T00:10:00.000Z"),
+		               dateFromStringWithTime("2016-10-29 02:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-10-30 03:10:00"),
+		               dateFromStringWithTime("2016-10-29 03:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-10-30 04:10:00"),
+		               dateFromStringWithTime("2016-10-29 04:10:00").drp_addCalendarUnits(1, unit: .day, calendar: calendar))
 	}
 }
 
