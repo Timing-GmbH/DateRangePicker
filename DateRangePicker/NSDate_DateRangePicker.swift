@@ -47,6 +47,22 @@ public extension Date {
 	}
 }
 
+public extension Date {
+	public func drp_settingHour(to value: Int, calendar: Calendar = Calendar.current) -> Date? {
+		return calendar.date(bySettingHour: value, minute: 0, second: 0, of: self)
+	}
+	
+	public func drp_beginningOfShiftedDay(by shiftedHour: Int, calendar: Calendar = Calendar.current) -> Date? {
+		return drp_beginningOfNextShiftedDay(by: shiftedHour)
+			.flatMap { calendar.date(byAdding: .day, value: -1, to: $0) }
+	}
+	
+	public func drp_beginningOfNextShiftedDay(by shiftedHour: Int, calendar: Calendar = Calendar.current) -> Date? {
+		let dateComponents = DateComponents(calendar: calendar, hour: shiftedHour, minute: 0, second: 0, nanosecond: 0)
+		return calendar.nextDate(after: self, matching: dateComponents, matchingPolicy: .nextTime)
+	}
+}
+
 // Required for backwards compatibility with Objective-C.
 public extension NSDate {
 	public func drp_addCalendarUnits(_ count: Int, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> NSDate? {
