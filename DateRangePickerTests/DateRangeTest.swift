@@ -103,7 +103,7 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(dateRange, DateRange.from(data: dateRange.toData()))
 	}
 	
-	func testrestrictTo() {
+	func testRestrictTo() {
 		let startDate = dateFromString("2015-06-15")
 		let endDate = dateFromString("2015-06-17")
 		
