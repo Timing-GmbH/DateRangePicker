@@ -76,6 +76,13 @@ public extension Date {
 		return startDate
 	}
 	
+	public func drp_end(of component: Calendar.Component, calendar: Calendar = Calendar.current,
+	                    returnNextIfAtBoundary: Bool = true) -> Date? {
+		guard let startDate = drp_beginning(of: component, calendar: Calendar.current) else { return nil }
+		if startDate == self && !returnNextIfAtBoundary { return self }
+		return startDate.drp_adding(1, component: component, calendar: calendar)
+	}
+	
 	public func drp_settingHour(to value: Int, calendar: Calendar = Calendar.current) -> Date? {
 		return calendar.date(bySettingHour: value, minute: 0, second: 0, of: self)
 	}

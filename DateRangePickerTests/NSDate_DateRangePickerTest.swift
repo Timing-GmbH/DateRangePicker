@@ -249,6 +249,34 @@ extension Date_DateRangePickerTest {
 		XCTAssertEqual(dateFromString("2015-12-01"), dateFromString("2015-12-31").drp_beginning(of: .month, calendar: calendar))
 	}
 	
+	func testEndOfCalendarComponent() {
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-01-01").drp_end(of: .year, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(of: .year, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(of: .quarter, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-10-01").drp_end(of: .quarter, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 00:00:00"), dateFromString("2015-01-01").drp_end(of: .month, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(of: .month, calendar: calendar))
+	}
+	
+	func testEndOfCalendarComponentWithoutReturningNext() {
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2016-01-01").drp_end(of: .year, calendar: calendar, returnNextIfAtBoundary: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2015-12-31").drp_end(of: .year, calendar: calendar, returnNextIfAtBoundary: false))
+		
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2015-12-31").drp_end(of: .quarter, calendar: calendar, returnNextIfAtBoundary: false))
+		XCTAssertEqual(dateFromStringWithTime("2015-10-01 00:00:00"),
+		               dateFromString("2015-10-01").drp_end(of: .quarter, calendar: calendar, returnNextIfAtBoundary: false))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromString("2015-01-01").drp_end(of: .month, calendar: calendar, returnNextIfAtBoundary: false))
+		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"),
+		               dateFromString("2015-12-31").drp_end(of: .month, calendar: calendar, returnNextIfAtBoundary: false))
+	}
+	
 	func testSettingHour() {
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 00:01:02").drp_settingHour(to: 5, calendar: calendar))
