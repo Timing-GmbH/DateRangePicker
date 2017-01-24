@@ -108,6 +108,16 @@ public extension Date {
 			.drp_settingHour(to: hourShift, calendar: calendar)
 	}
 	
+	public func drp_end(of component: Calendar.Component, hourShift: Int, calendar: Calendar = Calendar.current) -> Date? {
+		if !component.isAffectedByHourShift {
+			return self.drp_beginning(of: component, calendar: calendar)
+		}
+		
+		return self
+			.drp_beginning(of: component, hourShift: hourShift, calendar: calendar)?
+			.drp_adding(1, component: component, calendar: calendar)
+	}
+	
 	public func drp_components(_ component: Calendar.Component, since startDate: Date, calendar: Calendar = Calendar.current) -> Int? {
 		guard let fromDate = startDate.drp_beginning(of: component, calendar: calendar),
 			let toDate = self.drp_beginning(of: component, calendar: calendar) else { return nil }
