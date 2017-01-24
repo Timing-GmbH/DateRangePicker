@@ -212,7 +212,20 @@ class Date_DateRangePickerTest: XCTestCase {
 }
 
 extension Date_DateRangePickerTest {
-	func testSettingDateComponent() {
+	func testBeginningOfCalendarComponent() {
+		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-01-01").drp_beginning(of: .year, calendar: calendar))
+		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-12-31").drp_beginning(of: .year, calendar: calendar))
+		
+		XCTAssertEqual(dateFromString("2015-04-01"), dateFromString("2015-06-03").drp_beginning(of: .quarter, calendar: calendar))
+		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-03-31").drp_beginning(of: .quarter, calendar: calendar))
+		XCTAssertEqual(dateFromString("2015-10-01"), dateFromString("2015-10-01").drp_beginning(of: .quarter, calendar: calendar))
+		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-01-01").drp_beginning(of: .quarter, calendar: calendar))
+		
+		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-01-01").drp_beginning(of: .month, calendar: calendar))
+		XCTAssertEqual(dateFromString("2015-12-01"), dateFromString("2015-12-31").drp_beginning(of: .month, calendar: calendar))
+	}
+	
+	func testSettingHour() {
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 00:01:02").drp_settingHour(to: 5, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
@@ -275,6 +288,126 @@ extension Date_DateRangePickerTest {
 		               dateFromStringWithTime("2017-01-23 05:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2017-01-24 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 23:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
+	}
+	
+	func testBeginningOfShiftedCalendarComponent() {
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 00:00:00").drp_beginning(of: .year, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 04:59:59").drp_beginning(of: .year, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:00").drp_beginning(of: .year, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:01").drp_beginning(of: .year, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-12-31 00:00:00").drp_beginning(of: .year, hourShift: 0, calendar: calendar))
+		
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 00:00:00").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 04:59:59").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:00").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 00:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:01").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 00:00:00"),
+		               dateFromStringWithTime("2015-02-01 00:00:00").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 00:00:00"),
+		               dateFromStringWithTime("2015-02-01 04:59:59").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 00:00:00"),
+		               dateFromStringWithTime("2015-02-01 05:00:00").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 00:00:00"),
+		               dateFromStringWithTime("2015-02-01 05:00:01").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 00:00:00"),
+		               dateFromStringWithTime("2015-12-31 00:00:00").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 00:00:00"),
+		               dateFromStringWithTime("2015-12-31 04:59:59").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 00:00:00"),
+		               dateFromStringWithTime("2015-12-31 05:00:00").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 00:00:00"),
+		               dateFromStringWithTime("2015-12-31 05:00:01").drp_beginning(of: .month, hourShift: 0, calendar: calendar))
+		
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 00:00:00"),
+		               dateFromStringWithTime("2015-01-05 00:00:00").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 00:00:00"),
+		               dateFromStringWithTime("2015-01-05 04:59:59").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 00:00:00"),
+		               dateFromStringWithTime("2015-01-05 05:00:00").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 00:00:00"),
+		               dateFromStringWithTime("2015-01-05 05:00:01").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 00:00:00"),
+		               dateFromStringWithTime("2015-01-12 00:00:00").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 00:00:00"),
+		               dateFromStringWithTime("2015-01-12 04:59:59").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 00:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:00:00").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 00:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:00:01").drp_beginning(of: .weekOfYear, hourShift: 0, calendar: calendar))
+		
+		
+		
+		XCTAssertEqual(dateFromStringWithTime("2014-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 00:00:00").drp_beginning(of: .year, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2014-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 04:59:59").drp_beginning(of: .year, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:00").drp_beginning(of: .year, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:01").drp_beginning(of: .year, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-12-31 00:00:00").drp_beginning(of: .year, hourShift: 5, calendar: calendar))
+		
+		
+		XCTAssertEqual(dateFromStringWithTime("2014-12-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 00:00:00").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2014-12-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 04:59:59").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:00").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-01-01 05:00:01").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-02-01 00:00:00").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-01 05:00:00"),
+		               dateFromStringWithTime("2015-02-01 04:59:59").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 05:00:00"),
+		               dateFromStringWithTime("2015-02-01 05:00:00").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-02-01 05:00:00"),
+		               dateFromStringWithTime("2015-02-01 05:00:01").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 05:00:00"),
+		               dateFromStringWithTime("2015-12-31 00:00:00").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 05:00:00"),
+		               dateFromStringWithTime("2015-12-31 04:59:59").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 05:00:00"),
+		               dateFromStringWithTime("2015-12-31 05:00:00").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-12-01 05:00:00"),
+		               dateFromStringWithTime("2015-12-31 05:00:01").drp_beginning(of: .month, hourShift: 5, calendar: calendar))
+		
+		
+		XCTAssertEqual(dateFromStringWithTime("2014-12-29 05:00:00"),
+		               dateFromStringWithTime("2015-01-05 00:00:00").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2014-12-29 05:00:00"),
+		               dateFromStringWithTime("2015-01-05 04:59:59").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 05:00:00"),
+		               dateFromStringWithTime("2015-01-05 05:00:00").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 05:00:00"),
+		               dateFromStringWithTime("2015-01-05 05:00:01").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 00:00:00").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-05 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 04:59:59").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:00:00").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:00:01").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
 	}
 }
 

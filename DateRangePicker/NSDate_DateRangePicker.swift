@@ -49,6 +49,13 @@ public extension Date {
 }
 
 public extension Date {
+	public func drp_beginning(of component: Calendar.Component, calendar: Calendar = Calendar.current) -> Date? {
+		var startDate = self
+		var timeInterval: TimeInterval = 0
+		guard calendar.dateInterval(of: component, start: &startDate, interval: &timeInterval, for: self) else { return nil }
+		return startDate
+	}
+	
 	public func drp_settingHour(to value: Int, calendar: Calendar = Calendar.current) -> Date? {
 		return calendar.date(bySettingHour: value, minute: 0, second: 0, of: self)
 	}
@@ -61,6 +68,12 @@ public extension Date {
 	public func drp_beginningOfNextShiftedDay(by shiftedHour: Int, calendar: Calendar = Calendar.current) -> Date? {
 		let dateComponents = DateComponents(calendar: calendar, hour: shiftedHour, minute: 0, second: 0, nanosecond: 0)
 		return calendar.nextDate(after: self, matching: dateComponents, matchingPolicy: .nextTime)
+	}
+	
+	public func drp_beginning(of component: Calendar.Component, hourShift: Int, calendar: Calendar = Calendar.current) -> Date? {
+		return drp_beginningOfShiftedDay(by: hourShift, calendar: calendar)?
+			.drp_beginning(of: component, calendar: calendar)?
+			.drp_settingHour(to: hourShift, calendar: calendar)
 	}
 }
 
