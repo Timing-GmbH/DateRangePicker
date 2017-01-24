@@ -59,6 +59,16 @@ public extension Calendar.Component {
 }
 
 public extension Date {
+	public func drp_adding(_ value: Int, component: Calendar.Component, calendar: Calendar = Calendar.current) -> Date? {
+		if component == .quarter {
+			// There seems to be a bug where adding one quarter to a date in the 3rd quarter does not return the
+			// corresponding date in the 4th quarter. As a workaround, we add 3 months instead.
+			return calendar.date(byAdding: .month, value: 3 * value, to: self)
+		} else {
+			return calendar.date(byAdding: component, value: value, to: self)
+		}
+	}
+	
 	public func drp_beginning(of component: Calendar.Component, calendar: Calendar = Calendar.current) -> Date? {
 		var startDate = self
 		var timeInterval: TimeInterval = 0
@@ -89,6 +99,13 @@ public extension Date {
 			.drp_beginningOfShiftedDay(by: hourShift, calendar: calendar)?
 			.drp_beginning(of: component, calendar: calendar)?
 			.drp_settingHour(to: hourShift, calendar: calendar)
+	}
+	
+	public func drp_components(_ component: Calendar.Component, since startDate: Date, calendar: Calendar = Calendar.current) -> Int? {
+		guard let fromDate = startDate.drp_beginning(of: component, calendar: calendar),
+			let toDate = self.drp_beginning(of: component, calendar: calendar) else { return nil }
+		return calendar.dateComponents(Set(arrayLiteral: component), from: fromDate, to: toDate)
+			.value(for: component)
 	}
 }
 

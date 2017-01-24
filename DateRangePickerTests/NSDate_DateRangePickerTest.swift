@@ -87,6 +87,14 @@ class Date_DateRangePickerTest: XCTestCase {
 		XCTAssertEqual(-7, dateFromString("2015-03-25").drp_daysSince(dateFromString("2015-04-01"), calendar: calendar))
 	}
 	
+	func testCalendarUnitsSince() {
+		XCTAssertEqual(56, dateFromString("2015-07-10").drp_calendarUnits(since: dateFromString("2015-05-15"), unit: .day, calendar: calendar))
+		XCTAssertEqual(8, dateFromString("2015-07-10").drp_calendarUnits(since: dateFromString("2015-05-15"), unit: .weekOfYear, calendar: calendar))
+		XCTAssertEqual(2, dateFromString("2015-07-10").drp_calendarUnits(since: dateFromString("2015-05-15"), unit: .month, calendar: calendar))
+		XCTAssertEqual(0, dateFromString("2015-07-10").drp_calendarUnits(since: dateFromString("2015-05-15"), unit: .quarter, calendar: calendar))
+		XCTAssertEqual(0, dateFromString("2015-07-10").drp_calendarUnits(since: dateFromString("2015-05-15"), unit: .year, calendar: calendar))
+	}
+	
 	func testBeginningOfCalendarUnit() {
 		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-01-01").drp_beginning(ofCalendarUnit: .year, calendar: calendar))
 		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-12-31").drp_beginning(ofCalendarUnit: .year, calendar: calendar))
@@ -212,6 +220,22 @@ class Date_DateRangePickerTest: XCTestCase {
 }
 
 extension Date_DateRangePickerTest {
+	func testAddingCalendarComponents() {
+		XCTAssertEqual(dateFromString("2022-06-03"), dateFromString("2015-06-03").drp_adding(7, component: .year, calendar: calendar))
+		XCTAssertEqual(dateFromString("2008-06-03"), dateFromString("2015-06-03").drp_adding(-7, component: .year, calendar: calendar))
+		
+		XCTAssertEqual(dateFromString("2017-03-03"), dateFromString("2015-06-03").drp_adding(7, component: .quarter, calendar: calendar))
+		XCTAssertEqual(dateFromString("2013-09-03"), dateFromString("2015-06-03").drp_adding(-7, component: .quarter, calendar: calendar))
+		
+		XCTAssertEqual(dateFromString("2016-01-03"), dateFromString("2015-06-03").drp_adding(7, component: .month, calendar: calendar))
+		XCTAssertEqual(dateFromString("2014-11-03"), dateFromString("2015-06-03").drp_adding(-7, component: .month, calendar: calendar))
+		
+		XCTAssertEqual(dateFromString("2015-06-10"), dateFromString("2015-06-03").drp_adding(7, component: .day, calendar: calendar))
+		XCTAssertEqual(dateFromString("2015-05-27"), dateFromString("2015-06-03").drp_adding(-7, component: .day, calendar: calendar))
+		
+		XCTAssertEqual(dateFromString("2016-01-06"), dateFromString("2015-12-30").drp_adding(7, component: .day, calendar: calendar))
+	}
+	
 	func testBeginningOfCalendarComponent() {
 		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-01-01").drp_beginning(of: .year, calendar: calendar))
 		XCTAssertEqual(dateFromString("2015-01-01"), dateFromString("2015-12-31").drp_beginning(of: .year, calendar: calendar))
@@ -436,6 +460,28 @@ extension Date_DateRangePickerTest {
 		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .minute, hourShift: 5, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:07"),
 		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .second, hourShift: 5, calendar: calendar))
+	}
+	
+	func testDaysSinceWithComponent() {
+		XCTAssertEqual(7, dateFromString("2015-06-10").drp_components(.day, since: dateFromString("2015-06-03"), calendar: calendar))
+	}
+	
+	func testDaysSinceWithComponentAndDSTCalendar() {
+		XCTAssertEqual(7, dateFromString("2015-10-27").drp_components(.day, since: dateFromString("2015-10-20"), calendar: calendar))
+		XCTAssertEqual(-7, dateFromString("2015-10-20").drp_components(.day, since: dateFromString("2015-10-27"), calendar: calendar))
+		
+		XCTAssertEqual(0, calendar.timeZone.daylightSavingTimeOffset(for: dateFromString("2015-03-25")))
+		XCTAssertEqual(3600, calendar.timeZone.daylightSavingTimeOffset(for: dateFromString("2015-04-01")))
+		XCTAssertEqual(7, dateFromString("2015-04-01").drp_components(.day, since: dateFromString("2015-03-25"), calendar: calendar))
+		XCTAssertEqual(-7, dateFromString("2015-03-25").drp_components(.day, since: dateFromString("2015-04-01"), calendar: calendar))
+	}
+	
+	func testComponentsSince() {
+		XCTAssertEqual(56, dateFromString("2015-07-10").drp_components(.day, since: dateFromString("2015-05-15"), calendar: calendar))
+		XCTAssertEqual(8, dateFromString("2015-07-10").drp_components(.weekOfYear, since: dateFromString("2015-05-15"), calendar: calendar))
+		XCTAssertEqual(2, dateFromString("2015-07-10").drp_components(.month, since: dateFromString("2015-05-15"), calendar: calendar))
+		XCTAssertEqual(0, dateFromString("2015-07-10").drp_components(.quarter, since: dateFromString("2015-05-15"), calendar: calendar))
+		XCTAssertEqual(0, dateFromString("2015-07-10").drp_components(.year, since: dateFromString("2015-05-15"), calendar: calendar))
 	}
 }
 
