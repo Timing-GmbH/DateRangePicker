@@ -550,6 +550,34 @@ extension Date_DateRangePickerTest {
 		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .second, hourShift: 5, calendar: calendar))
 	}
 	
+	func testEndOfShiftedCalendarComponentForUnaffectedComponents() {
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_end(of: .hour, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:07:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_end(of: .minute, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:06:08"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_end(of: .second, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 06:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_end(of: .hour, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:07:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_end(of: .minute, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:08"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_end(of: .second, hourShift: 0, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_end(of: .hour, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:07:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_end(of: .minute, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:06:08"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_end(of: .second, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 06:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_end(of: .hour, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:07:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_end(of: .minute, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:08"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_end(of: .second, hourShift: 5, calendar: calendar))
+	}
+	
 	func testDaysSinceWithComponent() {
 		XCTAssertEqual(7, dateFromString("2015-06-10").drp_components(.day, since: dateFromString("2015-06-03"), calendar: calendar))
 	}

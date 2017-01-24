@@ -110,7 +110,7 @@ public extension Date {
 	
 	public func drp_end(of component: Calendar.Component, hourShift: Int, calendar: Calendar = Calendar.current) -> Date? {
 		if !component.isAffectedByHourShift {
-			return self.drp_beginning(of: component, calendar: calendar)
+			return self.drp_end(of: component, calendar: calendar)
 		}
 		
 		return self
