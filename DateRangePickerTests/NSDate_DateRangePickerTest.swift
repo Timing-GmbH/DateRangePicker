@@ -281,6 +281,10 @@ extension Date_DateRangePickerTest {
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 00:01:02").drp_settingHour(to: 5, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
+		               dateFromStringWithTime("2017-01-23 00:01:02")
+						.addingTimeInterval(0.1)
+						.drp_settingHour(to: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 01:01:02").drp_settingHour(to: 5, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 05:00:00").drp_settingHour(to: 5, calendar: calendar))
@@ -316,30 +320,6 @@ extension Date_DateRangePickerTest {
 		               dateFromStringWithTime("2017-01-23 05:01:02").drp_beginningOfShiftedDay(by: 5, calendar: calendar))
 		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
 		               dateFromStringWithTime("2017-01-23 23:01:02").drp_beginningOfShiftedDay(by: 5, calendar: calendar))
-	}
-	
-	func testBeginningOfNextShiftedDay() {
-		XCTAssertEqual(dateFromStringWithTime("2017-01-24 00:00:00"),
-		               dateFromStringWithTime("2017-01-23 00:00:00").drp_beginningOfNextShiftedDay(by: 0, calendar: calendar))
-		
-		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 00:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 04:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 04:59:59").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-23 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 05:00:00")
-						.addingTimeInterval(-0.00001)
-						.drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-24 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 05:00:00").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-24 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 05:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-24 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 05:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
-		XCTAssertEqual(dateFromStringWithTime("2017-01-24 05:00:00"),
-		               dateFromStringWithTime("2017-01-23 23:01:02").drp_beginningOfNextShiftedDay(by: 5, calendar: calendar))
 	}
 	
 	func testBeginningOfShiftedCalendarComponent() {

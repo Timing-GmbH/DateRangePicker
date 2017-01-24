@@ -88,13 +88,13 @@ public extension Date {
 	}
 	
 	public func drp_beginningOfShiftedDay(by shiftedHour: Int, calendar: Calendar = Calendar.current) -> Date? {
-		return drp_beginningOfNextShiftedDay(by: shiftedHour)
-			.flatMap { calendar.date(byAdding: .day, value: -1, to: $0) }
-	}
-	
-	public func drp_beginningOfNextShiftedDay(by shiftedHour: Int, calendar: Calendar = Calendar.current) -> Date? {
-		let dateComponents = DateComponents(calendar: calendar, hour: shiftedHour, minute: 0, second: 0, nanosecond: 0)
-		return calendar.nextDate(after: self, matching: dateComponents, matchingPolicy: .nextTime)
+		// We could also use calendar.nextDate(after:...) here, but that is significantly slower.
+		let modifiedDate = self.drp_settingHour(to: shiftedHour, calendar: calendar)
+		if let modifiedDate = modifiedDate, modifiedDate <= self {
+			return modifiedDate
+		} else {
+			return modifiedDate?.drp_adding(-1, component: .day, calendar: calendar)
+		}
 	}
 	
 	public func drp_beginning(of component: Calendar.Component, hourShift: Int, calendar: Calendar = Calendar.current) -> Date? {
