@@ -48,6 +48,16 @@ public extension Date {
 	}
 }
 
+public extension Calendar.Component {
+	public var isAffectedByHourShift: Bool {
+		switch self {
+		case .era, .year, .month, .day, .weekday, .weekdayOrdinal, .quarter, .weekOfMonth,
+		     .weekOfYear, .yearForWeekOfYear: return true
+		case .hour, .minute, .second, .nanosecond, .calendar, .timeZone: return false
+		}
+	}
+}
+
 public extension Date {
 	public func drp_beginning(of component: Calendar.Component, calendar: Calendar = Calendar.current) -> Date? {
 		var startDate = self
@@ -71,7 +81,12 @@ public extension Date {
 	}
 	
 	public func drp_beginning(of component: Calendar.Component, hourShift: Int, calendar: Calendar = Calendar.current) -> Date? {
-		return drp_beginningOfShiftedDay(by: hourShift, calendar: calendar)?
+		if !component.isAffectedByHourShift {
+			return self.drp_beginning(of: component, calendar: calendar)
+		}
+		
+		return self
+			.drp_beginningOfShiftedDay(by: hourShift, calendar: calendar)?
 			.drp_beginning(of: component, calendar: calendar)?
 			.drp_settingHour(to: hourShift, calendar: calendar)
 	}

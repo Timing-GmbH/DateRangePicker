@@ -409,6 +409,34 @@ extension Date_DateRangePickerTest {
 		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
 		               dateFromStringWithTime("2015-01-12 05:00:01").drp_beginning(of: .weekOfYear, hourShift: 5, calendar: calendar))
 	}
+	
+	func testBeginningOfShiftedCalendarComponentForUnaffectedComponents() {
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:00:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_beginning(of: .hour, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:06:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_beginning(of: .minute, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:06:07"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_beginning(of: .second, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .hour, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .minute, hourShift: 0, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:07"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .second, hourShift: 0, calendar: calendar))
+		
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:00:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_beginning(of: .hour, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:06:00"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_beginning(of: .minute, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 04:06:07"),
+		               dateFromStringWithTime("2015-01-12 04:06:07").drp_beginning(of: .second, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:00:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .hour, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:00"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .minute, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(dateFromStringWithTime("2015-01-12 05:06:07"),
+		               dateFromStringWithTime("2015-01-12 05:06:07").drp_beginning(of: .second, hourShift: 5, calendar: calendar))
+	}
 }
 
 class NSDate_DateRangePickerTest: XCTestCase {
