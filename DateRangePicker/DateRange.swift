@@ -8,6 +8,30 @@
 
 import Foundation
 
+extension NSCalendar.Unit {
+	public var drp_correspondingCalendarComponent: Calendar.Component? {
+		switch self {
+		case NSCalendar.Unit.era: return .era
+		case NSCalendar.Unit.year: return .year
+		case NSCalendar.Unit.month: return .month
+		case NSCalendar.Unit.day: return .day
+		case NSCalendar.Unit.hour: return .hour
+		case NSCalendar.Unit.minute: return .minute
+		case NSCalendar.Unit.second: return .second
+		case NSCalendar.Unit.weekday: return .weekday
+		case NSCalendar.Unit.weekdayOrdinal: return .weekdayOrdinal
+		case NSCalendar.Unit.quarter: return .quarter
+		case NSCalendar.Unit.weekOfMonth: return .weekOfMonth
+		case NSCalendar.Unit.weekOfYear: return .weekOfYear
+		case NSCalendar.Unit.yearForWeekOfYear: return .yearForWeekOfYear
+		case NSCalendar.Unit.nanosecond: return .nanosecond
+		case NSCalendar.Unit.calendar: return .calendar
+		case NSCalendar.Unit.timeZone: return .timeZone
+		default: return nil
+		}
+	}
+}
+
 public enum DateRange: Equatable {
 	case custom(Date, Date)
 	case pastDays(Int)
@@ -17,7 +41,7 @@ public enum DateRange: Equatable {
 	
 	// MARK: - Core properties
 	public var startDate: Date {
-		switch(self) {
+		switch self {
 		case .custom(let startDate, _):
 			return startDate.drp_beginning(ofCalendarUnit: .day)!
 		case .pastDays(let pastDays):
@@ -28,7 +52,7 @@ public enum DateRange: Equatable {
 	}
 	
 	public var endDate: Date {
-		switch(self) {
+		switch self {
 		case .custom(_, let endDate):
 			return endDate.drp_end(ofCalendarUnit: .day)!
 		case .pastDays(_):
@@ -36,6 +60,48 @@ public enum DateRange: Equatable {
 		case .calendarUnit(let offset, let unit):
 			return Date().drp_addCalendarUnits(offset, unit: unit)!.drp_end(ofCalendarUnit: unit)!
 		}
+	}
+	
+	// These functions are required for testing getStartDate(withHourShift:) and getEndDate(withHourShift:) for
+	// DateRange.pastDays and DateRange.calendarUnit with a fake "now" without depending on the hour of day the test is
+	// run.
+	func getStartDate(withHourShift hourShift: Int, now: Date) -> Date {
+		switch (self) {
+		case .custom(let startDate, _):
+			return startDate.drp_settingHour(to: hourShift)!
+		case .pastDays(let pastDays):
+			return now
+				.drp_beginning(of: .day, hourShift: hourShift)!
+				.drp_adding(-pastDays, component: .day)!
+		case .calendarUnit(let offset, let unit):
+			return now
+				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
+				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+		}
+	}
+	
+	func getEndDate(withHourShift hourShift: Int, now: Date) -> Date {
+		switch (self) {
+		case .custom(_, let endDate):
+			return endDate
+				.drp_settingHour(to: hourShift)!
+				.drp_adding(1, component: .day)!
+		case .pastDays(_):
+			return now
+				.drp_end(of: .day, hourShift: hourShift)!
+		case .calendarUnit(let offset, let unit):
+			return now
+				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
+				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+		}
+	}
+	
+	public func getStartDate(withHourShift hourShift: Int) -> Date {
+		return getStartDate(withHourShift: hourShift, now: Date())
+	}
+	
+	public func getEndDate(withHourShift hourShift: Int) -> Date {
+		return getEndDate(withHourShift: hourShift, now: Date())
 	}
 	
 	// MARK: - Display-related properties and methods

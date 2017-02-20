@@ -7,14 +7,25 @@
 //
 
 import XCTest
-
-import DateRangePicker
+@testable import DateRangePicker
 
 class DateRangeTest: XCTestCase {
-	func dateFromString(_ dateString: String) -> Date {
+	fileprivate let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "yyyy-MM-dd"
+		return dateFormatter
+	}()
+	func dateFromString(_ dateString: String) -> Date {
 		return dateFormatter.date(from: dateString)!
+	}
+	
+	fileprivate let dateFormatterWithTime: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+		return dateFormatter
+	}()
+	func dateFromStringWithTime(_ dateString: String) -> Date {
+		return dateFormatterWithTime.date(from: dateString)!
 	}
 	
 	func testTitle() {
@@ -50,6 +61,60 @@ class DateRangeTest: XCTestCase {
 		dateRange = DateRange.calendarUnit(1, .quarter)
 		XCTAssertEqual(Date().drp_addCalendarUnits(1, unit: .quarter)!.drp_beginning(ofCalendarUnit: .quarter), dateRange.startDate)
 		XCTAssertEqual(Date().drp_addCalendarUnits(1, unit: .quarter)!.drp_end(ofCalendarUnit: .quarter), dateRange.endDate)
+	}
+	
+	func testStartEndDatesWithHourShift() {
+		let startDate = dateFromString("2015-06-01")
+		let endDate = dateFromString("2015-06-03")
+		
+		let nowBeforeShift = dateFromStringWithTime("2015-06-01 04:59:59")
+		let nowAfterShift = dateFromStringWithTime("2015-06-01 05:00:00")
+		
+		var dateRange = DateRange.custom(startDate, endDate)
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"), dateRange.getStartDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-04 05:00:00"), dateRange.getEndDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"), dateRange.getStartDate(withHourShift: 5, now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-04 05:00:00"), dateRange.getEndDate(withHourShift: 5, now: nowAfterShift))
+		
+		dateRange = DateRange.pastDays(2)
+		XCTAssertEqual(dateFromStringWithTime("2015-05-29 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-05-30 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-02 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowAfterShift))
+		
+		dateRange = DateRange.calendarUnit(0, .month)
+		XCTAssertEqual(dateFromStringWithTime("2015-05-01 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-07-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowAfterShift))
+		
+		dateRange = DateRange.calendarUnit(-1, .month)
+		XCTAssertEqual(dateFromStringWithTime("2015-04-01 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-05-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-05-01 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowAfterShift))
+		
+		dateRange = DateRange.calendarUnit(1, .month)
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-07-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-07-01 05:00:00"),
+		               dateRange.getStartDate(withHourShift: 5, now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-08-01 05:00:00"),
+		               dateRange.getEndDate(withHourShift: 5, now: nowAfterShift))
 	}
 	
 	func testEqual() {
