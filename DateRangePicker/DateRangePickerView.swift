@@ -24,11 +24,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		set {
 			let restrictedValue = newValue.restrictTo(minDate: minDate, maxDate: maxDate)
 			if _dateRange != restrictedValue {
-				self.willChangeValue(forKey: "endDate")
-				self.willChangeValue(forKey: "startDate")
+				self.willChangeValue(forKey: #keyPath(endDate))
+				self.willChangeValue(forKey: #keyPath(startDate))
 				_dateRange = restrictedValue
-				self.didChangeValue(forKey: "endDate")
-				self.didChangeValue(forKey: "startDate")
+				self.didChangeValue(forKey: #keyPath(endDate))
+				self.didChangeValue(forKey: #keyPath(startDate))
 				
 				if dateRangePickerController?.dateRange != dateRange {
 					dateRangePickerController?.dateRange = dateRange
@@ -43,10 +43,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	@objc open func dayChanged(_ notification: Notification) {
 		// If the current date ranged is specified in a relative fashion,
 		// it might change on actual day changes, so make sure to notify any observers.
-		self.willChangeValue(forKey: "endDate")
-		self.willChangeValue(forKey: "startDate")
-		self.didChangeValue(forKey: "endDate")
-		self.didChangeValue(forKey: "startDate")
+		self.willChangeValue(forKey: #keyPath(endDate))
+		self.willChangeValue(forKey: #keyPath(startDate))
+		self.didChangeValue(forKey: #keyPath(endDate))
+		self.didChangeValue(forKey: #keyPath(startDate))
 	}
 	
 	// Can be used for restricting the selectable dates to a specific range.
