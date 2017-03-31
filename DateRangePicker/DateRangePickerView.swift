@@ -8,11 +8,20 @@
 
 import Cocoa
 
+@objc public protocol DateRangePickerViewDelegate {
+	func dateRangePickerView(
+		_ dateRangePickerView: DateRangePickerView,
+		willPresentExpandedDateRangePickerController expandedDateRangePickerController: ExpandedDateRangePickerController)
+	func dateRangePickerViewDidCloseExpandedDateRangePickerController(_ dateRangePickerView: DateRangePickerView)
+}
+
 @IBDesignable
 open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDelegate, NSPopoverDelegate {
 	fileprivate let segmentedControl: NSSegmentedControl
 	open let dateFormatter = DateFormatter()
 	fileprivate var dateRangePickerController: ExpandedDateRangePickerController?
+	
+	open weak var delegate: DateRangePickerViewDelegate?
 	
 	// MARK: - Date properties
 	fileprivate var _dateRange: DateRange  // Should almost never be accessed directly
@@ -186,10 +195,14 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		if dateRangePickerController != nil { return }
 		
 		let popover = makePopover()
-		dateRangePickerController = ExpandedDateRangePickerController(dateRange: dateRange)
-		dateRangePickerController?.minDate = minDate
-		dateRangePickerController?.maxDate = maxDate
-		dateRangePickerController?.delegate = self
+		let controller = ExpandedDateRangePickerController(dateRange: dateRange)
+		controller.minDate = minDate
+		controller.maxDate = maxDate
+		controller.delegate = self
+		self.dateRangePickerController = controller
+		
+		delegate?.dateRangePickerView(self, willPresentExpandedDateRangePickerController: controller)
+		
 		popover.contentViewController = dateRangePickerController
 		popover.delegate = self
 		popover.show(relativeTo: self.bounds, of: self, preferredEdge: .minY)
@@ -310,7 +323,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		guard let popover = notification.object as? NSPopover else { return }
 		if popover.contentViewController === dateRangePickerController {
 			dateRangePickerController = nil
+			
 			updateSegmentedControl()
+			
+			delegate?.dateRangePickerViewDidCloseExpandedDateRangePickerController(self)
 		}
 	}
 }
