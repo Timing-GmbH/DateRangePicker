@@ -8,6 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ExpandedDateRangePickerController" customModule="DateRangePicker" customModuleProvider="target">
             <connections>
+                <outlet property="auxiliaryViewContainer" destination="DTa-Lg-Dpb" id="9Qj-lA-F5t"/>
+                <outlet property="fixCalendarsToBottomConstraint" destination="nd1-UO-LzX" id="Gqo-Tx-epM"/>
                 <outlet property="presetRangeSelector" destination="Q5J-7O-GaA" id="qYX-YZ-R2R"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -103,27 +105,38 @@
                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
                     </connections>
                 </datePicker>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="DTa-Lg-Dpb">
+                    <rect key="frame" x="20" y="-20" width="286" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" placeholder="YES" id="wcS-JC-tZQ"/>
+                    </constraints>
+                </customView>
             </subviews>
             <constraints>
                 <constraint firstItem="EDu-C9-U0X" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" id="4NB-GK-Ip9"/>
+                <constraint firstAttribute="bottom" secondItem="DTa-Lg-Dpb" secondAttribute="bottom" priority="749" constant="20" id="Abd-xX-XKT"/>
                 <constraint firstItem="UeG-Rz-FlU" firstAttribute="top" secondItem="ajc-f3-C4T" secondAttribute="bottom" constant="8" id="BWv-nU-JL0"/>
+                <constraint firstItem="DTa-Lg-Dpb" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" priority="750" id="Ecz-6u-pUU"/>
                 <constraint firstItem="ajc-f3-C4T" firstAttribute="top" secondItem="Q5J-7O-GaA" secondAttribute="bottom" constant="20" id="JDU-xP-XAG"/>
                 <constraint firstItem="Q5J-7O-GaA" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Jt6-se-Ppy"/>
                 <constraint firstItem="ajc-f3-C4T" firstAttribute="baseline" secondItem="EDu-C9-U0X" secondAttribute="baseline" id="NRY-4N-iSk"/>
                 <constraint firstItem="5p6-r4-96F" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="R2x-ho-KeC"/>
                 <constraint firstItem="HSY-I2-CQn" firstAttribute="width" secondItem="5p6-r4-96F" secondAttribute="width" id="Y64-Is-AF5"/>
                 <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" id="fhd-1W-iEn"/>
+                <constraint firstItem="DTa-Lg-Dpb" firstAttribute="trailing" secondItem="Q5J-7O-GaA" secondAttribute="trailing" priority="750" id="gau-Vb-b7H"/>
+                <constraint firstItem="DTa-Lg-Dpb" firstAttribute="top" secondItem="HSY-I2-CQn" secondAttribute="bottom" priority="750" constant="20" id="hYB-aW-U8V"/>
                 <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="Q5J-7O-GaA" secondAttribute="leading" id="i3S-93-85T"/>
                 <constraint firstItem="Q5J-7O-GaA" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="trailing" constant="8" id="iut-cc-UZi"/>
                 <constraint firstItem="UeG-Rz-FlU" firstAttribute="width" secondItem="Q5J-7O-GaA" secondAttribute="width" id="jdI-J5-xoX"/>
                 <constraint firstItem="ajc-f3-C4T" firstAttribute="leading" secondItem="Q5J-7O-GaA" secondAttribute="leading" id="kdB-GP-MJL"/>
                 <constraint firstItem="5p6-r4-96F" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="lve-xv-HI3"/>
+                <constraint firstAttribute="bottom" secondItem="HSY-I2-CQn" secondAttribute="bottom" constant="20" id="nd1-UO-LzX"/>
                 <constraint firstItem="EDu-C9-U0X" firstAttribute="width" secondItem="5p6-r4-96F" secondAttribute="width" id="owt-VA-YjF"/>
                 <constraint firstItem="ajc-f3-C4T" firstAttribute="width" secondItem="Q5J-7O-GaA" secondAttribute="width" id="p5L-3C-Fby"/>
                 <constraint firstAttribute="trailing" secondItem="Q5J-7O-GaA" secondAttribute="trailing" constant="20" id="rRY-MR-Yb3"/>
                 <constraint firstItem="HSY-I2-CQn" firstAttribute="top" secondItem="EDu-C9-U0X" secondAttribute="bottom" constant="8" id="tpp-r7-aA4"/>
             </constraints>
-            <point key="canvasLocation" x="404" y="491"/>
+            <point key="canvasLocation" x="404" y="516"/>
         </customView>
     </objects>
 </document>
