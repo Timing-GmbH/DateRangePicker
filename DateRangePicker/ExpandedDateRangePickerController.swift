@@ -15,21 +15,21 @@ public protocol ExpandedDateRangePickerControllerDelegate: class {
 
 open class ExpandedDateRangePickerController: NSViewController {
 	@IBOutlet var auxiliaryViewContainer: NSView?
-	@IBOutlet var fixCalendarsToBottomConstraint: NSLayoutConstraint?
+	@IBOutlet var constraintHidingAuxiliaryView: NSLayoutConstraint?
 	
 	open var auxiliaryView: NSView? {
 		didSet {
 			_ = self.view  // Ensures that the view is loaded and outlets are set up.
 			
 			guard let auxiliaryViewContainer = auxiliaryViewContainer,
-				let fixCalendarsToBottomConstraint = fixCalendarsToBottomConstraint
+				let constraintHidingAuxiliaryView = constraintHidingAuxiliaryView
 				else { return }
 			
 			for subview in auxiliaryViewContainer.subviews {
 				subview.removeFromSuperview()
 			}
 			
-			self.view.removeConstraint(fixCalendarsToBottomConstraint)
+			self.view.removeConstraint(constraintHidingAuxiliaryView)
 			
 			if let auxiliaryView = auxiliaryView {
 				auxiliaryView.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 					withVisualFormat: "V:|[auxiliaryView]|", options: [], metrics: nil,
 					views: ["auxiliaryView": auxiliaryView]))
 			} else {
-				self.view.addConstraint(fixCalendarsToBottomConstraint)
+				self.view.addConstraint(constraintHidingAuxiliaryView)
 			}
 		}
 	}
