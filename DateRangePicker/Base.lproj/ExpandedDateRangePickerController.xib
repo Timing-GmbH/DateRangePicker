@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ExpandedDateRangePickerController" customModule="DateRangePicker" customModuleProvider="target">
@@ -17,9 +18,8 @@
             <rect key="frame" x="0.0" y="0.0" width="326" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn">
+                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn">
                     <rect key="frame" x="20" y="20" width="139" height="148"/>
-                    <animations/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerMode="range" datePickerStyle="clockAndCalendar" id="YkB-C8-NUg">
                         <font key="font" metaFont="system"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
@@ -35,9 +35,8 @@
                         <binding destination="-2" name="value" keyPath="startDate" previousBinding="DJa-3a-CL5" id="WUN-9R-YdI"/>
                     </connections>
                 </datePicker>
-                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDu-C9-U0X">
+                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EDu-C9-U0X">
                     <rect key="frame" x="20" y="176" width="142" height="27"/>
-                    <animations/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="SDR-7c-yGJ">
                         <font key="font" metaFont="system"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
@@ -53,9 +52,8 @@
                         <binding destination="-2" name="value" keyPath="startDate" previousBinding="tcK-0V-gpC" id="nhU-uZ-jcv"/>
                     </connections>
                 </datePicker>
-                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
+                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
                     <rect key="frame" x="167" y="20" width="139" height="148"/>
-                    <animations/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerMode="range" datePickerStyle="clockAndCalendar" id="IA0-nd-0dU">
                         <font key="font" metaFont="system"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
@@ -70,9 +68,8 @@
                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="pJ4-69-kqo"/>
                     </connections>
                 </datePicker>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5J-7O-GaA">
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q5J-7O-GaA">
                     <rect key="frame" x="165" y="216" width="144" height="26"/>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="WZK-A6-zOY">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -82,18 +79,16 @@
                         <action selector="presetRangeSelected:" target="-2" id="jDR-HQ-Tgm"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5p6-r4-96F">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5p6-r4-96F">
                     <rect key="frame" x="18" y="223" width="143" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Date Range:" id="OQ9-0t-PIG">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
+                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
                     <rect key="frame" x="167" y="176" width="142" height="27"/>
-                    <animations/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="jeJ-ON-TL7">
                         <font key="font" metaFont="system"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
@@ -109,7 +104,25 @@
                     </connections>
                 </datePicker>
             </subviews>
-            <animations/>
+            <constraints>
+                <constraint firstItem="EDu-C9-U0X" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" id="4NB-GK-Ip9"/>
+                <constraint firstItem="UeG-Rz-FlU" firstAttribute="top" secondItem="ajc-f3-C4T" secondAttribute="bottom" constant="8" id="BWv-nU-JL0"/>
+                <constraint firstItem="ajc-f3-C4T" firstAttribute="top" secondItem="Q5J-7O-GaA" secondAttribute="bottom" constant="20" id="JDU-xP-XAG"/>
+                <constraint firstItem="Q5J-7O-GaA" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Jt6-se-Ppy"/>
+                <constraint firstItem="ajc-f3-C4T" firstAttribute="baseline" secondItem="EDu-C9-U0X" secondAttribute="baseline" id="NRY-4N-iSk"/>
+                <constraint firstItem="5p6-r4-96F" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="R2x-ho-KeC"/>
+                <constraint firstItem="HSY-I2-CQn" firstAttribute="width" secondItem="5p6-r4-96F" secondAttribute="width" id="Y64-Is-AF5"/>
+                <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" id="fhd-1W-iEn"/>
+                <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="Q5J-7O-GaA" secondAttribute="leading" id="i3S-93-85T"/>
+                <constraint firstItem="Q5J-7O-GaA" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="trailing" constant="8" id="iut-cc-UZi"/>
+                <constraint firstItem="UeG-Rz-FlU" firstAttribute="width" secondItem="Q5J-7O-GaA" secondAttribute="width" id="jdI-J5-xoX"/>
+                <constraint firstItem="ajc-f3-C4T" firstAttribute="leading" secondItem="Q5J-7O-GaA" secondAttribute="leading" id="kdB-GP-MJL"/>
+                <constraint firstItem="5p6-r4-96F" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="lve-xv-HI3"/>
+                <constraint firstItem="EDu-C9-U0X" firstAttribute="width" secondItem="5p6-r4-96F" secondAttribute="width" id="owt-VA-YjF"/>
+                <constraint firstItem="ajc-f3-C4T" firstAttribute="width" secondItem="Q5J-7O-GaA" secondAttribute="width" id="p5L-3C-Fby"/>
+                <constraint firstAttribute="trailing" secondItem="Q5J-7O-GaA" secondAttribute="trailing" constant="20" id="rRY-MR-Yb3"/>
+                <constraint firstItem="HSY-I2-CQn" firstAttribute="top" secondItem="EDu-C9-U0X" secondAttribute="bottom" constant="8" id="tpp-r7-aA4"/>
+            </constraints>
             <point key="canvasLocation" x="404" y="491"/>
         </customView>
     </objects>
