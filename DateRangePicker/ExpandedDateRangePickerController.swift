@@ -46,23 +46,29 @@ open class ExpandedDateRangePickerController: NSViewController {
 		}
 	}
 	
-	let presetRanges: [DateRange?] = [
-		.custom(Date(), Date()),
-		nil,
-		.pastDays(7),
-		.pastDays(15),
-		.pastDays(30),
-		.pastDays(90),
-		.pastDays(365),
-		nil,
-		.calendarUnit(0, .day),
-		.calendarUnit(-1, .day),
-		.calendarUnit(0, .weekOfYear),
-		.calendarUnit(0, .month),
-		.calendarUnit(0, .quarter),
-		.calendarUnit(0, .year)
-	]
+	var presetRanges: [DateRange?] {
+		return [
+			.custom(Date(), Date(), hourShift: self.hourShift),
+			nil,
+			.pastDays(7, hourShift: self.hourShift),
+			.pastDays(15, hourShift: self.hourShift),
+			.pastDays(30, hourShift: self.hourShift),
+			.pastDays(90, hourShift: self.hourShift),
+			.pastDays(365, hourShift: self.hourShift),
+			nil,
+			.calendarUnit(0, .day, hourShift: self.hourShift),
+			.calendarUnit(-1, .day, hourShift: self.hourShift),
+			.calendarUnit(0, .weekOfYear, hourShift: self.hourShift),
+			.calendarUnit(0, .month, hourShift: self.hourShift),
+			.calendarUnit(0, .quarter, hourShift: self.hourShift),
+			.calendarUnit(0, .year, hourShift: self.hourShift)
+		]
+	}
 	@IBOutlet var presetRangeSelector: NSPopUpButton?
+	
+	open dynamic var hourShift: Int = 0 {
+		didSet { dateRange.hourShift = hourShift }
+	}
 	
 	fileprivate var _dateRange: DateRange
 	open var dateRange: DateRange {
@@ -89,7 +95,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 		}
 		
 		set {
-			dateRange = DateRange.custom(newValue, endDate)
+			dateRange = DateRange.custom(newValue, endDate, hourShift: self.hourShift)
 		}
 	}
 	open dynamic var endDate: Date {
@@ -98,7 +104,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 		}
 		
 		set {
-			dateRange = DateRange.custom(startDate, newValue)
+			dateRange = DateRange.custom(startDate, newValue, hourShift: self.hourShift)
 		}
 	}
 	
@@ -118,8 +124,9 @@ open class ExpandedDateRangePickerController: NSViewController {
 	
 	open weak var delegate: ExpandedDateRangePickerControllerDelegate?
 	
-	public init(dateRange: DateRange) {
+	public init(dateRange: DateRange, hourShift: Int) {
 		_dateRange = dateRange
+		self.hourShift = hourShift
 		super.init(nibName: "ExpandedDateRangePickerController",
 			bundle: Bundle(for: ExpandedDateRangePickerController.self))!
 	}
@@ -149,7 +156,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 		guard let selectedRange = presetRanges[sender.indexOfSelectedItem] else { return }
 		switch selectedRange {
 		case .custom:
-			dateRange = DateRange.custom(startDate, endDate)
+			dateRange = DateRange.custom(startDate, endDate, hourShift: self.hourShift)
 		case .pastDays, .calendarUnit:
 			dateRange = selectedRange
 		}

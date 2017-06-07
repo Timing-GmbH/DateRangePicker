@@ -33,75 +33,80 @@ extension NSCalendar.Unit {
 }
 
 public enum DateRange: Equatable {
-	case custom(Date, Date)
-	case pastDays(Int)
+	case custom(Date, Date, hourShift: Int)
+	case pastDays(Int, hourShift: Int)
 	// Spans the given calendar unit around the current date, adjusted by unit * first argument.
 	// E.g. .CalendarUnit(0, .Quarter) means this quarter, .CalendarUnit(-1, .Quarter) last quarter.
-	case calendarUnit(Int, NSCalendar.Unit)
+	case calendarUnit(Int, NSCalendar.Unit, hourShift: Int)
 	
 	// MARK: - Core properties
 	public var startDate: Date {
-		switch self {
-		case .custom(let startDate, _):
-			return startDate.drp_beginning(ofCalendarUnit: .day)!
-		case .pastDays(let pastDays):
-			return Date().drp_addCalendarUnits(-pastDays, unit: .day)!.drp_beginning(ofCalendarUnit: .day)!
-		case .calendarUnit(let offset, let unit):
-			return Date().drp_addCalendarUnits(offset, unit: unit)!.drp_beginning(ofCalendarUnit: unit)!
-		}
+		return getStartDate(now: Date())
 	}
 	
 	public var endDate: Date {
-		switch self {
-		case .custom(_, let endDate):
-			return endDate.drp_end(ofCalendarUnit: .day)!
-		case .pastDays(_):
-			return Date().drp_end(ofCalendarUnit: .day)!
-		case .calendarUnit(let offset, let unit):
-			return Date().drp_addCalendarUnits(offset, unit: unit)!.drp_end(ofCalendarUnit: unit)!
+		return getEndDate(now: Date())
+	}
+	
+	public var hourShift: Int {
+		get {
+			switch self {
+			case let .custom(_, _, hourShift): return hourShift
+			case let .pastDays(_, hourShift): return hourShift
+			case let .calendarUnit(_, _, hourShift): return hourShift
+			}
+		}
+		
+		set {
+			switch self {
+			case let .custom(startDate, endDate, _): self = .custom(startDate, endDate, hourShift: newValue)
+			case let .pastDays(pastDays, _): self = .pastDays(pastDays, hourShift: newValue)
+			case let .calendarUnit(offset, unit, _): self = .calendarUnit(offset, unit, hourShift: newValue)
+			}
 		}
 	}
 	
 	// These functions are required for testing getStartDate(withHourShift:) and getEndDate(withHourShift:) for
 	// DateRange.pastDays and DateRange.calendarUnit with a fake "now" without depending on the hour of day the test is
 	// run.
-	func getStartDate(withHourShift hourShift: Int, now: Date) -> Date {
+	func getStartDate(now: Date) -> Date {
 		switch (self) {
-		case .custom(let startDate, _):
-			return startDate.drp_settingHour(to: hourShift)!
-		case .pastDays(let pastDays):
+		case let .custom(startDate, _, _):
+			// Hour shift doesn't need to be taken into account with custom ranges.
+			return startDate.drp_settingHour(to: 0)!
+		case let .pastDays(pastDays, hourShift):
 			return now
 				.drp_beginning(of: .day, hourShift: hourShift)!
 				.drp_adding(-pastDays, component: .day)!
-		case .calendarUnit(let offset, let unit):
+				.drp_settingHour(to: 0)!
+		case let .calendarUnit(offset, unit, hourShift):
 			return now
 				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
 				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+				.drp_settingHour(to: 0)!
 		}
 	}
 	
-	func getEndDate(withHourShift hourShift: Int, now: Date) -> Date {
+	func getEndDate(now: Date) -> Date {
 		switch (self) {
-		case .custom(_, let endDate):
+		case let .custom(_, endDate, _):
+			// Hour shift doesn't need to be taken into account with custom ranges.
 			return endDate
-				.drp_settingHour(to: hourShift)!
+				.drp_settingHour(to: 0)!
 				.drp_adding(1, component: .day)!
-		case .pastDays(_):
+				.addingTimeInterval(-1)
+		case let .pastDays(_, hourShift):
 			return now
 				.drp_end(of: .day, hourShift: hourShift)!
-		case .calendarUnit(let offset, let unit):
+				.drp_settingHour(to: 0)!
+				.addingTimeInterval(-1)
+		case let .calendarUnit(offset, unit, hourShift):
 			return now
 				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
 				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+				.drp_settingHour(to: 0)!
+				.addingTimeInterval(-1)
 		}
-	}
-	
-	public func getStartDate(withHourShift hourShift: Int) -> Date {
-		return getStartDate(withHourShift: hourShift, now: Date())
-	}
-	
-	public func getEndDate(withHourShift hourShift: Int) -> Date {
-		return getEndDate(withHourShift: hourShift, now: Date())
 	}
 	
 	// MARK: - Display-related properties and methods
@@ -113,11 +118,11 @@ public enum DateRange: Equatable {
 		switch self {
 		case .custom:
 			return NSLocalizedString("Custom", bundle: getBundle(), comment: "Title for a custom date range.")
-		case .pastDays(let pastDays):
+		case .pastDays(let pastDays, _):
 			return String(format: NSLocalizedString(
 				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
 			              pastDays)
-		case .calendarUnit(let offset, let unit):
+		case .calendarUnit(let offset, let unit, _):
 			if offset == -1 && unit == .day {
 				return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
 			}
@@ -139,11 +144,11 @@ public enum DateRange: Equatable {
 	// A slightly shortened variant of .title.
 	public var shortTitle: String? {
 		switch self {
-		case .pastDays(let pastDays):
+		case .pastDays(let pastDays, _):
 			return String(format: NSLocalizedString(
 				"%d Days", bundle: getBundle(), comment: "Shorthand title for a date range spanning the past %d days."),
 			              pastDays)
-		case .calendarUnit(let offset, let unit):
+		case .calendarUnit(let offset, let unit, _):
 			if offset == -1 && unit == .day { return self.title }
 			if offset != 0 { return self.title }
 			
@@ -165,16 +170,17 @@ public enum DateRange: Equatable {
 	public func dateRangeDescription(withFormatter dateFormatter: DateFormatter) -> String {
 		switch self {
 		case .custom: break
-		case .calendarUnit(let offset, let unit) where unit == .month && offset != 0:
+		case .calendarUnit(let offset, let unit, _) where unit == .month && offset != 0:
 			// Special case: A month, but not the current one. E.g. "October 2015".
 			let monthDayFormat = DateFormatter.dateFormat(fromTemplate: "MMMM y", options:0, locale: Locale.current)
 			let fullMonthDateFormatter = DateFormatter()
 			fullMonthDateFormatter.timeStyle = .none
 			fullMonthDateFormatter.dateFormat = monthDayFormat
-			return fullMonthDateFormatter.string(from: endDate)
+			return fullMonthDateFormatter.string(from: startDate)
 		case .pastDays: fallthrough
 		case .calendarUnit: if let title = title { return title }
 		}
+		
 		if startDate.drp_beginning(ofCalendarUnit: .day) == endDate.drp_beginning(ofCalendarUnit: .day) {
 			return dateFormatter.string(from: endDate)
 		}
@@ -198,15 +204,16 @@ public enum DateRange: Equatable {
 			let dayDifference = endDate.drp_daysSince(startDate) + 1
 			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
 			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
-			if newEndDate == NSDate().drp_end(ofCalendarUnit: .day)! as Date {
-				if dayDifference == 1 {
-					return .calendarUnit(0, .day) // Today
+			let todayRange = DateRange.calendarUnit(0, .day, hourShift: self.hourShift)
+			if newEndDate == todayRange.endDate {
+				if newStartDate == todayRange.startDate {
+					return todayRange
 				}
-				return .pastDays(dayDifference - 1)
+				return .pastDays(dayDifference - 1, hourShift: self.hourShift)
 			}
-			return .custom(newStartDate, newEndDate)
-		case .calendarUnit(let offset, let unit):
-			return .calendarUnit(offset + steps, unit)
+			return .custom(newStartDate, newEndDate, hourShift: self.hourShift)
+		case let .calendarUnit(offset, unit, hourShift):
+			return .calendarUnit(offset + steps, unit, hourShift: hourShift)
 		}
 	}
 	
@@ -222,7 +229,7 @@ public enum DateRange: Equatable {
 			adjustedEndDate = (maxDate as NSDate).earlierDate(adjustedEndDate)
 		}
 		if startDate != adjustedStartDate || endDate != adjustedEndDate {
-			return .custom(adjustedStartDate, adjustedEndDate)
+			return .custom(adjustedStartDate, adjustedEndDate, hourShift: self.hourShift)
 		}
 		
 		return self
@@ -233,17 +240,20 @@ public enum DateRange: Equatable {
 		let data = NSMutableData()
 		let archiver = NSKeyedArchiver(forWritingWith: data)
 		switch self {
-		case .custom(let startDate, let endDate):
+		case let .custom(startDate, endDate, hourShift):
 			archiver.encode("Custom", forKey: "case")
 			archiver.encode(startDate, forKey: "startDate")
 			archiver.encode(endDate, forKey: "endDate")
-		case .pastDays(let pastDays):
+			archiver.encode(hourShift, forKey: "hourShift")
+		case let .pastDays(pastDays, hourShift):
 			archiver.encode("PastDays", forKey: "case")
 			archiver.encode(pastDays, forKey: "pastDays")
-		case .calendarUnit(let offset, let unit):
+			archiver.encode(hourShift, forKey: "hourShift")
+		case let .calendarUnit(offset, unit, hourShift):
 			archiver.encode("CalendarUnit", forKey: "case")
 			archiver.encode(offset, forKey: "offset")
 			archiver.encode(Int(unit.rawValue), forKey: "unit")
+			archiver.encode(hourShift, forKey: "hourShift")
 		}
 		archiver.finishEncoding()
 		return data as Data
@@ -256,14 +266,18 @@ public enum DateRange: Equatable {
 		case "Custom":
 			guard let startDate = unarchiver.decodeObject(forKey: "startDate") as? Date else { return nil }
 			guard let endDate = unarchiver.decodeObject(forKey: "endDate") as? Date else { return nil }
-			return custom(startDate, endDate)
+			return custom(startDate, endDate,
+			              hourShift: unarchiver.decodeInteger(forKey: "hourShift"))
 		case "PastDays":
 			if !unarchiver.containsValue(forKey: "pastDays") { return nil }
-			return pastDays(unarchiver.decodeInteger(forKey: "pastDays"))
+			return pastDays(unarchiver.decodeInteger(forKey: "pastDays"),
+			                hourShift: unarchiver.decodeInteger(forKey: "hourShift"))
 		case "CalendarUnit":
 			if !unarchiver.containsValue(forKey: "offset") { return nil }
 			if !unarchiver.containsValue(forKey: "unit") { return nil }
-			return calendarUnit(unarchiver.decodeInteger(forKey: "offset"), NSCalendar.Unit(rawValue: UInt(unarchiver.decodeInteger(forKey: "unit"))))
+			return calendarUnit(unarchiver.decodeInteger(forKey: "offset"),
+			                    NSCalendar.Unit(rawValue: UInt(unarchiver.decodeInteger(forKey: "unit"))),
+			                    hourShift: unarchiver.decodeInteger(forKey: "hourShift"))
 		default:
 			return nil
 		}
@@ -274,10 +288,10 @@ public func ==(lhs: DateRange, rhs: DateRange) -> Bool {
 	switch (lhs, rhs) {
 	case (.custom, .custom):
 		return lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate
-	case (.pastDays(let ld), .pastDays(let rd)):
-		return ld == rd
-	case (.calendarUnit(let lo, let lu), .calendarUnit(let ro, let ru)):
-		return lo == ro && lu == ru
+	case let (.pastDays(ld, lHourShift), .pastDays(rd, rHourShift)):
+		return ld == rd && lHourShift == rHourShift
+	case let (.calendarUnit(lo, lu, lHourShift), .calendarUnit(ro, ru, rHourShift)):
+		return lo == ro && lu == ru && lHourShift == rHourShift
 	default:
 		return false
 	}
