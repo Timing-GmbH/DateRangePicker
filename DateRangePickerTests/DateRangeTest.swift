@@ -149,7 +149,7 @@ class DateRangeTest: XCTestCase {
 		                                hourShift: 0),
 		               DateRange.pastDays(30, hourShift: 0).moveBy(steps: -2))
 		
-		//! TEST: Test moveBy with hour shifts. 
+		//! TEST: Test moveBy with hour shifts.
 		/*XCTAssertEqual(DateRange.custom(Date().drp_addCalendarUnits(-92, unit: .day)!,
 		                                Date().drp_addCalendarUnits(-62, unit: .day)!,
 		                                hourShift: 23),
