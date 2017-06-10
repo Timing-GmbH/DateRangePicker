@@ -95,7 +95,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 		}
 		
 		set {
-			dateRange = DateRange.custom(newValue, endDate, hourShift: self.hourShift)
+			dateRange = DateRange.custom(newValue, max(newValue, endDate), hourShift: self.hourShift)
 		}
 	}
 	open dynamic var endDate: Date {
@@ -104,7 +104,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 		}
 		
 		set {
-			dateRange = DateRange.custom(startDate, newValue, hourShift: self.hourShift)
+			dateRange = DateRange.custom(min(newValue, startDate), newValue, hourShift: self.hourShift)
 		}
 	}
 	
