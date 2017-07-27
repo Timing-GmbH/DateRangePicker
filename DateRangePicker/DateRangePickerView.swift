@@ -205,7 +205,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	// MARK: - Methods
 	open func makePopover() -> NSPopover {
 		let popover = NSPopover()
-		popover.behavior = .semitransient
+		popover.behavior = .transient
 		return popover
 	}
 	
