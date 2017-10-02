@@ -32,6 +32,20 @@ extension NSCalendar.Unit {
 	}
 }
 
+extension Date {
+	// TR-961: This property tries to avoid a crash when force-unwrapping `drp_settingHour(to: 0)` if there is no
+	// 0:00:00, e.g. due to a weird DST switch (e.g. Iran and Brazil switch DST at 0:00).
+	//! TODO(TR-961): Use this (and similar approaches) on more occasions.
+	var dayStart: Date {
+		for i in 0..<23 {
+			if let hour = self.drp_settingHour(to: i) {
+				return hour
+			}
+		}
+		return self.drp_settingHour(to: 23)!
+	}
+}
+
 public enum DateRange: Equatable {
 	case custom(Date, Date, hourShift: Int)
 	case pastDays(Int, hourShift: Int)
@@ -73,17 +87,17 @@ public enum DateRange: Equatable {
 		switch (self) {
 		case let .custom(startDate, _, _):
 			// Hour shift doesn't need to be taken into account with custom ranges.
-			return startDate.drp_settingHour(to: 0)!
+			return startDate.dayStart
 		case let .pastDays(pastDays, hourShift):
 			return now
 				.drp_beginning(of: .day, hourShift: hourShift)!
 				.drp_adding(-pastDays, component: .day)!
-				.drp_settingHour(to: 0)!
+				.dayStart
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
 				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
 				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
-				.drp_settingHour(to: 0)!
+				.dayStart
 		}
 	}
 	
@@ -92,19 +106,19 @@ public enum DateRange: Equatable {
 		case let .custom(_, endDate, _):
 			// Hour shift doesn't need to be taken into account with custom ranges.
 			return endDate
-				.drp_settingHour(to: 0)!
+				.dayStart
 				.drp_adding(1, component: .day)!
 				.addingTimeInterval(-1)
 		case let .pastDays(_, hourShift):
 			return now
 				.drp_end(of: .day, hourShift: hourShift)!
-				.drp_settingHour(to: 0)!
+				.dayStart
 				.addingTimeInterval(-1)
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
 				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
 				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
-				.drp_settingHour(to: 0)!
+				.dayStart
 				.addingTimeInterval(-1)
 		}
 	}
