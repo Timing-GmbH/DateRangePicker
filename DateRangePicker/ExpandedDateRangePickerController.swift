@@ -66,7 +66,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 	}
 	@IBOutlet var presetRangeSelector: NSPopUpButton?
 	
-	open dynamic var hourShift: Int = 0 {
+	@objc open dynamic var hourShift: Int = 0 {
 		didSet { dateRange.hourShift = hourShift }
 	}
 	
@@ -89,7 +89,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 	}
 	
 	// These are needed for the bindings with NSDatePicker
-	open dynamic var startDate: Date {
+	@objc open dynamic var startDate: Date {
 		get {
 			return dateRange.startDate
 		}
@@ -98,7 +98,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 			dateRange = DateRange.custom(newValue, max(newValue, endDate), hourShift: self.hourShift)
 		}
 	}
-	open dynamic var endDate: Date {
+	@objc open dynamic var endDate: Date {
 		get {
 			return dateRange.endDate
 		}
@@ -109,13 +109,13 @@ open class ExpandedDateRangePickerController: NSViewController {
 	}
 	
 	// Can be used for restricting the selectable dates to a specific range.
-	open dynamic var minDate: Date? {
+	@objc open dynamic var minDate: Date? {
 		didSet {
 			// Enforces the new date range restriction
 			dateRange = _dateRange
 		}
 	}
-	open dynamic var maxDate: Date? {
+	@objc open dynamic var maxDate: Date? {
 		didSet {
 			// Enforces the new date range restriction
 			dateRange = _dateRange
@@ -127,8 +127,8 @@ open class ExpandedDateRangePickerController: NSViewController {
 	public init(dateRange: DateRange, hourShift: Int) {
 		_dateRange = dateRange
 		self.hourShift = hourShift
-		super.init(nibName: "ExpandedDateRangePickerController",
-			bundle: Bundle(for: ExpandedDateRangePickerController.self))!
+		super.init(nibName: NSNib.Name(rawValue: "ExpandedDateRangePickerController"),
+			bundle: Bundle(for: ExpandedDateRangePickerController.self))
 	}
 	
 	public required init?(coder: NSCoder) {
