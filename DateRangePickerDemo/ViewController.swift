@@ -24,7 +24,7 @@ class ViewController: NSViewController {
 		
 		restrictedToThisYearPickerView?.minDate = Date().drp_beginning(ofCalendarUnit: .year)
 		restrictedToThisYearPickerView?.maxDate = Date().drp_end(ofCalendarUnit: .year)
-		restrictedToThisYearPickerView?.dateRange = .calendarUnit(0, .month)
+		restrictedToThisYearPickerView?.dateRange = .calendarUnit(0, .month, hourShift: 0)
 	}
 	
 	override func viewDidAppear() {
