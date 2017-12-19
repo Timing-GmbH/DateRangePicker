@@ -90,14 +90,29 @@ public enum DateRange: Equatable {
 			return startDate.dayStart
 		case let .pastDays(pastDays, hourShift):
 			return now
-				.drp_beginning(of: .day, hourShift: hourShift)!
-				.drp_adding(-pastDays, component: .day)!
+				.drp_beginning(of: .day, hourShift: hourShift)?
+				.drp_adding(-pastDays, component: .day)?
 				.dayStart
+				// This might reduce the likelihood of crashes due to trying to forcibly unwrap nil (also below).
+				?? now
+					.drp_adding(-pastDays, component: .day)?
+					.drp_beginning(of: .day, hourShift: hourShift)?
+					.dayStart
+				?? now
+					.drp_adding(-pastDays, component: .day)!
+					.dayStart
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
-				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
-				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
+				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
 				.dayStart
+				?? now
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
+					.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
+					.dayStart
+				?? now
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+					.dayStart
 		}
 	}
 	
@@ -107,19 +122,32 @@ public enum DateRange: Equatable {
 			// Hour shift doesn't need to be taken into account with custom ranges.
 			return endDate
 				.dayStart
-				.drp_adding(1, component: .day)!
+				.drp_adding(1, component: .day)?
 				.addingTimeInterval(-1)
+				?? endDate
+					.drp_adding(1, component: .day)!
+					.dayStart
+					.addingTimeInterval(-1)
 		case let .pastDays(_, hourShift):
 			return now
-				.drp_end(of: .day, hourShift: hourShift)!
+				.drp_end(of: .day, hourShift: hourShift)?
 				.dayStart
 				.addingTimeInterval(-1)
+				?? now
+					.dayStart
+					.drp_end(of: .day, hourShift: hourShift)!
+					.addingTimeInterval(-1)
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
-				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
-				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
+				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
 				.dayStart
 				.addingTimeInterval(-1)
+				?? now
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+					.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
+					.dayStart
+					.addingTimeInterval(-1)
 		}
 	}
 	
