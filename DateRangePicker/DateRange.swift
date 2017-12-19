@@ -137,19 +137,26 @@ public enum DateRange: Equatable {
 				"Past %d Days", bundle: getBundle(), comment: "Title for a date range spanning the past %d days."),
 			              pastDays)
 		case .calendarUnit(let offset, let unit, _):
-			if offset == -1 && unit == .day {
-				return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
+			if offset == -1 {
+				switch unit {
+				case .day: return NSLocalizedString("Yesterday", bundle: getBundle(), comment: "Date Range title for the previous day.")
+				case .weekOfYear: return NSLocalizedString("Last Week", bundle: getBundle(), comment: "Date Range title for last week.")
+				case .month: return NSLocalizedString("Last Month", bundle: getBundle(), comment: "Date Range title for last month.")
+				case .quarter: return NSLocalizedString("Last Quarter", bundle: getBundle(), comment: "Date Range title for last quarter.")
+				case .year: return NSLocalizedString("Last Year", bundle: getBundle(), comment: "Date Range title for last year.")
+				default: break
+				}
 			}
 			
-			if offset != 0 { return nil } // Not yet supported/needed.
+			guard offset == 0
+				else { return nil } // Not yet supported/needed.
 			
 			switch unit {
-			// Seems like OptionSetTypes do not support enum-style case .WeekOfYear: (yet?)...
-			case _ where unit == .day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
-			case _ where unit == .weekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
-			case _ where unit == .month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
-			case _ where unit == .quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
-			case _ where unit == .year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
+			case .day: return NSLocalizedString("Today", bundle: getBundle(), comment: "Date Range title for the current day.")
+			case .weekOfYear: return NSLocalizedString("This Week", bundle: getBundle(), comment: "Date Range title for this week.")
+			case .month: return NSLocalizedString("This Month", bundle: getBundle(), comment: "Date Range title for this month.")
+			case .quarter: return NSLocalizedString("This Quarter", bundle: getBundle(), comment: "Date Range title for this quarter.")
+			case .year: return NSLocalizedString("This Year", bundle: getBundle(), comment: "Date Range title for this year.")
 			default: return nil // Not yet supported/needed.
 			}
 		}
@@ -163,14 +170,13 @@ public enum DateRange: Equatable {
 				"%d Days", bundle: getBundle(), comment: "Shorthand title for a date range spanning the past %d days."),
 			              pastDays)
 		case .calendarUnit(let offset, let unit, _):
-			if offset == -1 && unit == .day { return self.title }
 			if offset != 0 { return self.title }
 			
 			switch unit {
-			case _ where unit == .weekOfYear: return NSLocalizedString("Week", bundle: getBundle(), comment: "Date Range short title for this week.")
-			case _ where unit == .month: return NSLocalizedString("Month", bundle: getBundle(), comment: "Date Range short title for this month.")
-			case _ where unit == .quarter: return NSLocalizedString("Quarter", bundle: getBundle(), comment: "Date Range short title for this quarter.")
-			case _ where unit == .year: return NSLocalizedString("Year", bundle: getBundle(), comment: "Date Range short title for this year.")
+			case .weekOfYear: return NSLocalizedString("Week", bundle: getBundle(), comment: "Date Range short title for this week.")
+			case .month: return NSLocalizedString("Month", bundle: getBundle(), comment: "Date Range short title for this month.")
+			case .quarter: return NSLocalizedString("Quarter", bundle: getBundle(), comment: "Date Range short title for this quarter.")
+			case .year: return NSLocalizedString("Year", bundle: getBundle(), comment: "Date Range short title for this year.")
 			default: return self.title
 			}
 		case .custom: return self.title

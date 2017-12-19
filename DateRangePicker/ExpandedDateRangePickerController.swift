@@ -57,11 +57,14 @@ open class ExpandedDateRangePickerController: NSViewController {
 			.pastDays(365, hourShift: self.hourShift),
 			nil,
 			.calendarUnit(0, .day, hourShift: self.hourShift),
-			.calendarUnit(-1, .day, hourShift: self.hourShift),
 			.calendarUnit(0, .weekOfYear, hourShift: self.hourShift),
 			.calendarUnit(0, .month, hourShift: self.hourShift),
 			.calendarUnit(0, .quarter, hourShift: self.hourShift),
-			.calendarUnit(0, .year, hourShift: self.hourShift)
+			.calendarUnit(0, .year, hourShift: self.hourShift),
+			nil,
+			.calendarUnit(-1, .day, hourShift: self.hourShift),
+			.calendarUnit(-1, .weekOfYear, hourShift: self.hourShift),
+			.calendarUnit(-1, .month, hourShift: self.hourShift)
 		]
 	}
 	@IBOutlet var presetRangeSelector: NSPopUpButton?

@@ -2,6 +2,10 @@
 "Past %d Days" = "Letzten %d Tage";
 "%d Days" = "%d Tage";
 "Yesterday" = "Gestern";
+"Last Week" = "Letzte Woche";
+"Last Month" = "Letzter Monat";
+"Last Quarter" = "Letztes Quartal";
+"Last Year" = "Letztes Jahr";
 "Today" = "Heute";
 "This Week" = "Diese Woche";
 "This Month" = "Dieser Monat";
