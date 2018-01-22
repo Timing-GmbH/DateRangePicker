@@ -37,12 +37,14 @@ extension Date {
 	// 0:00:00, e.g. due to a weird DST switch (e.g. Iran and Brazil switch DST at 0:00).
 	//! TODO(TR-961): Use this (and similar approaches) on more occasions.
 	var dayStart: Date {
-		for i in 0..<23 {
+		for i in 0...23 {
 			if let hour = self.drp_settingHour(to: i) {
 				return hour
 			}
 		}
-		return self.drp_settingHour(to: 23)!
+		globalDateErrorLogger?.logDayStartFailed(for: self, calendar: Calendar.current)
+		let calendar = Calendar.current
+		fatalError("error fetching dayStart for: date='\(self)' timeIntervalSince1970='\(self.timeIntervalSince1970)' calendar='\(calendar), \(calendar.identifier)' locale='\(Locale.current)' timeZone='\(calendar.timeZone)' abbreviation='\(calendar.timeZone.abbreviation() ?? "(nil)")' secondsFromGMT='\(calendar.timeZone.secondsFromGMT())' isDaylightSavingTime='\(calendar.timeZone.isDaylightSavingTime())' daylightSavingTimeOffset='\(calendar.timeZone.daylightSavingTimeOffset())' abbreviationForDate='\(calendar.timeZone.abbreviation(for: self) ?? "(nil)")' secondsFromGMTForDate='\(calendar.timeZone.secondsFromGMT(for: self))' isDaylightSavingTimeForDate='\(calendar.timeZone.isDaylightSavingTime(for: self))' daylightSavingTimeOffsetForDate='\(calendar.timeZone.daylightSavingTimeOffset(for: self))'")
 	}
 }
 
