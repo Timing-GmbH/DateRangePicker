@@ -217,10 +217,11 @@ public enum DateRange: Equatable {
 	// If no "pretty" description (e.g. "Past 7 Days", "This Week", "October 2015") is available,
 	// returns either a single date (if startDate.day == endDate.day) or a date range in the form of
 	// "Formatted Start Date - Formatted End Date" (e.g. "05.10.15 - 10.03.15").
-	public func dateRangeDescription(withFormatter dateFormatter: DateFormatter) -> String {
+	public func dateRangeDescription(withFormatter dateFormatter: DateFormatter,
+									 relativeDescriptionsAllowed: Bool = true) -> String {
 		switch self {
 		case .custom: break
-		case .calendarUnit(let offset, let unit, _) where unit == .month && offset != 0:
+		case .calendarUnit(let offset, let unit, _) where unit == .month && (!relativeDescriptionsAllowed || offset != 0):
 			// Special case: A month, but not the current one. E.g. "October 2015".
 			let monthDayFormat = DateFormatter.dateFormat(fromTemplate: "MMMM y", options:0, locale: Locale.current)
 			let fullMonthDateFormatter = DateFormatter()
@@ -228,7 +229,7 @@ public enum DateRange: Equatable {
 			fullMonthDateFormatter.dateFormat = monthDayFormat
 			return fullMonthDateFormatter.string(from: startDate)
 		case .pastDays: fallthrough
-		case .calendarUnit: if let title = title { return title }
+		case .calendarUnit: if relativeDescriptionsAllowed, let title = title { return title }
 		}
 		
 		if startDate.drp_beginning(ofCalendarUnit: .day) == endDate.drp_beginning(ofCalendarUnit: .day) {
