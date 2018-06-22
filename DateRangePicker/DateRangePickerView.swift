@@ -285,7 +285,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		// Ensure that the segmented control is large enough to not be clipped.
 		if optimizeForToolbarDisplay {
 			segmentedControlFrame.size.height = 25
-			if NSScreen.main?.backingScaleFactor == 2 {
+			if self.window?.screen?.backingScaleFactor == 2 {
 				segmentedControlFrame.origin.y = -0.5
 			}
 		}
@@ -347,6 +347,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 			
 			delegate?.dateRangePickerViewDidCloseExpandedDateRangePickerController(self)
 		}
+	}
+	
+	override open func viewDidChangeBackingProperties() {
+		super.viewDidChangeBackingProperties()
+		updateSegmentedControlFrame()
 	}
 }
 
