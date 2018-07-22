@@ -23,7 +23,7 @@ public protocol DateRangePickerViewDelegateSwiftOnly: DateRangePickerViewDelegat
 @IBDesignable
 open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDelegate, NSPopoverDelegate {
 	fileprivate let segmentedControl: NSSegmentedControl
-	open let dateFormatter = DateFormatter()
+	public let dateFormatter = DateFormatter()
 	fileprivate var dateRangePickerController: ExpandedDateRangePickerController?
 	
 	open weak var delegate: DateRangePickerViewDelegate?
