@@ -364,8 +364,8 @@ extension DateRangePickerView: NSTouchBarDelegate {
 	fileprivate func makeTouchBarItem() -> NSTouchBarItem {
 		let segment = NSSegmentedControl(labels: ["", "", ""], trackingMode: .momentary,
 		                                 target: self, action: #selector(DateRangePickerView.touchBarSegmentPressed(_:)))
-		segment.setImage(NSImage(named: .touchBarGoBackTemplate)!, forSegment: 0)
-		segment.setImage(NSImage(named: .touchBarGoForwardTemplate)!, forSegment: 2)
+		segment.setImage(NSImage(named: NSImage.touchBarGoBackTemplateName)!, forSegment: 0)
+		segment.setImage(NSImage(named: NSImage.touchBarGoForwardTemplateName)!, forSegment: 2)
 		segment.setWidth(30, forSegment: 0)
 		segment.setWidth(250, forSegment: 1)
 		segment.setWidth(30, forSegment: 2)

@@ -130,7 +130,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 	public init(dateRange: DateRange, hourShift: Int) {
 		_dateRange = dateRange
 		self.hourShift = hourShift
-		super.init(nibName: NSNib.Name(rawValue: "ExpandedDateRangePickerController"),
+		super.init(nibName: "ExpandedDateRangePickerController",
 			bundle: Bundle(for: ExpandedDateRangePickerController.self))
 	}
 	

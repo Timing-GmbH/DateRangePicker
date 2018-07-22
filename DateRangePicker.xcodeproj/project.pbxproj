@@ -285,7 +285,7 @@
 				TargetAttributes = {
 					65F770E61BEE162A0007D80E = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0910;
+						LastSwiftMigration = 1000;
 					};
 					65F770F01BEE162A0007D80E = {
 						CreatedOnToolsVersion = 7.1;
@@ -577,7 +577,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -598,7 +598,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
