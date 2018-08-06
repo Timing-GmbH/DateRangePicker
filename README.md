@@ -1,6 +1,6 @@
 # DateRangePicker - the best (?) date range picker control for OS X
 
-(At least I don't know of any better. If you do, please tell me.)
+Developed for and used in [Timing, the automatic time/productivity tracking app for Mac](https://timingapp.com).
 
 ![The popover for customized date ranges](Screenshots/Popover.png)
 ![Some possible looks for the control](Screenshots/ControlVariants.png)
