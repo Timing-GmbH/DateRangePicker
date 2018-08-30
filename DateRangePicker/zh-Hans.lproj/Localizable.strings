@@ -1,0 +1,54 @@
+/* Shorthand title for a date range spanning the past %d days. */
+"%d Days" = "%d 天";
+
+/* Title for a custom date range. */
+"Custom" = "自定义";
+
+/* Customization label for the Date Range picker. */
+"Date Range" = "日期区间";
+
+/* Date Range title for last month. */
+"Last Month" = "上个月";
+
+/* Date Range title for last quarter. */
+"Last Quarter" = "上季度";
+
+/* Date Range title for last week. */
+"Last Week" = "上周";
+
+/* Date Range title for last year. */
+"Last Year" = "去年";
+
+/* Date Range short title for this month. */
+"Month" = "月";
+
+/* Title for a date range spanning the past %d days. */
+"Past %d Days" = "过去 %d 天";
+
+/* Date Range short title for this quarter. */
+"Quarter" = "季度";
+
+/* Date Range title for this month. */
+"This Month" = "本月";
+
+/* Date Range title for this quarter. */
+"This Quarter" = "本季度";
+
+/* Date Range title for this week. */
+"This Week" = "本周";
+
+/* Date Range title for this year. */
+"This Year" = "今年";
+
+/* Date Range title for the current day. */
+"Today" = "今天";
+
+/* Date Range short title for this week. */
+"Week" = "周";
+
+/* Date Range short title for this year. */
+"Year" = "年";
+
+/* Date Range title for the previous day. */
+"Yesterday" = "昨天";
+
