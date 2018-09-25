@@ -37,6 +37,11 @@ extension Date {
 	// 0:00:00, e.g. due to a weird DST switch (e.g. Iran and Brazil switch DST at 0:00).
 	//! TODO(TR-961): Use this (and similar approaches) on more occasions.
 	var dayStart: Date {
+		if self.timeIntervalSince1970 < 0 {
+			// This hopefully avoids a crash for "very old" dates.
+			return self
+		}
+		
 		for i in 0...23 {
 			if let hour = self.drp_settingHour(to: i) {
 				return hour
