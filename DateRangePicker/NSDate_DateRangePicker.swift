@@ -36,14 +36,17 @@ public extension Date {
 		return adjustByOneSecond ? result?.addingTimeInterval(-1) : result
 	}
 	
-	public func drp_calendarUnits(since: Date, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int {
-		let fromDate = since.drp_beginning(ofCalendarUnit: unit, calendar: calendar)!
-		let toDate = self.drp_beginning(ofCalendarUnit: unit, calendar: calendar)!
-		return ((calendar as NSCalendar).components(unit, from: fromDate, to: toDate, options: []) as NSDateComponents).value(forComponent: unit)
+	public func drp_calendarUnits(since: Date, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int? {
+		guard let fromDate = since.drp_beginning(ofCalendarUnit: unit, calendar: calendar),
+			let toDate = self.drp_beginning(ofCalendarUnit: unit, calendar: calendar)
+			else { return nil }
+		return ((calendar as NSCalendar)
+			.components(unit, from: fromDate, to: toDate, options: []) as NSDateComponents)
+			.value(forComponent: unit)
 	}
 	
 	// Returns the number of calendar days between the argument and the receiver.
-	public func drp_daysSince(_ since: Date, calendar: Calendar = Calendar.current) -> Int {
+	public func drp_daysSince(_ since: Date, calendar: Calendar = Calendar.current) -> Int? {
 		return self.drp_calendarUnits(since: since, unit: .day, calendar: calendar)
 	}
 }
@@ -140,12 +143,12 @@ public extension NSDate {
 		return (self as Date).drp_end(ofCalendarUnit: unit, calendar: calendar) as NSDate?
 	}
 	
-	public func drp_calendarUnits(since: NSDate, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int {
+	public func drp_calendarUnits(since: NSDate, unit: NSCalendar.Unit, calendar: Calendar = Calendar.current) -> Int? {
 		return (self as Date).drp_calendarUnits(since: since as Date, unit: unit, calendar: calendar)
 	}
 	
 	// Returns the number of calendar days between the argument and the receiver.
-	public func drp_daysSince(_ since: NSDate, calendar: Calendar = Calendar.current) -> Int {
+	public func drp_daysSince(_ since: NSDate, calendar: Calendar = Calendar.current) -> Int? {
 		return (self as Date).drp_daysSince(since as Date, calendar: calendar)
 	}
 }

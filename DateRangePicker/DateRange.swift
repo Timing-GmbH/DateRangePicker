@@ -106,8 +106,9 @@ public enum DateRange: Equatable {
 					.drp_beginning(of: .day, hourShift: hourShift)?
 					.dayStart
 				?? now
-					.drp_adding(-pastDays, component: .day)!
+					.drp_adding(-pastDays, component: .day)?
 					.dayStart
+				?? now
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
 				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
@@ -118,8 +119,9 @@ public enum DateRange: Equatable {
 					.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
 					.dayStart
 				?? now
-					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
 					.dayStart
+				?? now
 		}
 	}
 	
@@ -132,9 +134,10 @@ public enum DateRange: Equatable {
 				.drp_adding(1, component: .day)?
 				.addingTimeInterval(-1)
 				?? endDate
-					.drp_adding(1, component: .day)!
+					.drp_adding(1, component: .day)?
 					.dayStart
 					.addingTimeInterval(-1)
+				?? now
 		case let .pastDays(_, hourShift):
 			return now
 				.drp_end(of: .day, hourShift: hourShift)?
@@ -142,8 +145,9 @@ public enum DateRange: Equatable {
 				.addingTimeInterval(-1)
 				?? now
 					.dayStart
-					.drp_end(of: .day, hourShift: hourShift)!
+					.drp_end(of: .day, hourShift: hourShift)?
 					.addingTimeInterval(-1)
+				?? now
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
 				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
@@ -151,10 +155,11 @@ public enum DateRange: Equatable {
 				.dayStart
 				.addingTimeInterval(-1)
 				?? now
-					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)!
-					.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)!
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
+					.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
 					.dayStart
 					.addingTimeInterval(-1)
+				?? now
 		}
 	}
 	
@@ -257,9 +262,9 @@ public enum DateRange: Equatable {
 		switch self {
 		case .custom, .pastDays:
 			// Add one to the distance between start and end date so that for steps = 1, the date ranges do not overlap.
-			let dayDifference = endDate.drp_daysSince(startDate) + 1
-			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
-			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day)!
+			let dayDifference = (endDate.drp_daysSince(startDate) ?? 0) + 1
+			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day) ?? startDate
+			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day) ?? endDate
 			let todayRange = DateRange.calendarUnit(0, .day, hourShift: self.hourShift)
 			if newEndDate == todayRange.endDate {
 				if newStartDate == todayRange.startDate {
