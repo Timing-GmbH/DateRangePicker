@@ -86,7 +86,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 			self.didChangeValue(forKey: "endDate")
 			self.didChangeValue(forKey: "startDate")
 			
-			presetRangeSelector?.selectItem(at: presetRanges.index(where: { $0 == dateRange }) ?? 0)
+			presetRangeSelector?.selectItem(at: presetRanges.firstIndex(where: { $0 == dateRange }) ?? 0)
 			delegate?.expandedDateRangePickerControllerDidChangeDateRange(self)
 		}
 	}
@@ -152,7 +152,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 			}
 			menu.addItem(menuItem)
 		}
-		presetRangeSelector?.selectItem(at: presetRanges.index(where: { $0 == dateRange }) ?? 0)
+		presetRangeSelector?.selectItem(at: presetRanges.firstIndex(where: { $0 == dateRange }) ?? 0)
 	}
 	
 	@IBAction func presetRangeSelected(_ sender: NSPopUpButton) {

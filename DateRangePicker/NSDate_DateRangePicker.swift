@@ -57,6 +57,7 @@ public extension Calendar.Component {
 		case .era, .year, .month, .day, .weekday, .weekdayOrdinal, .quarter, .weekOfMonth,
 		     .weekOfYear, .yearForWeekOfYear: return true
 		case .hour, .minute, .second, .nanosecond, .calendar, .timeZone: return false
+		@unknown default: return false
 		}
 	}
 }
