@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
     s.source                = { :git => 'https://github.com/MrMage/DateRangePicker.git', :tag => 'v4.2' }
     s.requires_arc          = true
     s.frameworks            = 'AppKit', 'Foundation'
-    s.swift_version         = '4.2'
+    s.swift_versions        = ['4.2', '5']
 		
 		s.xcconfig = { 'EMBEDDED_CONTENT_CONTAINS_SWIFT' => 'YES' }
 end
