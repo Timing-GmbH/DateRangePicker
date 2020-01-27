@@ -18,6 +18,4 @@ Pod::Spec.new do |s|
     s.requires_arc          = true
     s.frameworks            = 'AppKit', 'Foundation'
     s.swift_versions        = ['4.2', '5']
-		
-		s.xcconfig = { 'EMBEDDED_CONTENT_CONTAINS_SWIFT' => 'YES' }
 end
