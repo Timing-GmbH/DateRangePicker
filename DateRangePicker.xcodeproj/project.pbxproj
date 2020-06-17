@@ -55,6 +55,7 @@
 		24601D981DCA4685002B085D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
 		24601D991DCA4685002B085D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		24601D9A1DCA4685002B085D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		501ADC48249A2AD300E98368 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		650A03A7213842E50031A1E0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ExpandedDateRangePickerController.strings"; sourceTree = "<group>"; };
 		650A03AF213842E60031A1E0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		6527FA3E1BF11E5C00E0FB5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ExpandedDateRangePickerController.xib; sourceTree = "<group>"; };
@@ -309,6 +310,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				de,
@@ -451,6 +453,7 @@
 				65F7710E1BEE16440007D80E /* Base */,
 				6527FA451BF121C100E0FB5D /* de */,
 				24601D991DCA4685002B085D /* ru */,
+				501ADC48249A2AD300E98368 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
