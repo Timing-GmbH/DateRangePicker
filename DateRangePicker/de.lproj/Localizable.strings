@@ -1,18 +1,53 @@
-"Custom" = "Eigener";
-"Past %d Days" = "Letzten %d Tage";
-"%d Days" = "%d Tage";
-"Yesterday" = "Gestern";
-"Last Week" = "Letzte Woche";
-"Last Month" = "Letzter Monat";
-"Last Quarter" = "Letztes Quartal";
-"Last Year" = "Letztes Jahr";
-"Today" = "Heute";
-"This Week" = "Diese Woche";
-"This Month" = "Dieser Monat";
-"This Quarter" = "Dieses Quartal";
-"This Year" = "Dieses Jahr";
-"Week" = "Woche";
-"Month" = "Monat";
-"Quarter" = "Quartal";
-"Year" = "Jahr";
+/* Customization label for the Date Range picker. */
 "Date Range" = "Datumsbereich";
+
+/* Date Range short title for this month. */
+"Month" = "Monat";
+
+/* Date Range short title for this quarter. */
+"Quarter" = "Quartal";
+
+/* Date Range short title for this week. */
+"Week" = "Woche";
+
+/* Date Range short title for this year. */
+"Year" = "Jahr";
+
+/* Date Range title for last month. */
+"Last Month" = "Letzter Monat";
+
+/* Date Range title for last quarter. */
+"Last Quarter" = "Letztes Quartal";
+
+/* Date Range title for last week. */
+"Last Week" = "Letzte Woche";
+
+/* Date Range title for last year. */
+"Last Year" = "Letztes Jahr";
+
+/* Date Range title for the current day. */
+"Today" = "Heute";
+
+/* Date Range title for the previous day. */
+"Yesterday" = "Gestern";
+
+/* Date Range title for this month. */
+"This Month" = "Dieser Monat";
+
+/* Date Range title for this quarter. */
+"This Quarter" = "Dieses Quartal";
+
+/* Date Range title for this week. */
+"This Week" = "Diese Woche";
+
+/* Date Range title for this year. */
+"This Year" = "Dieses Jahr";
+
+/* Shorthand title for a date range spanning the past %d days. */
+"%d Days" = "%d Tage";
+
+/* Title for a custom date range. */
+"Custom" = "Eigener";
+
+/* Title for a date range spanning the past %d days. */
+"Past %d Days" = "Letzten %d Tage";

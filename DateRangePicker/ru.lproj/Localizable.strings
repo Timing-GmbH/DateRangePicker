@@ -1,14 +1,41 @@
-"Custom" = " Произвольный";
-"Past %d Days" = "%d д. назад";
-"%d Days" = "%d д.";
-"Yesterday" = "Вчера";
-"Today" = "Сегодня";
-"This Week" = "Эта неделя";
-"This Month" = "Этот месяц";
-"This Quarter" = "Этот квартал";
-"This Year" = "Этот год";
-"Week" = "Неделя";
-"Month" = "Месяц";
-"Quarter" = "Квартал";
-"Year" = "Год";
+/* Customization label for the Date Range picker. */
 "Date Range" = "Временной интервал";
+
+/* Date Range short title for this month. */
+"Month" = "Месяц";
+
+/* Date Range short title for this quarter. */
+"Quarter" = "Квартал";
+
+/* Date Range short title for this week. */
+"Week" = "Неделя";
+
+/* Date Range short title for this year. */
+"Year" = "Год";
+
+/* Date Range title for the current day. */
+"Today" = "Сегодня";
+
+/* Date Range title for the previous day. */
+"Yesterday" = "Вчера";
+
+/* Date Range title for this month. */
+"This Month" = "Этот месяц";
+
+/* Date Range title for this quarter. */
+"This Quarter" = "Этот квартал";
+
+/* Date Range title for this week. */
+"This Week" = "Эта неделя";
+
+/* Date Range title for this year. */
+"This Year" = "Этот год";
+
+/* Shorthand title for a date range spanning the past %d days. */
+"%d Days" = "%d д.";
+
+/* Title for a custom date range. */
+"Custom" = " Произвольный";
+
+/* Title for a date range spanning the past %d days. */
+"Past %d Days" = "%d д. назад";

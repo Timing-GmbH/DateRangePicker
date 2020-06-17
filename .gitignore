@@ -5,3 +5,4 @@
 *.xcuserstate
 *.xcbkptlist
 *.xcodeproj/xcuserdata
+tmp/
