@@ -307,10 +307,9 @@
 			};
 			buildConfigurationList = 65F770E11BEE162A0007D80E /* Build configuration list for PBXProject "DateRangePicker" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 				de,
