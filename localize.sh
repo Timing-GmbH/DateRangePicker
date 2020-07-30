@@ -2,6 +2,17 @@
 
 XLIFF_PATH=./tmp/xcode-xliff-export
 
+# Sample commands to import an XLIFF file:
+#
+# ./localize.sh xliff
+# swift run ../MergeTranslations/MergeTranslationsCLI \
+#  --localization fr \
+#  --xliffDir "tmp/xcode-xliff-export/" \
+#  --extraMemoryXliffFile "/Users/daniel/Downloads/Timing-5/DateRangePickerEN.xliff/frx.xliff" \
+#  --projectPath "../DateRangePicker" \
+#  --skip "DateRangePickerDemo" \
+#  --out "./tmp/"
+
 function export_xliff {
   xcodebuild -exportLocalizations \
       -project DateRangePicker.xcodeproj \
