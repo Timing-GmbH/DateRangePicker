@@ -9,7 +9,8 @@ function export_xliff {
       -exportLanguage en \
       -exportLanguage de \
       -exportLanguage zh-Hans \
-      -exportLanguage ru
+      -exportLanguage ru \
+      -exportLanguage fr
 }
 
 function find_strings {

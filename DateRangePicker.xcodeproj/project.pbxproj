@@ -64,6 +64,8 @@
 		6527FA451BF121C100E0FB5D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationHelper.swift; sourceTree = "<group>"; };
 		659FB87A201678B20046CAD1 /* DateErrorLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateErrorLogger.swift; sourceTree = "<group>"; };
+		65A88C6E24D309BA0056D39E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
+		65A88C6F24D309BA0056D39E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		65F770E71BEE162A0007D80E /* DateRangePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DateRangePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F770EA1BEE162A0007D80E /* DateRangePicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateRangePicker.h; sourceTree = "<group>"; };
 		65F770EC1BEE162A0007D80E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				de,
 				ru,
 				"zh-Hans",
+				fr,
 			);
 			mainGroup = 65F770DD1BEE162A0007D80E;
 			productRefGroup = 65F770E81BEE162A0007D80E /* Products */;
@@ -432,6 +435,7 @@
 				6527FA401BF11E6D00E0FB5D /* de */,
 				24601D981DCA4685002B085D /* ru */,
 				650A03A7213842E50031A1E0 /* zh-Hans */,
+				65A88C6E24D309BA0056D39E /* fr */,
 			);
 			name = ExpandedDateRangePickerController.xib;
 			sourceTree = "<group>";
@@ -442,6 +446,7 @@
 				6527FA421BF11FCA00E0FB5D /* de */,
 				24601D9A1DCA4685002B085D /* ru */,
 				650A03AF213842E60031A1E0 /* zh-Hans */,
+				65A88C6F24D309BA0056D39E /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

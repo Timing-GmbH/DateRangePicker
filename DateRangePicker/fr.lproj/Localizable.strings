@@ -1,0 +1,53 @@
+/* Customization label for the Date Range picker. */
+"Date Range" = "Période";
+
+/* Date Range short title for this month. */
+"Month" = "Mois";
+
+/* Date Range short title for this quarter. */
+"Quarter" = "Trimestre";
+
+/* Date Range short title for this week. */
+"Week" = "Semaine";
+
+/* Date Range short title for this year. */
+"Year" = "Année";
+
+/* Date Range title for last month. */
+"Last Month" = "Le mois dernier";
+
+/* Date Range title for last quarter. */
+"Last Quarter" = "Le trimestre dernier";
+
+/* Date Range title for last week. */
+"Last Week" = "La semaine dernière";
+
+/* Date Range title for last year. */
+"Last Year" = "L'année dernière";
+
+/* Date Range title for the current day. */
+"Today" = "Aujourd'hui";
+
+/* Date Range title for the previous day. */
+"Yesterday" = "Hier";
+
+/* Date Range title for this month. */
+"This Month" = "Ce mois-ci";
+
+/* Date Range title for this quarter. */
+"This Quarter" = "Ce trimestre";
+
+/* Date Range title for this week. */
+"This Week" = "Cette semaine";
+
+/* Date Range title for this year. */
+"This Year" = "Cette année";
+
+/* Shorthand title for a date range spanning the past %d days. */
+"%d Days" = "%d jours";
+
+/* Title for a custom date range. */
+"Custom" = "Personnalisé";
+
+/* Title for a date range spanning the past %d days. */
+"Past %d Days" = "Les %d derniers jours";
