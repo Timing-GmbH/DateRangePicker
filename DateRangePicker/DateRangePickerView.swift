@@ -232,11 +232,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		segmentedControl.segmentCount = 3
 		if #available(OSX 11.0, *) {
 			segmentedControl.setImage(
-				NSImage(systemSymbolName: "arrowtriangle.left.fill", accessibilityDescription:
+				NSImage(systemSymbolName: "chevron.left", accessibilityDescription:
 							NSLocalizedString("Previous", bundle: getBundle(),
 											  comment: "Accessibility label for the button to go back in time.")), forSegment: 0)
 			segmentedControl.setImage(
-				NSImage(systemSymbolName: "arrowtriangle.right.fill", accessibilityDescription:
+				NSImage(systemSymbolName: "chevron.right", accessibilityDescription:
 							NSLocalizedString("Next", bundle: getBundle(),
 											  comment: "Accessibility label for the button to go forward in time.")), forSegment: 2)
 		} else {
