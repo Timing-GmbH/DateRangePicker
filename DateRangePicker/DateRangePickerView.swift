@@ -17,7 +17,7 @@ import Cocoa
 
 public protocol DateRangePickerViewDelegateSwiftOnly: DateRangePickerViewDelegate {
 	func dateRangePickerView(_ dateRangePickerView: DateRangePickerView,
-	                         descriptionFor dateRange: DateRange, formatter: DateFormatter) -> String
+							 descriptionFor dateRange: DateRange, formatter: DateFormatter) -> String
 }
 
 @IBDesignable
@@ -34,7 +34,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		get {
 			return _dateRange
 		}
-
+		
 		set {
 			var restrictedValue = newValue.restrictTo(minDate: minDate, maxDate: maxDate)
 			restrictedValue.hourShift = self.hourShift
@@ -172,7 +172,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	open func setStartDate(_ startDate: Date, endDate: Date) {
 		dateRange = .custom(startDate, endDate, hourShift: self.hourShift)
 	}
-
+	
 	@IBAction open func selectToday(_ sender: AnyObject?) {
 		self.dateRange = DateRange.calendarUnit(0, .day, hourShift: self.hourShift)
 	}
@@ -363,7 +363,7 @@ extension DateRangePickerView: NSTouchBarDelegate {
 	
 	fileprivate func makeTouchBarItem() -> NSTouchBarItem {
 		let segment = NSSegmentedControl(labels: ["", "", ""], trackingMode: .momentary,
-		                                 target: self, action: #selector(DateRangePickerView.touchBarSegmentPressed(_:)))
+										 target: self, action: #selector(DateRangePickerView.touchBarSegmentPressed(_:)))
 		segment.setImage(NSImage(named: NSImage.touchBarGoBackTemplateName)!, forSegment: 0)
 		segment.setImage(NSImage(named: NSImage.touchBarGoForwardTemplateName)!, forSegment: 2)
 		segment.setWidth(30, forSegment: 0)
@@ -376,7 +376,7 @@ extension DateRangePickerView: NSTouchBarDelegate {
 		let item = NSPopoverTouchBarItem(identifier: DateRangePickerView.touchBarItemIdentifier)
 		item.collapsedRepresentation = segment
 		item.customizationLabel = NSLocalizedString("Date Range", bundle: getBundle(),
-		                                            comment: "Customization label for the Date Range picker.")
+													comment: "Customization label for the Date Range picker.")
 		
 		item.popoverTouchBar.defaultItemIdentifiers = popoverItemDateRanges.map {
 			guard let dateRange = $0 else { return .flexibleSpace }
@@ -402,14 +402,14 @@ extension DateRangePickerView: NSTouchBarDelegate {
 			let identifierSuffix = identifier.rawValue[DateRangePickerView.popoverItemIdentifierPrefix.endIndex...]
 			// Not very efficient, but more than fast enough for our purposes.
 			guard let (itemIndex, dateRange) = (popoverItemDateRanges
-				.enumerated()
-				.first {
-					guard let dateRange = $0.1 else { return false }
-					return String(describing: dateRange) == identifierSuffix }),
-				let dateRangeTitle = dateRange?.shortTitle else { return nil }
+													.enumerated()
+													.first {
+														guard let dateRange = $0.1 else { return false }
+														return String(describing: dateRange) == identifierSuffix }),
+				  let dateRangeTitle = dateRange?.shortTitle else { return nil }
 			
 			let button = NSButton(title: dateRangeTitle,
-			                      target: self, action: #selector(DateRangePickerView.popoverItemPressed(_:)))
+								  target: self, action: #selector(DateRangePickerView.popoverItemPressed(_:)))
 			button.tag = itemIndex
 			
 			let item = NSCustomTouchBarItem(identifier: identifier)
@@ -421,7 +421,7 @@ extension DateRangePickerView: NSTouchBarDelegate {
 	
 	@objc func popoverItemPressed(_ sender: NSButton) {
 		guard sender.tag >= 0 && sender.tag < popoverItemDateRanges.count,
-			let dateRange = popoverItemDateRanges[sender.tag] else { return }
+			  let dateRange = popoverItemDateRanges[sender.tag] else { return }
 		self.dateRange = dateRange
 		touchBarItem.dismissPopover(sender)
 	}
