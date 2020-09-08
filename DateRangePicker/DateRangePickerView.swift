@@ -230,10 +230,22 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	// MARK: - Initializers
 	fileprivate func sharedInit() {
 		segmentedControl.segmentCount = 3
-		segmentedControl.setLabel("◀", forSegment: 0)
-		segmentedControl.setLabel("▶", forSegment: 2)
+		if #available(OSX 11.0, *) {
+			segmentedControl.setImage(
+				NSImage(systemSymbolName: "arrowtriangle.left.fill", accessibilityDescription:
+							NSLocalizedString("Previous", bundle: getBundle(),
+											  comment: "Accessibility label for the button to go back in time.")), forSegment: 0)
+			segmentedControl.setImage(
+				NSImage(systemSymbolName: "arrowtriangle.right.fill", accessibilityDescription:
+							NSLocalizedString("Next", bundle: getBundle(),
+											  comment: "Accessibility label for the button to go forward in time.")), forSegment: 2)
+		} else {
+			segmentedControl.setLabel("◀", forSegment: 0)
+			segmentedControl.setLabel("▶", forSegment: 2)
+		}
 		segmentedControl.action = #selector(segmentDidChange(_:))
 		segmentedControl.autoresizingMask = NSView.AutoresizingMask()
+		segmentedControl.translatesAutoresizingMaskIntoConstraints = false
 		segmentedControl.target = self
 		self.addSubview(segmentedControl)
 		
@@ -277,7 +289,13 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		// It would be nice to use Auto Layout instead, but that doesn't play nicely with views in a toolbar.
 		let sideButtonWidth: CGFloat = 22
 		// Magic number to avoid the segmented control overflowing out of its bounds.
-		let unusedControlWidth: CGFloat = 8
+		let unusedControlWidth: CGFloat
+		if #available(OSX 11.0, *) {
+			// Seems like we need a larger padding to avoid clipping on macOS 11+.
+			unusedControlWidth = 16
+		} else {
+			unusedControlWidth = 8
+		}
 		segmentedControl.setWidth(sideButtonWidth, forSegment: 0)
 		segmentedControl.setWidth(self.bounds.size.width - 2 * sideButtonWidth - unusedControlWidth, forSegment: 1)
 		segmentedControl.setWidth(sideButtonWidth, forSegment: 2)
