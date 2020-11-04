@@ -321,7 +321,12 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		case 0:
 			dateRange = dateRange.previous()
 		case 1:
-			displayExpandedDatePicker()
+			if NSEvent.modifierFlags.contains(.option) {
+				// Make option-clicking the main element immediately switch to "Today".
+				selectToday(sender)
+			} else {
+				displayExpandedDatePicker()
+			}
 		case 2:
 			dateRange = dateRange.next()
 		default:
