@@ -189,13 +189,13 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 	// MARK: - Other properties
 	@objc open var segmentStyle: NSSegmentedControl.Style {
-		get {
-			return segmentedControl.segmentStyle
-		}
+		get { return segmentedControl.segmentStyle }
+		set { segmentedControl.segmentStyle = newValue }
+	}
 
-		set {
-			segmentedControl.segmentStyle = newValue
-		}
+	@objc open override var controlSize: NSControl.ControlSize {
+		get { return segmentedControl.controlSize }
+		set { segmentedControl.controlSize = newValue }
 	}
 
 	// If true, segmented control's height will be fixed and its vertical offset adjusted
