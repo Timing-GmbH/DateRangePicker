@@ -13,66 +13,81 @@ public protocol ExpandedDateRangePickerControllerDelegate: class {
 	func expandedDateRangePickerControllerDidChangeDateRange(_ controller: ExpandedDateRangePickerController)
 }
 
-open class ExpandedDateRangePickerController: NSViewController {
-	@IBOutlet var auxiliaryViewContainer: NSView?
-	@IBOutlet var constraintHidingAuxiliaryView: NSLayoutConstraint?
-	
-	open var auxiliaryView: NSView? {
-		didSet {
-			_ = self.view  // Ensures that the view is loaded and outlets are set up.
-			
-			guard let auxiliaryViewContainer = auxiliaryViewContainer,
-				let constraintHidingAuxiliaryView = constraintHidingAuxiliaryView
-				else { return }
-			
-			for subview in auxiliaryViewContainer.subviews {
-				subview.removeFromSuperview()
-			}
-			
-			self.view.removeConstraint(constraintHidingAuxiliaryView)
-			
-			if let auxiliaryView = auxiliaryView {
-				auxiliaryView.translatesAutoresizingMaskIntoConstraints = false
-				auxiliaryViewContainer.addSubview(auxiliaryView)
-				auxiliaryViewContainer.addConstraints(NSLayoutConstraint.constraints(
-					withVisualFormat: "H:|[auxiliaryView]|", options: [], metrics: nil,
-					views: ["auxiliaryView": auxiliaryView]))
-				auxiliaryViewContainer.addConstraints(NSLayoutConstraint.constraints(
-					withVisualFormat: "V:|[auxiliaryView]|", options: [], metrics: nil,
-					views: ["auxiliaryView": auxiliaryView]))
-			} else {
-				self.view.addConstraint(constraintHidingAuxiliaryView)
-			}
-		}
+fileprivate class SolidBackgroundView: NSView {
+	var backgroundColor: NSColor?
+
+	convenience init() {
+		self.init(frame: .zero)
+		self.wantsLayer = true
 	}
+
+	convenience init(backgroundColor: NSColor) {
+		self.init(frame: .zero)
+		self.wantsLayer = true
+		self.backgroundColor = backgroundColor
+	}
+
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+		self.wantsLayer = true
+	}
+
+	required init?(coder decoder: NSCoder) {
+		super.init(coder: decoder)
+		self.wantsLayer = true
+	}
+
+	static func horizontalSeparator(backgroundColor: NSColor = .gridColor, height: CGFloat = 1) -> SolidBackgroundView {
+		let result = SolidBackgroundView(backgroundColor: backgroundColor)
+		result.translatesAutoresizingMaskIntoConstraints = false
+		result.heightAnchor.constraint(equalToConstant: height).isActive = true
+		return result
+	}
+
+	static func verticalSeparator(backgroundColor: NSColor = .gridColor, width: CGFloat = 1) -> SolidBackgroundView {
+		let result = SolidBackgroundView(backgroundColor: backgroundColor)
+		result.translatesAutoresizingMaskIntoConstraints = false
+		result.widthAnchor.constraint(equalToConstant: width).isActive = true
+		return result
+	}
+
+	override var wantsUpdateLayer: Bool { true }
+
+	override func updateLayer() {
+		self.layer?.backgroundColor = backgroundColor?.cgColor
+	}
+}
+
+open class ExpandedDateRangePickerController: NSViewController {
+	@IBOutlet var presetColumnStackView: NSStackView?
 	
-	var presetRanges: [DateRange?] {
-		return [
-			.custom(Date(), Date(), hourShift: self.hourShift),
-			nil,
-			.pastDays(7, hourShift: self.hourShift),
-			.pastDays(15, hourShift: self.hourShift),
-			.pastDays(30, hourShift: self.hourShift),
-			.pastDays(90, hourShift: self.hourShift),
-			.pastDays(365, hourShift: self.hourShift),
-			nil,
-			.calendarUnit(0, .day, hourShift: self.hourShift),
-			.calendarUnit(0, .weekOfYear, hourShift: self.hourShift),
-			.calendarUnit(0, .month, hourShift: self.hourShift),
-			.calendarUnit(0, .quarter, hourShift: self.hourShift),
-			.calendarUnit(0, .year, hourShift: self.hourShift),
-			nil,
-			.calendarUnit(-1, .day, hourShift: self.hourShift),
-			.calendarUnit(-1, .weekOfYear, hourShift: self.hourShift),
-			.calendarUnit(-1, .month, hourShift: self.hourShift)
+	var presetRanges: [[DateRange?]] {
+		[
+			[
+				.pastDays(7, hourShift: self.hourShift),
+				.pastDays(15, hourShift: self.hourShift),
+				.pastDays(30, hourShift: self.hourShift),
+				.pastDays(90, hourShift: self.hourShift),
+				.pastDays(365, hourShift: self.hourShift),
+			],
+			[
+				.calendarUnit(0, .day, hourShift: self.hourShift),
+				.calendarUnit(0, .weekOfYear, hourShift: self.hourShift),
+				.calendarUnit(0, .month, hourShift: self.hourShift),
+				.calendarUnit(0, .quarter, hourShift: self.hourShift),
+				.calendarUnit(0, .year, hourShift: self.hourShift),
+				nil,
+				.calendarUnit(-1, .day, hourShift: self.hourShift),
+				.calendarUnit(-1, .weekOfYear, hourShift: self.hourShift),
+				.calendarUnit(-1, .month, hourShift: self.hourShift),
+			]
 		]
 	}
-	@IBOutlet var presetRangeSelector: NSPopUpButton?
-	
+
 	@objc open dynamic var hourShift: Int = 0 {
 		didSet { dateRange.hourShift = hourShift }
 	}
-	
+
 	fileprivate var _dateRange: DateRange
 	open var dateRange: DateRange {
 		get {
@@ -85,12 +100,12 @@ open class ExpandedDateRangePickerController: NSViewController {
 			_dateRange = newValue.restrictTo(minDate: minDate, maxDate: maxDate)
 			self.didChangeValue(forKey: "endDate")
 			self.didChangeValue(forKey: "startDate")
-			
-			presetRangeSelector?.selectItem(at: presetRanges.firstIndex(where: { $0 == dateRange }) ?? 0)
+
+			self.updateButtonStates(selectedRange: dateRange)
 			delegate?.expandedDateRangePickerControllerDidChangeDateRange(self)
 		}
 	}
-	
+
 	// These are needed for the bindings with NSDatePicker
 	@objc open dynamic var startDate: Date {
 		get {
@@ -133,30 +148,86 @@ open class ExpandedDateRangePickerController: NSViewController {
 		super.init(nibName: "ExpandedDateRangePickerController",
 			bundle: Bundle(for: ExpandedDateRangePickerController.self))
 	}
-	
+
 	public required init?(coder: NSCoder) {
         return nil
+	}
+
+	private func updateButtonStates(selectedRange: DateRange) {
+		guard let presetColumnStackView = self.presetColumnStackView else { return }
+
+		for subview in presetColumnStackView.arrangedSubviews {
+			guard let column = subview as? NSStackView else { continue }
+			for innerSubview in column.arrangedSubviews {
+				guard let button = innerSubview as? DateRangeButton else { continue }
+				button.state = button.dateRange == selectedRange ? .on : .off
+			}
+		}
+	}
+
+	private func preparePresetColumnStackView() {
+		guard let presetColumnStackView = self.presetColumnStackView else { return }
+
+		var previousColumn: NSStackView?
+		for ranges in self.presetRanges {
+			let column = NSStackView()
+			column.alignment = .leading
+			column.orientation = .vertical
+			column.spacing = 0
+			var previousWasSpacer = false
+			for range in ranges {
+				guard let range = range,
+					  let title = range.title else {
+					previousWasSpacer = true
+					continue
+				}
+
+				let button = DateRangeButton()
+				button.title = title
+				button.bezelStyle = .inline
+				button.dateRange = range
+				button.target = self
+				button.action = #selector(presetRangeSelected(_:))
+
+				if previousWasSpacer,
+				   let previousSubview = column.subviews.last {
+					column.setCustomSpacing(8, after: previousSubview)
+					previousWasSpacer = false
+				}
+				column.addArrangedSubview(button)
+
+				column.widthAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+			}
+
+			presetColumnStackView.addArrangedSubview(column)
+			var separatorColor: NSColor?
+			if #available(OSX 10.14, *) {
+				separatorColor = NSColor(named: "DateRangePicker_separator")
+			}
+			let separator = SolidBackgroundView.verticalSeparator(
+				backgroundColor: separatorColor ?? NSColor(calibratedWhite: 0, alpha: 0.2),
+				width: 1.0 / (NSScreen.main?.backingScaleFactor ?? 1))
+			presetColumnStackView.addArrangedSubview(separator)
+			separator.heightAnchor.constraint(equalTo: presetColumnStackView.heightAnchor).isActive = true
+
+			if let previousColumn = previousColumn {
+				previousColumn.widthAnchor.constraint(equalTo: column.widthAnchor).isActive = true
+			}
+			previousColumn = column
+		}
+
+		updateButtonStates(selectedRange: self.dateRange)
 	}
 	
 	open override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		guard let menu = presetRangeSelector?.menu else { return }
-		for range in presetRanges {
-			let menuItem: NSMenuItem
-			if let range = range {
-				guard let title = range.title else { continue }
-				menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
-			} else {
-				menuItem = NSMenuItem.separator()
-			}
-			menu.addItem(menuItem)
-		}
-		presetRangeSelector?.selectItem(at: presetRanges.firstIndex(where: { $0 == dateRange }) ?? 0)
+
+		self.preparePresetColumnStackView()
 	}
 	
-	@IBAction func presetRangeSelected(_ sender: NSPopUpButton) {
-		guard let selectedRange = presetRanges[sender.indexOfSelectedItem] else { return }
+	@IBAction func presetRangeSelected(_ sender: Any?) {
+		guard let selectedRange = (sender as? DateRangeButton)?.dateRange else { return }
+
 		switch selectedRange {
 		case .custom:
 			dateRange = DateRange.custom(startDate, endDate, hourShift: self.hourShift)

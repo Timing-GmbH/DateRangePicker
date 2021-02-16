@@ -377,7 +377,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 
 	// MARK: - NSPopoverDelegate
-	open func popoverWillClose(_ notification: Notification) {
+	@objc open func popoverWillClose(_ notification: Notification) {
 		guard let popover = notification.object as? NSPopover else { return }
 		if popover.contentViewController === dateRangePickerController {
 			dateRangePickerController = nil

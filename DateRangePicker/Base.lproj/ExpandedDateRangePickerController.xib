@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ExpandedDateRangePickerController" customModule="DateRangePicker" customModuleProvider="target">
             <connections>
-                <outlet property="auxiliaryViewContainer" destination="DTa-Lg-Dpb" id="9Qj-lA-F5t"/>
-                <outlet property="constraintHidingAuxiliaryView" destination="JDU-xP-XAG" id="hYl-pv-Qyq"/>
-                <outlet property="presetRangeSelector" destination="Q5J-7O-GaA" id="qYX-YZ-R2R"/>
+                <outlet property="presetColumnStackView" destination="GDi-As-t9S" id="hmf-sI-YLX"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="326" height="260"/>
+            <rect key="frame" x="0.0" y="0.0" width="346" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GDi-As-t9S">
+                    <rect key="frame" x="10" y="0.0" width="10" height="220"/>
+                    <edgeInsets key="edgeInsets" left="0.0" right="0.0" top="20" bottom="20"/>
+                </stackView>
                 <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn">
-                    <rect key="frame" x="20" y="20" width="139" height="148"/>
+                    <rect key="frame" x="40" y="20" width="139" height="148"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="YkB-C8-NUg">
                         <font key="font" metaFont="system"/>
                         <date key="date" timeIntervalSinceReferenceDate="-595929600">
@@ -36,7 +38,7 @@
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EDu-C9-U0X">
-                    <rect key="frame" x="20" y="176" width="142" height="27"/>
+                    <rect key="frame" x="40" y="176" width="142" height="28"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="SDR-7c-yGJ">
                         <font key="font" metaFont="system"/>
                         <date key="date" timeIntervalSinceReferenceDate="-595929600">
@@ -51,7 +53,7 @@
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
-                    <rect key="frame" x="167" y="20" width="139" height="148"/>
+                    <rect key="frame" x="187" y="20" width="139" height="148"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="IA0-nd-0dU">
                         <font key="font" metaFont="system"/>
                         <date key="date" timeIntervalSinceReferenceDate="-595929600">
@@ -65,27 +67,8 @@
                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="pJ4-69-kqo"/>
                     </connections>
                 </datePicker>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q5J-7O-GaA">
-                    <rect key="frame" x="165" y="216" width="144" height="26"/>
-                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="WZK-A6-zOY">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" id="tlN-8z-Bek"/>
-                    </popUpButtonCell>
-                    <connections>
-                        <action selector="presetRangeSelected:" target="-2" id="jDR-HQ-Tgm"/>
-                    </connections>
-                </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5p6-r4-96F">
-                    <rect key="frame" x="18" y="223" width="143" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Date Range:" id="OQ9-0t-PIG">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
-                    <rect key="frame" x="167" y="176" width="142" height="27"/>
+                    <rect key="frame" x="187" y="176" width="142" height="28"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="jeJ-ON-TL7">
                         <font key="font" metaFont="system"/>
                         <date key="date" timeIntervalSinceReferenceDate="-595929600">
@@ -99,35 +82,22 @@
                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
                     </connections>
                 </datePicker>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="DTa-Lg-Dpb">
-                    <rect key="frame" x="20" y="179" width="286" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" placeholder="YES" id="wcS-JC-tZQ"/>
-                    </constraints>
-                </customView>
             </subviews>
             <constraints>
-                <constraint firstItem="EDu-C9-U0X" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" id="4NB-GK-Ip9"/>
+                <constraint firstItem="EDu-C9-U0X" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="7EG-L7-gHF"/>
+                <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="EDu-C9-U0X" secondAttribute="leading" id="7bn-FG-HvX"/>
                 <constraint firstItem="UeG-Rz-FlU" firstAttribute="top" secondItem="ajc-f3-C4T" secondAttribute="bottom" constant="8" id="BWv-nU-JL0"/>
-                <constraint firstItem="DTa-Lg-Dpb" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" priority="750" id="Ecz-6u-pUU"/>
-                <constraint firstItem="ajc-f3-C4T" firstAttribute="top" secondItem="Q5J-7O-GaA" secondAttribute="bottom" constant="20" id="JDU-xP-XAG"/>
-                <constraint firstItem="Q5J-7O-GaA" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Jt6-se-Ppy"/>
+                <constraint firstAttribute="bottom" secondItem="GDi-As-t9S" secondAttribute="bottom" id="C6t-eT-w9d"/>
+                <constraint firstAttribute="trailing" secondItem="UeG-Rz-FlU" secondAttribute="trailing" constant="20" id="NQ2-Xe-scL"/>
                 <constraint firstItem="ajc-f3-C4T" firstAttribute="baseline" secondItem="EDu-C9-U0X" secondAttribute="baseline" id="NRY-4N-iSk"/>
-                <constraint firstItem="5p6-r4-96F" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="R2x-ho-KeC"/>
-                <constraint firstItem="HSY-I2-CQn" firstAttribute="width" secondItem="5p6-r4-96F" secondAttribute="width" id="Y64-Is-AF5"/>
-                <constraint firstItem="ajc-f3-C4T" firstAttribute="top" secondItem="DTa-Lg-Dpb" secondAttribute="bottom" priority="749" constant="20" id="bHT-eu-fGF"/>
-                <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="leading" id="fhd-1W-iEn"/>
-                <constraint firstItem="DTa-Lg-Dpb" firstAttribute="trailing" secondItem="Q5J-7O-GaA" secondAttribute="trailing" priority="750" id="gau-Vb-b7H"/>
-                <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="Q5J-7O-GaA" secondAttribute="leading" id="i3S-93-85T"/>
-                <constraint firstItem="Q5J-7O-GaA" firstAttribute="leading" secondItem="5p6-r4-96F" secondAttribute="trailing" constant="8" id="iut-cc-UZi"/>
-                <constraint firstItem="UeG-Rz-FlU" firstAttribute="width" secondItem="Q5J-7O-GaA" secondAttribute="width" id="jdI-J5-xoX"/>
-                <constraint firstItem="ajc-f3-C4T" firstAttribute="leading" secondItem="Q5J-7O-GaA" secondAttribute="leading" id="kdB-GP-MJL"/>
-                <constraint firstItem="5p6-r4-96F" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="lve-xv-HI3"/>
-                <constraint firstItem="DTa-Lg-Dpb" firstAttribute="top" secondItem="Q5J-7O-GaA" secondAttribute="bottom" priority="750" constant="20" id="mhV-Ld-NhE"/>
+                <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="GDi-As-t9S" secondAttribute="trailing" constant="20" id="P76-qj-gc5"/>
+                <constraint firstItem="GDi-As-t9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="RaM-l1-r0R"/>
+                <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="HSY-I2-CQn" secondAttribute="trailing" constant="8" symbolic="YES" id="S2B-tb-1VW"/>
+                <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="ajc-f3-C4T" secondAttribute="leading" id="WF4-G8-lL6"/>
+                <constraint firstItem="EDu-C9-U0X" firstAttribute="width" secondItem="HSY-I2-CQn" secondAttribute="width" id="dVB-ym-dh7"/>
+                <constraint firstItem="GDi-As-t9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="dge-Dd-b7A"/>
+                <constraint firstItem="ajc-f3-C4T" firstAttribute="width" secondItem="UeG-Rz-FlU" secondAttribute="width" id="hsN-gC-jsQ"/>
                 <constraint firstAttribute="bottom" secondItem="HSY-I2-CQn" secondAttribute="bottom" constant="20" id="nd1-UO-LzX"/>
-                <constraint firstItem="EDu-C9-U0X" firstAttribute="width" secondItem="5p6-r4-96F" secondAttribute="width" id="owt-VA-YjF"/>
-                <constraint firstItem="ajc-f3-C4T" firstAttribute="width" secondItem="Q5J-7O-GaA" secondAttribute="width" id="p5L-3C-Fby"/>
-                <constraint firstAttribute="trailing" secondItem="Q5J-7O-GaA" secondAttribute="trailing" constant="20" id="rRY-MR-Yb3"/>
                 <constraint firstItem="HSY-I2-CQn" firstAttribute="top" secondItem="EDu-C9-U0X" secondAttribute="bottom" constant="8" id="tpp-r7-aA4"/>
             </constraints>
             <point key="canvasLocation" x="404" y="516"/>

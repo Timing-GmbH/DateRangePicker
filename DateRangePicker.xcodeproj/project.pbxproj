@@ -10,7 +10,9 @@
 		6527FA3D1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6527FA3F1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib */; };
 		6527FA431BF11FCA00E0FB5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6527FA411BF11FCA00E0FB5D /* Localizable.strings */; };
 		6527FA471BF1230900E0FB5D /* LocalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */; };
+		656528A925D2E2EF000410EE /* DateRangeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656528A825D2E2EF000410EE /* DateRangeButton.swift */; };
 		659FB87B201678B20046CAD1 /* DateErrorLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659FB87A201678B20046CAD1 /* DateErrorLogger.swift */; };
+		65C918A525DBDF16009FAACB /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C918A425DBDF16009FAACB /* Colors.xcassets */; };
 		65F770EB1BEE162A0007D80E /* DateRangePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 65F770EA1BEE162A0007D80E /* DateRangePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		65F770F21BEE162A0007D80E /* DateRangePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F770E71BEE162A0007D80E /* DateRangePicker.framework */; };
 		65F771081BEE16440007D80E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F771071BEE16440007D80E /* AppDelegate.swift */; };
@@ -63,9 +65,11 @@
 		6527FA421BF11FCA00E0FB5D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6527FA451BF121C100E0FB5D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationHelper.swift; sourceTree = "<group>"; };
+		656528A825D2E2EF000410EE /* DateRangeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeButton.swift; sourceTree = "<group>"; };
 		659FB87A201678B20046CAD1 /* DateErrorLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateErrorLogger.swift; sourceTree = "<group>"; };
 		65A88C6E24D309BA0056D39E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
 		65A88C6F24D309BA0056D39E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		65C918A425DBDF16009FAACB /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		65F770E71BEE162A0007D80E /* DateRangePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DateRangePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F770EA1BEE162A0007D80E /* DateRangePicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateRangePicker.h; sourceTree = "<group>"; };
 		65F770EC1BEE162A0007D80E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -153,10 +157,12 @@
 				65F771221BEE16760007D80E /* DateRangePickerView.swift */,
 				65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */,
 				6527FA3F1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib */,
+				656528A825D2E2EF000410EE /* DateRangeButton.swift */,
 				65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */,
 				6527FA411BF11FCA00E0FB5D /* Localizable.strings */,
 				6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */,
 				659FB87A201678B20046CAD1 /* DateErrorLogger.swift */,
+				65C918A425DBDF16009FAACB /* Colors.xcassets */,
 			);
 			path = DateRangePicker;
 			sourceTree = "<group>";
@@ -337,6 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65C918A525DBDF16009FAACB /* Colors.xcassets in Resources */,
 				6527FA3D1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib in Resources */,
 				6527FA431BF11FCA00E0FB5D /* Localizable.strings in Resources */,
 			);
@@ -375,6 +382,7 @@
 				65F7714A1BEE4B140007D80E /* NSDate_DateRangePicker.swift in Sources */,
 				65F771231BEE16760007D80E /* DateRangePickerView.swift in Sources */,
 				65F7715A1BEE79A30007D80E /* DateRange.swift in Sources */,
+				656528A925D2E2EF000410EE /* DateRangeButton.swift in Sources */,
 				65F7714F1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift in Sources */,
 				6527FA471BF1230900E0FB5D /* LocalizationHelper.swift in Sources */,
 				659FB87B201678B20046CAD1 /* DateErrorLogger.swift in Sources */,
@@ -589,7 +597,7 @@
 				INFOPLIST_FILE = DateRangePicker/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -609,7 +617,7 @@
 				INFOPLIST_FILE = DateRangePicker/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -647,7 +655,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = DateRangePickerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePickerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -661,7 +669,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = DateRangePickerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = de.danielalm.DateRangePickerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
