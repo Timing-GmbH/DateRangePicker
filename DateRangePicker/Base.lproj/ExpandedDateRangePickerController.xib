@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ExpandedDateRangePickerController" customModule="DateRangePicker" customModuleProvider="target">
             <connections>
                 <outlet property="presetColumnStackView" destination="GDi-As-t9S" id="hmf-sI-YLX"/>
+                <outlet property="rhsStackView" destination="lyK-YL-YS5" id="4NL-nX-Dsr"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -19,98 +20,112 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GDi-As-t9S">
-                    <rect key="frame" x="10" y="0.0" width="10" height="220"/>
+                    <rect key="frame" x="10" y="0.0" width="0.0" height="220"/>
                     <edgeInsets key="edgeInsets" left="0.0" right="0.0" top="20" bottom="20"/>
-                </stackView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="b1y-f2-GFG">
-                    <rect key="frame" x="40" y="20" width="286" height="180"/>
-                    <subviews>
-                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
-                            <rect key="frame" x="147" y="156" width="142" height="28"/>
-                            <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="jeJ-ON-TL7">
-                                <font key="font" metaFont="system"/>
-                                <date key="date" timeIntervalSinceReferenceDate="-595929600">
-                                    <!--1982-02-12 16:00:00 +0000-->
-                                </date>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            </datePickerCell>
-                            <connections>
-                                <binding destination="-2" name="value" keyPath="endDate" previousBinding="z8H-Ip-gnA" id="e2i-GH-Vc9"/>
-                                <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
-                            </connections>
-                        </datePicker>
-                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn">
-                            <rect key="frame" x="0.0" y="0.0" width="139" height="148"/>
-                            <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="YkB-C8-NUg">
-                                <font key="font" metaFont="system"/>
-                                <date key="date" timeIntervalSinceReferenceDate="-595929600">
-                                    <!--1982-02-12 16:00:00 +0000-->
-                                </date>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            </datePickerCell>
-                            <connections>
-                                <binding destination="-2" name="minValue" keyPath="minDate" id="f4g-Ub-j6q"/>
-                                <binding destination="-2" name="value" keyPath="startDate" id="m8C-aT-mc7"/>
-                            </connections>
-                        </datePicker>
-                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
-                            <rect key="frame" x="147" y="0.0" width="139" height="148"/>
-                            <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="IA0-nd-0dU">
-                                <font key="font" metaFont="system"/>
-                                <date key="date" timeIntervalSinceReferenceDate="-595929600">
-                                    <!--1982-02-12 16:00:00 +0000-->
-                                </date>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            </datePickerCell>
-                            <connections>
-                                <binding destination="-2" name="value" keyPath="endDate" previousBinding="pJ4-69-kqo" id="yIX-Tl-BCJ"/>
-                                <binding destination="-2" name="maxValue" keyPath="maxDate" id="pJ4-69-kqo"/>
-                            </connections>
-                        </datePicker>
-                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EDu-C9-U0X">
-                            <rect key="frame" x="0.0" y="156" width="142" height="28"/>
-                            <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="SDR-7c-yGJ">
-                                <font key="font" metaFont="system"/>
-                                <date key="date" timeIntervalSinceReferenceDate="-595929600">
-                                    <!--1982-02-12 16:00:00 +0000-->
-                                </date>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            </datePickerCell>
-                            <connections>
-                                <binding destination="-2" name="minValue" keyPath="minDate" id="dFo-hb-vaH"/>
-                                <binding destination="-2" name="value" keyPath="startDate" id="Hke-7T-T3V"/>
-                            </connections>
-                        </datePicker>
-                    </subviews>
                     <constraints>
-                        <constraint firstItem="EDu-C9-U0X" firstAttribute="width" secondItem="HSY-I2-CQn" secondAttribute="width" id="1hz-J8-0vh"/>
-                        <constraint firstItem="EDu-C9-U0X" firstAttribute="leading" secondItem="b1y-f2-GFG" secondAttribute="leading" id="3fB-vg-NDA"/>
-                        <constraint firstItem="EDu-C9-U0X" firstAttribute="top" secondItem="b1y-f2-GFG" secondAttribute="top" id="5mQ-F9-Qmm"/>
-                        <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="HSY-I2-CQn" secondAttribute="trailing" constant="8" symbolic="YES" id="AHy-qF-Bj3"/>
-                        <constraint firstAttribute="trailing" secondItem="ajc-f3-C4T" secondAttribute="trailing" id="Ing-5b-vfy"/>
-                        <constraint firstAttribute="trailing" secondItem="UeG-Rz-FlU" secondAttribute="trailing" id="KI9-ms-3ef"/>
-                        <constraint firstItem="UeG-Rz-FlU" firstAttribute="top" secondItem="ajc-f3-C4T" secondAttribute="bottom" constant="8" id="PUt-GK-LuB"/>
-                        <constraint firstItem="ajc-f3-C4T" firstAttribute="baseline" secondItem="EDu-C9-U0X" secondAttribute="baseline" id="PhM-bM-TQV"/>
-                        <constraint firstAttribute="bottom" secondItem="HSY-I2-CQn" secondAttribute="bottom" id="SB4-fU-08R"/>
-                        <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="EDu-C9-U0X" secondAttribute="leading" id="SSG-np-rkh"/>
-                        <constraint firstItem="ajc-f3-C4T" firstAttribute="width" secondItem="UeG-Rz-FlU" secondAttribute="width" id="V0w-ip-zjZ"/>
-                        <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="ajc-f3-C4T" secondAttribute="leading" id="ZcA-ci-LqM"/>
-                        <constraint firstItem="HSY-I2-CQn" firstAttribute="top" secondItem="EDu-C9-U0X" secondAttribute="bottom" constant="8" id="wjo-fv-NCp"/>
+                        <constraint firstAttribute="width" placeholder="YES" id="ssd-wh-ENb"/>
                     </constraints>
-                </customView>
+                </stackView>
+                <stackView distribution="fill" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lyK-YL-YS5">
+                    <rect key="frame" x="30" y="20" width="296" height="180"/>
+                    <subviews>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="b1y-f2-GFG">
+                            <rect key="frame" x="5" y="0.0" width="286" height="180"/>
+                            <subviews>
+                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ajc-f3-C4T">
+                                    <rect key="frame" x="147" y="156" width="142" height="28"/>
+                                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="jeJ-ON-TL7">
+                                        <font key="font" metaFont="system"/>
+                                        <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                                            <!--1982-02-12 16:00:00 +0000-->
+                                        </date>
+                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    </datePickerCell>
+                                    <connections>
+                                        <binding destination="-2" name="value" keyPath="endDate" previousBinding="z8H-Ip-gnA" id="e2i-GH-Vc9"/>
+                                        <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
+                                    </connections>
+                                </datePicker>
+                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn">
+                                    <rect key="frame" x="0.0" y="0.0" width="139" height="148"/>
+                                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="YkB-C8-NUg">
+                                        <font key="font" metaFont="system"/>
+                                        <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                                            <!--1982-02-12 16:00:00 +0000-->
+                                        </date>
+                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    </datePickerCell>
+                                    <connections>
+                                        <binding destination="-2" name="minValue" keyPath="minDate" id="f4g-Ub-j6q"/>
+                                        <binding destination="-2" name="value" keyPath="startDate" id="m8C-aT-mc7"/>
+                                    </connections>
+                                </datePicker>
+                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
+                                    <rect key="frame" x="147" y="0.0" width="139" height="148"/>
+                                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="IA0-nd-0dU">
+                                        <font key="font" metaFont="system"/>
+                                        <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                                            <!--1982-02-12 16:00:00 +0000-->
+                                        </date>
+                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    </datePickerCell>
+                                    <connections>
+                                        <binding destination="-2" name="value" keyPath="endDate" previousBinding="pJ4-69-kqo" id="yIX-Tl-BCJ"/>
+                                        <binding destination="-2" name="maxValue" keyPath="maxDate" id="pJ4-69-kqo"/>
+                                    </connections>
+                                </datePicker>
+                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EDu-C9-U0X">
+                                    <rect key="frame" x="0.0" y="156" width="142" height="28"/>
+                                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="SDR-7c-yGJ">
+                                        <font key="font" metaFont="system"/>
+                                        <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                                            <!--1982-02-12 16:00:00 +0000-->
+                                        </date>
+                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    </datePickerCell>
+                                    <connections>
+                                        <binding destination="-2" name="minValue" keyPath="minDate" id="dFo-hb-vaH"/>
+                                        <binding destination="-2" name="value" keyPath="startDate" id="Hke-7T-T3V"/>
+                                    </connections>
+                                </datePicker>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="EDu-C9-U0X" firstAttribute="width" secondItem="HSY-I2-CQn" secondAttribute="width" id="1hz-J8-0vh"/>
+                                <constraint firstItem="EDu-C9-U0X" firstAttribute="leading" secondItem="b1y-f2-GFG" secondAttribute="leading" id="3fB-vg-NDA"/>
+                                <constraint firstItem="EDu-C9-U0X" firstAttribute="top" secondItem="b1y-f2-GFG" secondAttribute="top" id="5mQ-F9-Qmm"/>
+                                <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="HSY-I2-CQn" secondAttribute="trailing" constant="8" symbolic="YES" id="AHy-qF-Bj3"/>
+                                <constraint firstAttribute="trailing" secondItem="ajc-f3-C4T" secondAttribute="trailing" id="Ing-5b-vfy"/>
+                                <constraint firstAttribute="trailing" secondItem="UeG-Rz-FlU" secondAttribute="trailing" id="KI9-ms-3ef"/>
+                                <constraint firstItem="UeG-Rz-FlU" firstAttribute="top" secondItem="ajc-f3-C4T" secondAttribute="bottom" constant="8" id="PUt-GK-LuB"/>
+                                <constraint firstItem="ajc-f3-C4T" firstAttribute="baseline" secondItem="EDu-C9-U0X" secondAttribute="baseline" id="PhM-bM-TQV"/>
+                                <constraint firstAttribute="bottom" secondItem="HSY-I2-CQn" secondAttribute="bottom" id="SB4-fU-08R"/>
+                                <constraint firstItem="HSY-I2-CQn" firstAttribute="leading" secondItem="EDu-C9-U0X" secondAttribute="leading" id="SSG-np-rkh"/>
+                                <constraint firstItem="ajc-f3-C4T" firstAttribute="width" secondItem="UeG-Rz-FlU" secondAttribute="width" id="V0w-ip-zjZ"/>
+                                <constraint firstItem="UeG-Rz-FlU" firstAttribute="leading" secondItem="ajc-f3-C4T" secondAttribute="leading" id="ZcA-ci-LqM"/>
+                                <constraint firstItem="HSY-I2-CQn" firstAttribute="top" secondItem="EDu-C9-U0X" secondAttribute="bottom" constant="8" id="wjo-fv-NCp"/>
+                            </constraints>
+                        </customView>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </subviews>
             <constraints>
-                <constraint firstItem="b1y-f2-GFG" firstAttribute="leading" secondItem="GDi-As-t9S" secondAttribute="trailing" constant="20" id="0RV-0X-3OI"/>
-                <constraint firstItem="b1y-f2-GFG" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" symbolic="YES" id="1U0-1A-TB8"/>
-                <constraint firstAttribute="bottom" secondItem="b1y-f2-GFG" secondAttribute="bottom" constant="20" symbolic="YES" id="7rZ-f8-cQw"/>
+                <constraint firstItem="lyK-YL-YS5" firstAttribute="leading" secondItem="GDi-As-t9S" secondAttribute="trailing" constant="20" id="1o0-RD-FYN"/>
+                <constraint firstItem="lyK-YL-YS5" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" symbolic="YES" id="6Xs-SL-za2"/>
                 <constraint firstAttribute="bottom" secondItem="GDi-As-t9S" secondAttribute="bottom" id="C6t-eT-w9d"/>
+                <constraint firstAttribute="trailing" secondItem="lyK-YL-YS5" secondAttribute="trailing" constant="20" symbolic="YES" id="MeV-43-Nrl"/>
                 <constraint firstItem="GDi-As-t9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="RaM-l1-r0R"/>
-                <constraint firstAttribute="trailing" secondItem="b1y-f2-GFG" secondAttribute="trailing" constant="20" symbolic="YES" id="W8q-Vq-Bn6"/>
                 <constraint firstItem="GDi-As-t9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="dge-Dd-b7A"/>
+                <constraint firstAttribute="bottom" secondItem="lyK-YL-YS5" secondAttribute="bottom" constant="20" symbolic="YES" id="fxm-Ii-XfL"/>
             </constraints>
             <point key="canvasLocation" x="404" y="516"/>
         </customView>

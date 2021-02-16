@@ -60,6 +60,16 @@ fileprivate class SolidBackgroundView: NSView {
 
 open class ExpandedDateRangePickerController: NSViewController {
 	@IBOutlet var presetColumnStackView: NSStackView?
+	@IBOutlet var rhsStackView: NSStackView?
+
+	open var auxiliaryView: NSView? {
+		willSet { auxiliaryView?.removeFromSuperview() }
+		didSet {
+			if let auxiliaryView = auxiliaryView {
+				rhsStackView?.insertArrangedSubview(auxiliaryView, at: 0)
+			}
+		}
+	}
 	
 	var presetRanges: [[DateRange?]] {
 		[
