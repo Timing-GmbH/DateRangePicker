@@ -26,7 +26,7 @@
                         <constraint firstAttribute="width" placeholder="YES" id="ssd-wh-ENb"/>
                     </constraints>
                 </stackView>
-                <stackView distribution="fill" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lyK-YL-YS5">
+                <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lyK-YL-YS5">
                     <rect key="frame" x="30" y="20" width="296" height="180"/>
                     <subviews>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="b1y-f2-GFG">

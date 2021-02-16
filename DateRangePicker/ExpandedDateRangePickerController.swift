@@ -65,6 +65,9 @@ open class ExpandedDateRangePickerController: NSViewController {
 	open var auxiliaryView: NSView? {
 		willSet { auxiliaryView?.removeFromSuperview() }
 		didSet {
+			// Ensure that the view has been loaded.
+			_ = self.view
+
 			if let auxiliaryView = auxiliaryView {
 				rhsStackView?.insertArrangedSubview(auxiliaryView, at: 0)
 			}
