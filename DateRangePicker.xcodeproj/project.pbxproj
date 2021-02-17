@@ -12,7 +12,7 @@
 		6527FA471BF1230900E0FB5D /* LocalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */; };
 		656528A925D2E2EF000410EE /* DateRangeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656528A825D2E2EF000410EE /* DateRangeButton.swift */; };
 		659FB87B201678B20046CAD1 /* DateErrorLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659FB87A201678B20046CAD1 /* DateErrorLogger.swift */; };
-		65C918A525DBDF16009FAACB /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C918A425DBDF16009FAACB /* Colors.xcassets */; };
+		65C918A525DBDF16009FAACB /* DateRangePicker_Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65C918A425DBDF16009FAACB /* DateRangePicker_Colors.xcassets */; };
 		65F770EB1BEE162A0007D80E /* DateRangePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 65F770EA1BEE162A0007D80E /* DateRangePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		65F770F21BEE162A0007D80E /* DateRangePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F770E71BEE162A0007D80E /* DateRangePicker.framework */; };
 		65F771081BEE16440007D80E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F771071BEE16440007D80E /* AppDelegate.swift */; };
@@ -69,7 +69,7 @@
 		659FB87A201678B20046CAD1 /* DateErrorLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateErrorLogger.swift; sourceTree = "<group>"; };
 		65A88C6E24D309BA0056D39E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
 		65A88C6F24D309BA0056D39E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		65C918A425DBDF16009FAACB /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		65C918A425DBDF16009FAACB /* DateRangePicker_Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DateRangePicker_Colors.xcassets; sourceTree = "<group>"; };
 		65F770E71BEE162A0007D80E /* DateRangePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DateRangePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F770EA1BEE162A0007D80E /* DateRangePicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateRangePicker.h; sourceTree = "<group>"; };
 		65F770EC1BEE162A0007D80E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 				6527FA411BF11FCA00E0FB5D /* Localizable.strings */,
 				6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */,
 				659FB87A201678B20046CAD1 /* DateErrorLogger.swift */,
-				65C918A425DBDF16009FAACB /* Colors.xcassets */,
+				65C918A425DBDF16009FAACB /* DateRangePicker_Colors.xcassets */,
 			);
 			path = DateRangePicker;
 			sourceTree = "<group>";
@@ -343,7 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65C918A525DBDF16009FAACB /* Colors.xcassets in Resources */,
+				65C918A525DBDF16009FAACB /* DateRangePicker_Colors.xcassets in Resources */,
 				6527FA3D1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib in Resources */,
 				6527FA431BF11FCA00E0FB5D /* Localizable.strings in Resources */,
 			);

@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     s.platforms             = { :osx => '10.9' }
 
     s.source_files          = 'DateRangePicker/*.{h,swift}'
-    s.resources             = 'DateRangePicker/*.lproj/*'
+    s.resources             = ['DateRangePicker/*.lproj/*', 'DateRangePicker/*.xcassets']
     s.module_name           = 'DateRangePicker'
     s.source                = { :git => 'https://github.com/MrMage/DateRangePicker.git', :tag => 'v4.2' }
     s.requires_arc          = true
