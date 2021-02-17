@@ -215,11 +215,12 @@ open class ExpandedDateRangePickerController: NSViewController {
 			presetColumnStackView.addArrangedSubview(column)
 			var separatorColor: NSColor?
 			if #available(OSX 10.14, *) {
+				// In other contexts, `.gridColor` seems to work fine for uses like this, but in this particular case it
+				// appears too weak (possibly because of the popover's vibrancy).
 				separatorColor = NSColor(named: "DateRangePicker_separator")
 			}
 			let separator = SolidBackgroundView.verticalSeparator(
-				backgroundColor: separatorColor ?? NSColor(calibratedWhite: 0, alpha: 0.2),
-				width: 1.0 / (NSScreen.main?.backingScaleFactor ?? 1))
+				backgroundColor: separatorColor ?? NSColor(calibratedWhite: 0, alpha: 0.2))
 			presetColumnStackView.addArrangedSubview(separator)
 			separator.heightAnchor.constraint(equalTo: presetColumnStackView.heightAnchor).isActive = true
 
