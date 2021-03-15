@@ -50,4 +50,4 @@
 "Custom" = "Eigener";
 
 /* Title for a date range spanning the past %d days. */
-"Past %d Days" = "Letzten %d Tage";
+"Past %d Days" = "Letzte %d Tage";
