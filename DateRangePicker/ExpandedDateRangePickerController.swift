@@ -58,9 +58,12 @@ fileprivate class SolidBackgroundView: NSView {
 	}
 }
 
+
 open class ExpandedDateRangePickerController: NSViewController {
 	@IBOutlet var presetColumnStackView: NSStackView?
 	@IBOutlet var rhsStackView: NSStackView?
+	@IBOutlet var startDateCalendarPicker: DoubleClickDateRangePicker?
+	@IBOutlet var endDateCalendarPicker: DoubleClickDateRangePicker?
 
 	open var auxiliaryView: NSView? {
 		willSet { auxiliaryView?.removeFromSuperview() }
@@ -237,6 +240,10 @@ open class ExpandedDateRangePickerController: NSViewController {
 		super.awakeFromNib()
 
 		self.preparePresetColumnStackView()
+
+		// Allow selecting a single date with a double-click on one of the calendar pickers.
+		self.startDateCalendarPicker?.doubleAction = #selector(startDateDoubleClicked(_:))
+		self.endDateCalendarPicker?.doubleAction = #selector(endDateDoubleClicked(_:))
 	}
 	
 	@IBAction func presetRangeSelected(_ sender: Any?) {
@@ -248,5 +255,13 @@ open class ExpandedDateRangePickerController: NSViewController {
 		case .pastDays, .calendarUnit:
 			dateRange = selectedRange
 		}
+	}
+
+	@IBAction func startDateDoubleClicked(_ sender: Any?) {
+		self.dateRange = .custom(startDate, startDate, hourShift: hourShift)
+	}
+
+	@IBAction func endDateDoubleClicked(_ sender: Any?) {
+		self.dateRange = .custom(endDate, endDate, hourShift: hourShift)
 	}
 }

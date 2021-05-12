@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ExpandedDateRangePickerController" customModule="DateRangePicker" customModuleProvider="target">
             <connections>
+                <outlet property="endDateCalendarPicker" destination="UeG-Rz-FlU" id="KEp-6A-bqa"/>
                 <outlet property="presetColumnStackView" destination="GDi-As-t9S" id="hmf-sI-YLX"/>
                 <outlet property="rhsStackView" destination="lyK-YL-YS5" id="4NL-nX-Dsr"/>
+                <outlet property="startDateCalendarPicker" destination="HSY-I2-CQn" id="fgg-pJ-qMe"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -47,7 +49,7 @@
                                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
                                     </connections>
                                 </datePicker>
-                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn">
+                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HSY-I2-CQn" customClass="DoubleClickDateRangePicker" customModule="DateRangePicker" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="139" height="148"/>
                                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="YkB-C8-NUg">
                                         <font key="font" metaFont="system"/>
@@ -62,7 +64,7 @@
                                         <binding destination="-2" name="value" keyPath="startDate" id="m8C-aT-mc7"/>
                                     </connections>
                                 </datePicker>
-                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU">
+                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UeG-Rz-FlU" customClass="DoubleClickDateRangePicker" customModule="DateRangePicker" customModuleProvider="target">
                                     <rect key="frame" x="147" y="0.0" width="139" height="148"/>
                                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="IA0-nd-0dU">
                                         <font key="font" metaFont="system"/>
