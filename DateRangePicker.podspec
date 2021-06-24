@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     s.author                = { 'Daniel Alm' => 'CocoaPods@danielalm.de' }
     s.license               = { :type => 'ISC (simplified BSD)', :file => 'LICENSE' }
     s.social_media_url      = 'https://twitter.com/daniel_a_a'
-    s.platforms             = { :osx => '10.9' }
+    s.platforms             = { :osx => '10.13' }
 
     s.source_files          = 'DateRangePicker/*.{h,swift}'
     s.resources             = ['DateRangePicker/*.lproj/*', 'DateRangePicker/*.xcassets']
