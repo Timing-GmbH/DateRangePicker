@@ -9,7 +9,7 @@
 import Cocoa
 
 //! CLEANUP: Migrate to Swift 3 naming convention.
-public protocol ExpandedDateRangePickerControllerDelegate: class {
+public protocol ExpandedDateRangePickerControllerDelegate: AnyObject {
 	func expandedDateRangePickerControllerDidChangeDateRange(_ controller: ExpandedDateRangePickerController)
 }
 
