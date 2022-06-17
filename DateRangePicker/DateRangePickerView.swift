@@ -173,6 +173,14 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		dateRange = .custom(startDate, endDate, hourShift: self.hourShift)
 	}
 
+	@IBAction open func selectPreviousDateRange(_ sender: Any?) {
+		dateRange = dateRange.previous()
+	}
+
+	@IBAction open func selectNextDateRange(_ sender: Any?) {
+		dateRange = dateRange.next()
+	}
+
 	@IBAction open func selectToday(_ sender: AnyObject?) {
 		self.dateRange = DateRange.calendarUnit(0, .day, hourShift: self.hourShift)
 	}
@@ -247,6 +255,8 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		segmentedControl.autoresizingMask = NSView.AutoresizingMask()
 		segmentedControl.translatesAutoresizingMaskIntoConstraints = false
 		segmentedControl.target = self
+		segmentedControl.setAccessibilityTitle(NSLocalizedString("Date Range", bundle: getBundle(),
+																 comment: "Accessibility label for the Date Range picker."))
 		self.addSubview(segmentedControl)
 
 		if #available(OSX 10.15, *) {
@@ -334,8 +344,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 	@objc func segmentDidChange(_ sender: NSSegmentedControl) {
 		switch sender.selectedSegment {
-		case 0:
-			dateRange = dateRange.previous()
+		case 0: self.selectPreviousDateRange(sender)
 		case 1:
 			if NSEvent.modifierFlags.contains(.option) {
 				// Make option-clicking the main element immediately switch to "Today".
@@ -343,8 +352,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 			} else {
 				displayExpandedDatePicker()
 			}
-		case 2:
-			dateRange = dateRange.next()
+		case 2: self.selectNextDateRange(sender)
 		default:
 			break
 		}
@@ -392,6 +400,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		super.viewDidChangeBackingProperties()
 		updateSegmentedControlFrame()
 	}
+
+	open override func isAccessibilityElement() -> Bool { false }
+
+	open override func accessibilityChildren() -> [Any]? { [self.segmentedControl] }
 }
 
 @available(OSX 10.12.2, *)
