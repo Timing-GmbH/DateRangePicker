@@ -405,7 +405,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 	open override func accessibilityRole() -> NSAccessibility.Role? { .group }
 
-	open override func accessibilityChildren() -> [Any]? { [self.segmentedControl] }
+	open override func accessibilityChildren() -> [Any]? { self.segmentedControl.accessibilityChildren() }
 }
 
 @available(OSX 10.12.2, *)
