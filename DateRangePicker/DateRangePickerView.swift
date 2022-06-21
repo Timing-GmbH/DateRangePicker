@@ -255,6 +255,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		segmentedControl.autoresizingMask = NSView.AutoresizingMask()
 		segmentedControl.translatesAutoresizingMaskIntoConstraints = false
 		segmentedControl.target = self
+		segmentedControl.setAccessibilityRole(.group)
 		segmentedControl.setAccessibilityTitle(NSLocalizedString("Date Range", bundle: getBundle(),
 																 comment: "Accessibility label for the Date Range picker."))
 		self.addSubview(segmentedControl)
@@ -401,11 +402,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		updateSegmentedControlFrame()
 	}
 
-	open override func isAccessibilityElement() -> Bool { true }
+	open override func isAccessibilityElement() -> Bool { false }
 
-	open override func accessibilityRole() -> NSAccessibility.Role? { .group }
+	open override func accessibilityRole() -> NSAccessibility.Role? { nil }
 
-	open override func accessibilityChildren() -> [Any]? { self.segmentedControl.accessibilityChildren() }
+	open override func accessibilityChildren() -> [Any]? { [self.segmentedControl] }
 }
 
 @available(OSX 10.12.2, *)
