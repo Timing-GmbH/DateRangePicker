@@ -401,7 +401,9 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		updateSegmentedControlFrame()
 	}
 
-	open override func isAccessibilityElement() -> Bool { false }
+	open override func isAccessibilityElement() -> Bool { true }
+
+	open override func accessibilityRole() -> NSAccessibility.Role? { .group }
 
 	open override func accessibilityChildren() -> [Any]? { [self.segmentedControl] }
 }
