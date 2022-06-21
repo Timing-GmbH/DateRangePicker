@@ -1,2 +1,11 @@
-/* Class = "NSTextFieldCell"; title = "Date Range:"; ObjectID = "OQ9-0t-PIG"; */
-"OQ9-0t-PIG.title" = "日期区间：";
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "Start Date"; ObjectID = "EDu-C9-U0X"; */
+"EDu-C9-U0X.ibExternalAccessibilityDescription" = "开始日期";
+
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "Start Date"; ObjectID = "HSY-I2-CQn"; */
+"HSY-I2-CQn.ibExternalAccessibilityDescription" = "开始日期";
+
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "End Date"; ObjectID = "UeG-Rz-FlU"; */
+"UeG-Rz-FlU.ibExternalAccessibilityDescription" = "结束日期";
+
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "End Date"; ObjectID = "ajc-f3-C4T"; */
+"ajc-f3-C4T.ibExternalAccessibilityDescription" = "结束日期";

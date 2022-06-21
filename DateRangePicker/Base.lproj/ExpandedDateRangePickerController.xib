@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21179.7"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -44,6 +44,7 @@
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     </datePickerCell>
+                                    <accessibility description="End Date"/>
                                     <connections>
                                         <binding destination="-2" name="value" keyPath="endDate" previousBinding="z8H-Ip-gnA" id="e2i-GH-Vc9"/>
                                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="z8H-Ip-gnA"/>
@@ -59,6 +60,7 @@
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     </datePickerCell>
+                                    <accessibility description="Start Date"/>
                                     <connections>
                                         <binding destination="-2" name="minValue" keyPath="minDate" id="f4g-Ub-j6q"/>
                                         <binding destination="-2" name="value" keyPath="startDate" id="m8C-aT-mc7"/>
@@ -74,6 +76,7 @@
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     </datePickerCell>
+                                    <accessibility description="End Date"/>
                                     <connections>
                                         <binding destination="-2" name="value" keyPath="endDate" previousBinding="pJ4-69-kqo" id="yIX-Tl-BCJ"/>
                                         <binding destination="-2" name="maxValue" keyPath="maxDate" id="pJ4-69-kqo"/>
@@ -89,6 +92,7 @@
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     </datePickerCell>
+                                    <accessibility description="Start Date"/>
                                     <connections>
                                         <binding destination="-2" name="minValue" keyPath="minDate" id="dFo-hb-vaH"/>
                                         <binding destination="-2" name="value" keyPath="startDate" id="Hke-7T-T3V"/>
