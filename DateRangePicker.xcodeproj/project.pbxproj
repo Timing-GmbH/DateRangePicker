@@ -128,9 +128,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		502DED1E2A31320C000CBCD1 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				502DED1F2A31320C000CBCD1 /* DateRangePicker */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		502DED1F2A31320C000CBCD1 /* DateRangePicker */ = {
+			isa = PBXGroup;
+			children = (
+				502DED222A313240000CBCD1 /* Resources */,
+				65F771591BEE79A30007D80E /* DateRange.swift */,
+				65F771221BEE16760007D80E /* DateRangePickerView.swift */,
+				65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */,
+				656528A825D2E2EF000410EE /* DateRangeButton.swift */,
+				65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */,
+				6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */,
+				659FB87A201678B20046CAD1 /* DateErrorLogger.swift */,
+				65F24B64264BFE32008BD367 /* DoubleClickDateRangePicker.swift */,
+			);
+			path = DateRangePicker;
+			sourceTree = "<group>";
+		};
+		502DED202A31320C000CBCD1 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				502DED212A31320C000CBCD1 /* DateRangePickerTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		502DED212A31320C000CBCD1 /* DateRangePickerTests */ = {
+			isa = PBXGroup;
+			children = (
+				65F7715B1BEF62F70007D80E /* DateRangeTest.swift */,
+				65F7714B1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift */,
+			);
+			path = DateRangePickerTests;
+			sourceTree = "<group>";
+		};
+		502DED222A313240000CBCD1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6527FA3F1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib */,
+				6527FA411BF11FCA00E0FB5D /* Localizable.strings */,
+				65C918A425DBDF16009FAACB /* DateRangePicker_Colors.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		65F770DD1BEE162A0007D80E = {
 			isa = PBXGroup;
 			children = (
+				502DED1E2A31320C000CBCD1 /* Sources */,
+				502DED202A31320C000CBCD1 /* Tests */,
 				65F770E91BEE162A0007D80E /* DateRangePicker */,
 				65F770F51BEE162A0007D80E /* DateRangePickerTests */,
 				65F771061BEE16440007D80E /* DateRangePickerDemo */,
@@ -155,17 +208,6 @@
 			children = (
 				65F770EA1BEE162A0007D80E /* DateRangePicker.h */,
 				65F770EC1BEE162A0007D80E /* Info.plist */,
-				65F771591BEE79A30007D80E /* DateRange.swift */,
-				65F771221BEE16760007D80E /* DateRangePickerView.swift */,
-				65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */,
-				6527FA3F1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib */,
-				656528A825D2E2EF000410EE /* DateRangeButton.swift */,
-				65F771491BEE4B140007D80E /* NSDate_DateRangePicker.swift */,
-				6527FA411BF11FCA00E0FB5D /* Localizable.strings */,
-				6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */,
-				659FB87A201678B20046CAD1 /* DateErrorLogger.swift */,
-				65C918A425DBDF16009FAACB /* DateRangePicker_Colors.xcassets */,
-				65F24B64264BFE32008BD367 /* DoubleClickDateRangePicker.swift */,
 			);
 			path = DateRangePicker;
 			sourceTree = "<group>";
@@ -173,8 +215,6 @@
 		65F770F51BEE162A0007D80E /* DateRangePickerTests */ = {
 			isa = PBXGroup;
 			children = (
-				65F7715B1BEF62F70007D80E /* DateRangeTest.swift */,
-				65F7714B1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift */,
 				65F770F81BEE162A0007D80E /* Info.plist */,
 			);
 			path = DateRangePickerTests;
