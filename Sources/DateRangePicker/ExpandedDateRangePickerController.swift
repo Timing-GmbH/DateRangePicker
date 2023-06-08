@@ -86,18 +86,13 @@ open class ExpandedDateRangePickerController: NSViewController {
 				}
 			}
 		} else {
-			#if SWIFT_PACKAGE
 			// This code path is for macOS 10.14 and Xcode.
 			// Swift Packages won't compile asset catalogs from the command line. Xcode is required to compile an
 			// asset catalog. This is fine in practice because Xcode is required to build AppKit apps anyway, so this
 			// code path is never exercised from the command line. (It's a bummer nevertheless.)
-			let bundle = Bundle.module
-			#else
-			let bundle = Bundle(for: ExpandedDateRangePickerController.self)
-			#endif
 			return NSColor(
 				named: "DateRangePicker_separator",
-				bundle: bundle)
+				bundle: getBundle())
 		}
 	}
 
@@ -202,13 +197,8 @@ open class ExpandedDateRangePickerController: NSViewController {
 	public init(dateRange: DateRange, hourShift: Int) {
 		_dateRange = dateRange
 		self.hourShift = hourShift
-		#if SWIFT_PACKAGE
 		super.init(nibName: "ExpandedDateRangePickerController",
-				   bundle: Bundle.module)
-		#else
-		super.init(nibName: "ExpandedDateRangePickerController",
-				   bundle: Bundle(for: ExpandedDateRangePickerController.self))
-		#endif
+				   bundle: getBundle())
 	}
 
 	public required init?(coder: NSCoder) {
