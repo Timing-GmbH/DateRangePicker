@@ -6,3 +6,5 @@
 *.xcbkptlist
 *.xcodeproj/xcuserdata
 tmp/
+.swiftpm/
+.build/
