@@ -183,6 +183,7 @@
 				65F770E81BEE162A0007D80E /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		65F770E81BEE162A0007D80E /* Products */ = {
 			isa = PBXGroup;
