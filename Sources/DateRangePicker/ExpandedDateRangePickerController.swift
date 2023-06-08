@@ -59,47 +59,47 @@ fileprivate class SolidBackgroundView: NSView {
 }
 
 extension NSAppearance {
-    fileprivate var isDarkMode: Bool {
-        if #available(macOS 10.14, *) {
-            if self.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
-                return true
-            } else {
-                return false
-            }
-        } else {
-            return false
-        }
-    }
+	fileprivate var isDarkMode: Bool {
+		if #available(macOS 10.14, *) {
+			if self.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+				return true
+			} else {
+				return false
+			}
+		} else {
+			return false
+		}
+	}
 }
 
 open class ExpandedDateRangePickerController: NSViewController {
-    /// - Note: Testing seam to verify the color is loadable from all build products.
-    @available(macOS 10.14, *)
-    static var separatorColor: NSColor? {
-        if #available(macOS 10.15, *) {
-            // Programmatic initialization works on all devices and in all contexts and should be favored in the long run.
-            return NSColor(name: "DateRangePicker_separator") { appearance in
-                if appearance.isDarkMode {
-                    return NSColor(genericGamma22White: 1, alpha: 0.098)
-                } else {
-                    return NSColor(genericGamma22White: 1, alpha: 0.098)
-                }
-            }
-        } else {
-            #if SWIFT_PACKAGE
-            // This code path is for macOS 10.14 and Xcode.
-            // Swift Packages won't compile asset catalogs from the command line. Xcode is required to compile an
-            // asset catalog. This is fine in practice because Xcode is required to build AppKit apps anyway, so this
-            // code path is never exercised from the command line. (It's a bummer nevertheless.)
-            let bundle = Bundle.module
-            #else
-            let bundle = Bundle(for: ExpandedDateRangePickerController.self)
-            #endif
-            return NSColor(
-                named: "DateRangePicker_separator",
-                bundle: bundle)
-        }
-    }
+	/// - Note: Testing seam to verify the color is loadable from all build products.
+	@available(macOS 10.14, *)
+	static var separatorColor: NSColor? {
+		if #available(macOS 10.15, *) {
+			// Programmatic initialization works on all devices and in all contexts and should be favored in the long run.
+			return NSColor(name: "DateRangePicker_separator") { appearance in
+				if appearance.isDarkMode {
+					return NSColor(genericGamma22White: 1, alpha: 0.098)
+				} else {
+					return NSColor(genericGamma22White: 1, alpha: 0.098)
+				}
+			}
+		} else {
+			#if SWIFT_PACKAGE
+			// This code path is for macOS 10.14 and Xcode.
+			// Swift Packages won't compile asset catalogs from the command line. Xcode is required to compile an
+			// asset catalog. This is fine in practice because Xcode is required to build AppKit apps anyway, so this
+			// code path is never exercised from the command line. (It's a bummer nevertheless.)
+			let bundle = Bundle.module
+			#else
+			let bundle = Bundle(for: ExpandedDateRangePickerController.self)
+			#endif
+			return NSColor(
+				named: "DateRangePicker_separator",
+				bundle: bundle)
+		}
+	}
 
 	@IBOutlet var presetColumnStackView: NSStackView?
 	@IBOutlet var rhsStackView: NSStackView?
@@ -207,7 +207,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 	}
 
 	public required init?(coder: NSCoder) {
-        return nil
+		return nil
 	}
 
 	private func updateButtonStates(selectedRange: DateRange) {
@@ -258,10 +258,10 @@ open class ExpandedDateRangePickerController: NSViewController {
 
 			presetColumnStackView.addArrangedSubview(column)
 			var separatorColor: NSColor?
-            if #available(macOS 10.14, *) {
+			if #available(macOS 10.14, *) {
 				// In other contexts, `.gridColor` seems to work fine for uses like this, but in this particular case it
 				// appears too weak (possibly because of the popover's vibrancy).
-                separatorColor = ExpandedDateRangePickerController.separatorColor
+				separatorColor = ExpandedDateRangePickerController.separatorColor
 			}
 			let separator = SolidBackgroundView.verticalSeparator(
 				backgroundColor: separatorColor ?? NSColor(calibratedWhite: 0, alpha: 0.2))
