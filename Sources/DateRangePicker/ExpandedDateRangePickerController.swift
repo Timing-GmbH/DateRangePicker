@@ -202,8 +202,13 @@ open class ExpandedDateRangePickerController: NSViewController {
 	public init(dateRange: DateRange, hourShift: Int) {
 		_dateRange = dateRange
 		self.hourShift = hourShift
+		#if SWIFT_PACKAGE
 		super.init(nibName: "ExpandedDateRangePickerController",
-			bundle: Bundle(for: ExpandedDateRangePickerController.self))
+				   bundle: Bundle.module)
+		#else
+		super.init(nibName: "ExpandedDateRangePickerController",
+				   bundle: Bundle(for: ExpandedDateRangePickerController.self))
+		#endif
 	}
 
 	public required init?(coder: NSCoder) {
