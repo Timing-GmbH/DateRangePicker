@@ -82,7 +82,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 				if appearance.isDarkMode {
 					return NSColor(genericGamma22White: 1, alpha: 0.098)
 				} else {
-					return NSColor(genericGamma22White: 1, alpha: 0.098)
+					return NSColor(genericGamma22White: 0, alpha: 0.098)
 				}
 			}
 		} else {
