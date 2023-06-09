@@ -6,7 +6,7 @@
 //  Copyright © 2021 Daniel Alm. All rights reserved.
 //
 
-import Foundation
+import AppKit
 
 class DateRangeButtonCell: NSButtonCell {
 	static let horizontalInset: CGFloat = 7
