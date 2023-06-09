@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name                  = 'DateRangePicker'
-    s.version               = '5.0'
+    s.version               = '6.0'
 
     s.homepage              = 'https://github.com/Timing-GmbH/DateRangePicker'
     s.summary               = 'The best (?) date range picker control for OS X.'
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.source_files          = 'Sources/DateRangePicker/*.{h,swift}'
     s.resources             = ['Sources/DateRangePicker/Resources/*.lproj/*', 'Sources/DateRangePicker/Resources/*.xcassets']
     s.module_name           = 'DateRangePicker'
-    s.source                = { :git => 'https://github.com/Timing-GmbH/DateRangePicker.git', :tag => 'v5.0' }
+    s.source                = { :git => 'https://github.com/Timing-GmbH/DateRangePicker.git', :tag => '6.0' }
     s.requires_arc          = true
     s.frameworks            = 'AppKit', 'Foundation'
     s.swift_versions        = ['4.2', '5']
