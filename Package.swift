@@ -6,7 +6,7 @@ let package = Package(
 	name: "DateRangePicker",
 	defaultLocalization: "en",
 	platforms: [
-		.macOS(.v10_13)
+		.macOS(.v10_13),
 	],
 	products: [
 		.library(
