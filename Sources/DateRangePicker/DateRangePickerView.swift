@@ -218,7 +218,9 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 
 	open func displayExpandedDatePicker() {
-		if dateRangePickerController != nil { return }
+		guard dateRangePickerController == nil,
+			  let windowContentView = self.window?.contentView
+		else { return }
 
 		let popover = makePopover()
 		let controller = ExpandedDateRangePickerController(dateRange: dateRange, hourShift: hourShift)
@@ -231,7 +233,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 		popover.contentViewController = dateRangePickerController
 		popover.delegate = self
-		popover.show(relativeTo: self.bounds, of: self, preferredEdge: .minY)
+		// Anchor the popover to our own coordinates, but in the _window's_ coordinate system, to avoid the popover
+		// moving around when the picker's dimensions change.
+		let boundsInWindow = windowContentView.convert(self.bounds, from: self)
+		popover.show(relativeTo: boundsInWindow, of: windowContentView, preferredEdge: .minY)
 		updateSegmentedControl()
 	}
 
