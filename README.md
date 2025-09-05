@@ -47,6 +47,11 @@ You can observe changes in the date range by key-value-observing startDate and e
 
 Requires (and tested on) OS X 10.9 or later. Looks a lot better in the toolbar with OS X 10.10 ;-)
 
+### Usage in toolbars on macOS 26
+
+To ensure that the date range picker is rendered as a toolbar item with a "Liquid Glass" effect on macOS 26, make sure
+to set the containing toolbar item's `isBordered` property to `true`.
+
 ### Notes for legacy Nibs
 
 If your Nib uses the old initWithFrame: initialization or is deflated on OS X 10.9, there is a bug with custom views in NSToolbar. This results in the date range picker's frame not being initialized correctly. In order to avoid this, I recommend the following procedure:
