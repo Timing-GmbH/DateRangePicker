@@ -69,6 +69,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		self.willChangeValue(forKey: #keyPath(startDate))
 		self.didChangeValue(forKey: #keyPath(endDate))
 		self.didChangeValue(forKey: #keyPath(startDate))
+
+		// KVO won't trigger a `didSet`, so we make sure to also update the segmented control's label manually,
+		// just in case. This is necesary to make e.g. ".day, offset: -2" show the new day before yesterday.
+		updateSegmentedControl()
 	}
 
 	// Can be used for restricting the selectable dates to a specific range.
