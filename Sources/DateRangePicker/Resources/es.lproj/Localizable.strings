@@ -1,41 +1,53 @@
 /* Customization label for the Date Range picker. */
-"Date Range" = "Временной интервал";
+"Date Range" = "Rango de fechas";
 
 /* Date Range short title for this month. */
-"Month" = "Месяц";
+"Month" = "Mes";
 
 /* Date Range short title for this quarter. */
-"Quarter" = "Квартал";
+"Quarter" = "Trimestre";
 
 /* Date Range short title for this week. */
-"Week" = "Неделя";
+"Week" = "Semana";
 
 /* Date Range short title for this year. */
-"Year" = "Год";
+"Year" = "Año";
+
+/* Date Range title for last month. */
+"Last Month" = "Mes pasado";
+
+/* Date Range title for last quarter. */
+"Last Quarter" = "Trimestre pasado";
+
+/* Date Range title for last week. */
+"Last Week" = "Semana pasada";
+
+/* Date Range title for last year. */
+"Last Year" = "Año pasado";
 
 /* Date Range title for the current day. */
-"Today" = "Сегодня";
+"Today" = "Hoy";
 
 /* Date Range title for the previous day. */
-"Yesterday" = "Вчера";
+"Yesterday" = "Ayer";
 
 /* Date Range title for this month. */
-"This Month" = "Этот месяц";
+"This Month" = "Este mes";
 
 /* Date Range title for this quarter. */
-"This Quarter" = "Этот квартал";
+"This Quarter" = "Este trimestre";
 
 /* Date Range title for this week. */
-"This Week" = "Эта неделя";
+"This Week" = "Esta semana";
 
 /* Date Range title for this year. */
-"This Year" = "Этот год";
+"This Year" = "Este año";
 
 /* Shorthand title for a date range spanning the past %d days. */
-"%d Days" = "%d д.";
+"%d Days" = "%d días";
 
 /* Title for a custom date range. */
-"Custom" = " Произвольный";
+"Custom" = "Personalizado";
 
 /* Title for a date range spanning the past %d days. */
-"Past %d Days" = "%d д. назад";
+"Past %d Days" = "Últimos %d días";

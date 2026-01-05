@@ -1,0 +1,11 @@
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "Start Date"; ObjectID = "EDu-C9-U0X"; */
+"EDu-C9-U0X.ibExternalAccessibilityDescription" = "Fecha de inicio";
+
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "Start Date"; ObjectID = "HSY-I2-CQn"; */
+"HSY-I2-CQn.ibExternalAccessibilityDescription" = "Fecha de inicio";
+
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "End Date"; ObjectID = "UeG-Rz-FlU"; */
+"UeG-Rz-FlU.ibExternalAccessibilityDescription" = "Fecha de fin";
+
+/* Class = "NSDatePicker"; ibExternalAccessibilityDescription = "End Date"; ObjectID = "ajc-f3-C4T"; */
+"ajc-f3-C4T.ibExternalAccessibilityDescription" = "Fecha de fin";

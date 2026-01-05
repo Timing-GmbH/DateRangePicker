@@ -19,9 +19,9 @@ function export_xliff {
       -localizationPath $XLIFF_PATH \
       -exportLanguage en \
       -exportLanguage de \
-      -exportLanguage zh-Hans \
-      -exportLanguage ru \
-      -exportLanguage fr
+      -exportLanguage es \
+      -exportLanguage fr \
+      -exportLanguage zh-Hans
 }
 
 function find_strings {
