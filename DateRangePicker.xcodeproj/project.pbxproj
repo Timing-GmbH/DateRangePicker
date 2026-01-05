@@ -48,17 +48,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		24601D981DCA4685002B085D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
-		24601D991DCA4685002B085D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
-		24601D9A1DCA4685002B085D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		501ADC48249A2AD300E98368 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		502DED252A31B3FC000CBCD1 /* AssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
 		650A03A7213842E50031A1E0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ExpandedDateRangePickerController.strings"; sourceTree = "<group>"; };
 		650A03AF213842E60031A1E0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		6527FA3E1BF11E5C00E0FB5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ExpandedDateRangePickerController.xib; sourceTree = "<group>"; };
 		6527FA401BF11E6D00E0FB5D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
 		6527FA421BF11FCA00E0FB5D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6527FA451BF121C100E0FB5D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationHelper.swift; sourceTree = "<group>"; };
 		656528A825D2E2EF000410EE /* DateRangeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeButton.swift; sourceTree = "<group>"; };
 		659FB87A201678B20046CAD1 /* DateErrorLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateErrorLogger.swift; sourceTree = "<group>"; };
@@ -83,6 +78,8 @@
 		65F7714D1BEE54CA0007D80E /* ExpandedDateRangePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedDateRangePickerController.swift; sourceTree = "<group>"; };
 		65F771591BEE79A30007D80E /* DateRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRange.swift; sourceTree = "<group>"; };
 		65F7715B1BEF62F70007D80E /* DateRangeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRangeTest.swift; sourceTree = "<group>"; };
+		7D09BFCF2F0BD840004E6024 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ExpandedDateRangePickerController.strings; sourceTree = "<group>"; };
+		7D09BFD12F0BD84C004E6024 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,9 +321,9 @@
 				en,
 				Base,
 				de,
-				ru,
 				"zh-Hans",
 				fr,
+				es,
 			);
 			mainGroup = 65F770DD1BEE162A0007D80E;
 			productRefGroup = 65F770E81BEE162A0007D80E /* Products */;
@@ -425,9 +422,9 @@
 			children = (
 				6527FA3E1BF11E5C00E0FB5D /* Base */,
 				6527FA401BF11E6D00E0FB5D /* de */,
-				24601D981DCA4685002B085D /* ru */,
 				650A03A7213842E50031A1E0 /* zh-Hans */,
 				65A88C6E24D309BA0056D39E /* fr */,
+				7D09BFCF2F0BD840004E6024 /* es */,
 			);
 			name = ExpandedDateRangePickerController.xib;
 			sourceTree = "<group>";
@@ -436,9 +433,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				6527FA421BF11FCA00E0FB5D /* de */,
-				24601D9A1DCA4685002B085D /* ru */,
 				650A03AF213842E60031A1E0 /* zh-Hans */,
 				65A88C6F24D309BA0056D39E /* fr */,
+				7D09BFD12F0BD84C004E6024 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -447,9 +444,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				65F7710E1BEE16440007D80E /* Base */,
-				6527FA451BF121C100E0FB5D /* de */,
-				24601D991DCA4685002B085D /* ru */,
-				501ADC48249A2AD300E98368 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
