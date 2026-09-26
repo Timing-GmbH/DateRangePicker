@@ -114,24 +114,29 @@ open class ExpandedDateRangePickerController: NSViewController {
 	}
 	
 	var presetRanges: [[DateRange?]] {
+		Self.presetRanges(hourShift: self.hourShift)
+	}
+
+	/// The preset columns, left to right; `nil` separates two groups within a column.
+	public static func presetRanges(hourShift: Int) -> [[DateRange?]] {
 		[
 			[
-				.pastDays(7, hourShift: self.hourShift),
-				.pastDays(15, hourShift: self.hourShift),
-				.pastDays(30, hourShift: self.hourShift),
-				.pastDays(90, hourShift: self.hourShift),
-				.pastDays(365, hourShift: self.hourShift),
+				.pastDays(7, hourShift: hourShift),
+				.pastDays(15, hourShift: hourShift),
+				.pastDays(30, hourShift: hourShift),
+				.pastDays(90, hourShift: hourShift),
+				.pastDays(365, hourShift: hourShift),
 			],
 			[
-				.calendarUnit(0, .day, hourShift: self.hourShift),
-				.calendarUnit(0, .weekOfYear, hourShift: self.hourShift),
-				.calendarUnit(0, .month, hourShift: self.hourShift),
-				.calendarUnit(0, .quarter, hourShift: self.hourShift),
-				.calendarUnit(0, .year, hourShift: self.hourShift),
+				.calendarUnit(0, .day, hourShift: hourShift),
+				.calendarUnit(0, .weekOfYear, hourShift: hourShift),
+				.calendarUnit(0, .month, hourShift: hourShift),
+				.calendarUnit(0, .quarter, hourShift: hourShift),
+				.calendarUnit(0, .year, hourShift: hourShift),
 				nil,
-				.calendarUnit(-1, .day, hourShift: self.hourShift),
-				.calendarUnit(-1, .weekOfYear, hourShift: self.hourShift),
-				.calendarUnit(-1, .month, hourShift: self.hourShift),
+				.calendarUnit(-1, .day, hourShift: hourShift),
+				.calendarUnit(-1, .weekOfYear, hourShift: hourShift),
+				.calendarUnit(-1, .month, hourShift: hourShift),
 			]
 		]
 	}
