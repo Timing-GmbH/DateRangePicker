@@ -215,10 +215,12 @@ open class ExpandedDateRangePickerController: NSViewController {
 
 	// Returns the current date that relative date ranges like "Past 7 Days" are computed from.
 	@objc open var now: () -> Date = { Date() } {
-		didSet {
-			// Enforces the date range restriction for the new current date
-			dateRange = _dateRange
-		}
+		didSet { nowDidChange() }
+	}
+
+	func nowDidChange() {
+		// Enforces the date range restriction relative to the new current date and refreshes the calendar pickers
+		dateRange = _dateRange
 	}
 	
 	open weak var delegate: ExpandedDateRangePickerControllerDelegate?

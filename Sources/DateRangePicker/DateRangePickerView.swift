@@ -87,13 +87,24 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 	}
 
+	// Call when the date returned by `now` has moved on, e.g. to the next day, so that relative date ranges like
+	// "Past 7 Days" are recomputed. The system's day changes are observed regardless.
+	@objc open func nowDidChange() {
+		dateRangePickerController?.nowDidChange()
+		dateRangeComputationsDidChange()
+	}
+
 	private func dateRangeComputationsDidChange() {
 		// Enforces the date range restrictions for the new computations
 		dateRange = _dateRange
-		updateSegmentedControl()
+		relativeDateRangeDidChange()
 	}
 
 	@objc open func dayChanged(_ notification: Notification) {
+		relativeDateRangeDidChange()
+	}
+
+	private func relativeDateRangeDidChange() {
 		// If the current date ranged is specified in a relative fashion,
 		// it might change on actual day changes, so make sure to notify any observers.
 		self.willChangeValue(forKey: #keyPath(endDate))

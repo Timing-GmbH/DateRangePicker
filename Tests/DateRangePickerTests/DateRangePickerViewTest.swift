@@ -81,6 +81,44 @@ final class DateRangePickerViewTest: XCTestCase {
 		XCTAssertTrue(picker.segmentedControl.isEnabled(forSegment: 2))
 	}
 	
+	func testNowDidChangeRecomputesRelativeDateRange() {
+		let picker = makePicker()
+		var now = kiritimatiNow
+		picker.now = { now }
+		picker.dateRange = .calendarUnit(-1, .month, hourShift: 0)
+		var observedStartDates: [Date] = []
+		let observation = picker.observe(\.startDate, options: [.new]) { _, change in
+			change.newValue.map { observedStartDates.append($0) }
+		}
+		
+		// July 1st, 02:00 in Kiritimati.
+		now = isoDate("2015-06-30T12:00:00Z")
+		picker.nowDidChange()
+		
+		XCTAssertEqual("June 2015", picker.segmentedControl.label(forSegment: 1))
+		XCTAssertEqual([isoDate("2015-05-31T10:00:00Z")], observedStartDates)
+		observation.invalidate()
+	}
+	
+	func testNowDidChangeNotifiesExpandedController() {
+		let picker = makePicker()
+		var now = kiritimatiNow
+		picker.now = { now }
+		picker.dateRange = .pastDays(2, hourShift: 0)
+		let controller = presentedController(of: picker)
+		var observedStartDates: [Date] = []
+		let observation = controller?.observe(\.startDate, options: [.new]) { _, change in
+			change.newValue.map { observedStartDates.append($0) }
+		}
+		
+		// June 5th, 02:00 in Kiritimati.
+		now = isoDate("2015-06-04T12:00:00Z")
+		picker.nowDidChange()
+		
+		XCTAssertEqual([isoDate("2015-06-02T10:00:00Z")], observedStartDates)
+		observation?.invalidate()
+	}
+	
 	func testExpandedControllerUsesNowAndCalendar() {
 		let controller = ExpandedDateRangePickerController(dateRange: .pastDays(2, hourShift: 0), hourShift: 0)
 		controller.calendar = kiritimatiCalendar
