@@ -28,6 +28,25 @@ class DateRangeTest: XCTestCase {
 		return dateFormatterWithTime.date(from: dateString)!
 	}
 	
+	fileprivate let isoDateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+		return dateFormatter
+	}()
+	func isoDate(_ dateString: String) -> Date {
+		return isoDateFormatter.date(from: dateString)!
+	}
+	
+	// UTC+14, so that its days differ from those of the time zone the tests run in.
+	let kiritimatiCalendar: Calendar = {
+		var calendar = Calendar(identifier: .gregorian)
+		calendar.timeZone = TimeZone(identifier: "Pacific/Kiritimati")!
+		return calendar
+	}()
+	// June 4th, 02:00 in Kiritimati.
+	var kiritimatiNow: Date { return isoDate("2015-06-03T12:00:00Z") }
+	
 	func testTitle() {
 		XCTAssertEqual("Custom", DateRange.custom(Date(), Date(), hourShift: 0).title)
 		
@@ -71,50 +90,68 @@ class DateRangeTest: XCTestCase {
 		let nowAfterShift = dateFromStringWithTime("2015-06-01 05:00:00")
 		
 		var dateRange = DateRange.custom(startDate, endDate, hourShift: 5)
-		XCTAssertEqual(dateFromStringWithTime("2015-06-01 00:00:00"), dateRange.getStartDate(now: nowBeforeShift))
-		XCTAssertEqual(dateFromStringWithTime("2015-06-03 23:59:59"), dateRange.getEndDate(now: nowBeforeShift))
-		XCTAssertEqual(dateFromStringWithTime("2015-06-01 00:00:00"), dateRange.getStartDate(now: nowAfterShift))
-		XCTAssertEqual(dateFromStringWithTime("2015-06-03 23:59:59"), dateRange.getEndDate(now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 00:00:00"), dateRange.startDate(now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-03 23:59:59"), dateRange.endDate(now: nowBeforeShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-01 00:00:00"), dateRange.startDate(now: nowAfterShift))
+		XCTAssertEqual(dateFromStringWithTime("2015-06-03 23:59:59"), dateRange.endDate(now: nowAfterShift))
 		
 		dateRange = DateRange.pastDays(2, hourShift: 5)
 		XCTAssertEqual(dateFromStringWithTime("2015-05-29 00:00:00"),
-		               dateRange.getStartDate(now: nowBeforeShift))
+		               dateRange.startDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-05-31 23:59:59"),
-		               dateRange.getEndDate(now: nowBeforeShift))
+		               dateRange.endDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-05-30 00:00:00"),
-		               dateRange.getStartDate(now: nowAfterShift))
+		               dateRange.startDate(now: nowAfterShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-06-01 23:59:59"),
-		               dateRange.getEndDate(now: nowAfterShift))
+		               dateRange.endDate(now: nowAfterShift))
 		
 		dateRange = DateRange.calendarUnit(0, .month, hourShift: 5)
 		XCTAssertEqual(dateFromStringWithTime("2015-05-01 00:00:00"),
-		               dateRange.getStartDate(now: nowBeforeShift))
+		               dateRange.startDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-05-31 23:59:59"),
-		               dateRange.getEndDate(now: nowBeforeShift))
+		               dateRange.endDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-06-01 00:00:00"),
-		               dateRange.getStartDate(now: nowAfterShift))
+		               dateRange.startDate(now: nowAfterShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-06-30 23:59:59"),
-		               dateRange.getEndDate(now: nowAfterShift))
+		               dateRange.endDate(now: nowAfterShift))
 		
 		dateRange = DateRange.calendarUnit(-1, .month, hourShift: 5)
 		XCTAssertEqual(dateFromStringWithTime("2015-04-01 00:00:00"),
-		               dateRange.getStartDate(now: nowBeforeShift))
+		               dateRange.startDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-04-30 23:59:59"),
-		               dateRange.getEndDate(now: nowBeforeShift))
+		               dateRange.endDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-05-01 00:00:00"),
-		               dateRange.getStartDate(now: nowAfterShift))
+		               dateRange.startDate(now: nowAfterShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-05-31 23:59:59"),
-		               dateRange.getEndDate(now: nowAfterShift))
+		               dateRange.endDate(now: nowAfterShift))
 		
 		dateRange = DateRange.calendarUnit(1, .month, hourShift: 5)
 		XCTAssertEqual(dateFromStringWithTime("2015-06-01 00:00:00"),
-		               dateRange.getStartDate(now: nowBeforeShift))
+		               dateRange.startDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-06-30 23:59:59"),
-		               dateRange.getEndDate(now: nowBeforeShift))
+		               dateRange.endDate(now: nowBeforeShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-07-01 00:00:00"),
-		               dateRange.getStartDate(now: nowAfterShift))
+		               dateRange.startDate(now: nowAfterShift))
 		XCTAssertEqual(dateFromStringWithTime("2015-07-31 23:59:59"),
-		               dateRange.getEndDate(now: nowAfterShift))
+		               dateRange.endDate(now: nowAfterShift))
+	}
+	
+	func testStartEndDatesWithNowAndCalendar() {
+		var dateRange = DateRange.custom(isoDate("2015-06-02T12:00:00Z"), isoDate("2015-06-03T12:00:00Z"), hourShift: 0)
+		XCTAssertEqual(isoDate("2015-06-02T10:00:00Z"), dateRange.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-04T09:59:59Z"), dateRange.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		
+		dateRange = DateRange.pastDays(2, hourShift: 0)
+		XCTAssertEqual(isoDate("2015-06-01T10:00:00Z"), dateRange.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-04T09:59:59Z"), dateRange.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		
+		dateRange = DateRange.calendarUnit(0, .month, hourShift: 0)
+		XCTAssertEqual(isoDate("2015-05-31T10:00:00Z"), dateRange.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-30T09:59:59Z"), dateRange.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		
+		dateRange = DateRange.calendarUnit(-1, .month, hourShift: 0)
+		XCTAssertEqual(isoDate("2015-04-30T10:00:00Z"), dateRange.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-05-31T09:59:59Z"), dateRange.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
 	}
 	
 	func testEqual() {
