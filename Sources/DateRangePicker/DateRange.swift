@@ -226,7 +226,10 @@ public enum DateRange: Equatable {
 	// returns either a single date (if startDate.day == endDate.day) or a date range in the form of
 	// "Formatted Start Date - Formatted End Date" (e.g. "05.10.15 - 10.03.15").
 	public func dateRangeDescription(withFormatter dateFormatter: DateFormatter,
-									 relativeDescriptionsAllowed: Bool = true) -> String {
+									 relativeDescriptionsAllowed: Bool = true,
+									 now: Date = Date(), calendar: Calendar = Calendar.current) -> String {
+		let startDate = self.startDate(now: now, calendar: calendar)
+		let endDate = self.endDate(now: now, calendar: calendar)
 		switch self {
 		case .custom: break
 		case .calendarUnit(let offset, let unit, _) where unit == .month && (!relativeDescriptionsAllowed || offset != 0):
@@ -235,12 +238,15 @@ public enum DateRange: Equatable {
 			let fullMonthDateFormatter = DateFormatter()
 			fullMonthDateFormatter.timeStyle = .none
 			fullMonthDateFormatter.dateFormat = monthDayFormat
+			fullMonthDateFormatter.calendar = calendar
+			fullMonthDateFormatter.timeZone = calendar.timeZone
 			return fullMonthDateFormatter.string(from: startDate)
 		case .pastDays: fallthrough
 		case .calendarUnit: if relativeDescriptionsAllowed, let title = title { return title }
 		}
 		
-		if startDate.drp_beginning(ofCalendarUnit: .day) == endDate.drp_beginning(ofCalendarUnit: .day) {
+		if startDate.drp_beginning(ofCalendarUnit: .day, calendar: calendar)
+			== endDate.drp_beginning(ofCalendarUnit: .day, calendar: calendar) {
 			return dateFormatter.string(from: endDate)
 		}
 		//! TODO: Use DateIntervalFormatter here.

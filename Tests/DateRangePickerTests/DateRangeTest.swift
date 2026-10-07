@@ -154,6 +154,21 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(isoDate("2015-05-31T09:59:59Z"), dateRange.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
 	}
 	
+	func testDateRangeDescriptionWithNowAndCalendar() {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd"
+		dateFormatter.timeZone = kiritimatiCalendar.timeZone
+		
+		XCTAssertEqual("May 2015", DateRange.calendarUnit(-1, .month, hourShift: 0)
+			.dateRangeDescription(withFormatter: dateFormatter, now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual("2015-06-02 \u{2013} 2015-06-04", DateRange.pastDays(2, hourShift: 0)
+			.dateRangeDescription(withFormatter: dateFormatter, relativeDescriptionsAllowed: false,
+			                      now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual("2015-06-04", DateRange.calendarUnit(0, .day, hourShift: 0)
+			.dateRangeDescription(withFormatter: dateFormatter, relativeDescriptionsAllowed: false,
+			                      now: kiritimatiNow, calendar: kiritimatiCalendar))
+	}
+	
 	func testEqual() {
 		let startDate = dateFromString("2015-06-15")
 		let endDate = dateFromString("2015-06-17")
