@@ -210,6 +210,19 @@ class DateRangeTest: XCTestCase {
 		               DateRange.pastDays(0, hourShift: 23).moveBy(steps: -2).moveBy(steps: 2))
 	}
 	
+	func testMoveByWithNowAndCalendar() {
+		let pastDays = DateRange.pastDays(2, hourShift: 0)
+		let previous = pastDays.previous(now: kiritimatiNow, calendar: kiritimatiCalendar)
+		XCTAssertEqual(isoDate("2015-05-29T10:00:00Z"), previous.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-01T09:59:59Z"), previous.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		
+		XCTAssertEqual(pastDays, previous.next(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		let today = DateRange.pastDays(0, hourShift: 0)
+			.moveBy(steps: -2, now: kiritimatiNow, calendar: kiritimatiCalendar)
+			.moveBy(steps: 2, now: kiritimatiNow, calendar: kiritimatiCalendar)
+		XCTAssertEqual(DateRange.calendarUnit(0, .day, hourShift: 0), today)
+	}
+	
 	func testToFromData() {
 		let startDate = dateFromString("2015-06-15")
 		let endDate = dateFromString("2015-06-17")

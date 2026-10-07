@@ -248,24 +248,26 @@ public enum DateRange: Equatable {
 	}
 	
 	// MARK: - Obtaining related ranges
-	public func previous() -> DateRange {
-		return moveBy(steps: -1)
+	public func previous(now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
+		return moveBy(steps: -1, now: now, calendar: calendar)
 	}
 	
-	public func next() -> DateRange {
-		return moveBy(steps: 1)
+	public func next(now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
+		return moveBy(steps: 1, now: now, calendar: calendar)
 	}
 	
-	public func moveBy(steps: Int) -> DateRange {
+	public func moveBy(steps: Int, now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
 		switch self {
 		case .custom, .pastDays:
+			let startDate = self.startDate(now: now, calendar: calendar)
+			let endDate = self.endDate(now: now, calendar: calendar)
 			// Add one to the distance between start and end date so that for steps = 1, the date ranges do not overlap.
-			let dayDifference = (endDate.drp_daysSince(startDate) ?? 0) + 1
-			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day) ?? startDate
-			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day) ?? endDate
+			let dayDifference = (endDate.drp_daysSince(startDate, calendar: calendar) ?? 0) + 1
+			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day, calendar: calendar) ?? startDate
+			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day, calendar: calendar) ?? endDate
 			let todayRange = DateRange.calendarUnit(0, .day, hourShift: self.hourShift)
-			if newEndDate == todayRange.endDate {
-				if newStartDate == todayRange.startDate {
+			if newEndDate == todayRange.endDate(now: now, calendar: calendar) {
+				if newStartDate == todayRange.startDate(now: now, calendar: calendar) {
 					return todayRange
 				}
 				return .pastDays(dayDifference - 1, hourShift: self.hourShift)
