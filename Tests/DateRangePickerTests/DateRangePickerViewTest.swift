@@ -80,4 +80,67 @@ final class DateRangePickerViewTest: XCTestCase {
 		picker.selectPreviousDateRange(nil)
 		XCTAssertTrue(picker.segmentedControl.isEnabled(forSegment: 2))
 	}
+	
+	func testExpandedControllerUsesNowAndCalendar() {
+		let controller = ExpandedDateRangePickerController(dateRange: .pastDays(2, hourShift: 0), hourShift: 0)
+		controller.calendar = kiritimatiCalendar
+		let now = kiritimatiNow
+		controller.now = { now }
+		XCTAssertEqual(isoDate("2015-06-01T10:00:00Z"), controller.startDate)
+		XCTAssertEqual(isoDate("2015-06-04T09:59:59Z"), controller.endDate)
+		
+		_ = controller.view
+		XCTAssertEqual(kiritimatiCalendar, controller.startDateCalendarPicker?.calendar)
+		XCTAssertEqual(kiritimatiCalendar.timeZone, controller.startDateCalendarPicker?.timeZone)
+		XCTAssertEqual(kiritimatiCalendar, controller.endDateCalendarPicker?.calendar)
+		XCTAssertEqual(kiritimatiCalendar.timeZone, controller.endDateCalendarPicker?.timeZone)
+	}
+	
+	func testExpandedControllerAppliesCalendarToLoadedDatePickers() {
+		let controller = ExpandedDateRangePickerController(dateRange: .pastDays(2, hourShift: 0), hourShift: 0)
+		_ = controller.view
+		controller.calendar = kiritimatiCalendar
+		XCTAssertEqual(kiritimatiCalendar.timeZone, controller.startDateCalendarPicker?.timeZone)
+		XCTAssertEqual(kiritimatiCalendar.timeZone, controller.endDateCalendarPicker?.timeZone)
+	}
+	
+	func testExpandedControllerLeavesDatePickersOnSystemTimeZoneByDefault() {
+		let controller = ExpandedDateRangePickerController(dateRange: .pastDays(2, hourShift: 0), hourShift: 0)
+		_ = controller.view
+		XCTAssertNil(controller.startDateCalendarPicker?.timeZone)
+		XCTAssertNil(controller.endDateCalendarPicker?.timeZone)
+	}
+	
+	func presentedController(of picker: DateRangePickerView) -> ExpandedDateRangePickerController? {
+		let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 300, height: 100),
+		                      styleMask: [.titled], backing: .buffered, defer: false)
+		window.contentView?.addSubview(picker)
+		let delegate = PresentationRecorder()
+		picker.delegate = delegate
+		picker.displayExpandedDatePicker()
+		return delegate.presentedController
+	}
+	
+	func testPickerPassesNowAndCalendarToExpandedController() {
+		let controller = presentedController(of: makePicker())
+		XCTAssertEqual(kiritimatiCalendar, controller?.calendar)
+		XCTAssertEqual(kiritimatiNow, controller?.now())
+	}
+	
+	func testPickerLeavesExpandedControllerOnSystemTimeZoneByDefault() {
+		let controller = presentedController(of: DateRangePickerView(frame: .zero))
+		XCTAssertNotNil(controller)
+		XCTAssertNil(controller?.startDateCalendarPicker?.timeZone)
+	}
+}
+
+private final class PresentationRecorder: NSObject, DateRangePickerViewDelegate {
+	var presentedController: ExpandedDateRangePickerController?
+	
+	func dateRangePickerView(_ dateRangePickerView: DateRangePickerView,
+	                         willPresentExpandedDateRangePickerController expandedDateRangePickerController: ExpandedDateRangePickerController) {
+		presentedController = expandedDateRangePickerController
+	}
+	
+	func dateRangePickerViewDidCloseExpandedDateRangePickerController(_ dateRangePickerView: DateRangePickerView) {}
 }

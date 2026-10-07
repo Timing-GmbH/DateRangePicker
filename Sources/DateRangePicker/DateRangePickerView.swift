@@ -64,17 +64,27 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 	// The calendar, including its time zone, in which days, weeks, months etc. are computed. Also applied to
 	// `dateFormatter` when set.
-	@objc open dynamic var calendar: Calendar = Calendar.current {
-		didSet {
-			dateFormatter.calendar = calendar
-			dateFormatter.timeZone = calendar.timeZone
+	@objc open dynamic var calendar: Calendar {
+		get {
+			return customCalendar ?? Calendar.autoupdatingCurrent
+		}
+
+		set {
+			customCalendar = newValue
+			dateFormatter.calendar = newValue
+			dateFormatter.timeZone = newValue.timeZone
+			dateRangePickerController?.calendar = newValue
 			dateRangeComputationsDidChange()
 		}
 	}
+	fileprivate var customCalendar: Calendar?
 
 	// Returns the current date that relative date ranges like "Past 7 Days" are computed from.
 	@objc open var now: () -> Date = { Date() } {
-		didSet { dateRangeComputationsDidChange() }
+		didSet {
+			dateRangePickerController?.now = now
+			dateRangeComputationsDidChange()
+		}
 	}
 
 	private func dateRangeComputationsDidChange() {
@@ -249,6 +259,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 		let popover = makePopover()
 		let controller = ExpandedDateRangePickerController(dateRange: dateRange, hourShift: hourShift)
+		if let customCalendar = customCalendar {
+			controller.calendar = customCalendar
+		}
+		controller.now = now
 		controller.minDate = minDate
 		controller.maxDate = maxDate
 		controller.delegate = self
