@@ -254,4 +254,20 @@ class DateRangeTest: XCTestCase {
 		XCTAssertEqual(DateRange.custom(dateFromString("2015-06-14"), dateFromString("2015-06-14"), hourShift: 0),
 			dateRange.restrictTo(minDate: dateFromString("2015-06-01"), maxDate: dateFromString("2015-06-14")))
 	}
+	
+	func testRestrictToWithNowAndCalendar() {
+		let pastDays = DateRange.pastDays(2, hourShift: 0)
+		XCTAssertEqual(pastDays, pastDays.restrictTo(minDate: isoDate("2015-05-01T00:00:00Z"), maxDate: kiritimatiNow,
+		                                             now: kiritimatiNow, calendar: kiritimatiCalendar))
+		
+		// June 3rd, 08:00 in Kiritimati.
+		let june3rd = isoDate("2015-06-02T18:00:00Z")
+		let endingJune3rd = pastDays.restrictTo(minDate: nil, maxDate: june3rd, now: kiritimatiNow, calendar: kiritimatiCalendar)
+		XCTAssertEqual(isoDate("2015-06-01T10:00:00Z"), endingJune3rd.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-03T09:59:59Z"), endingJune3rd.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		
+		let startingJune3rd = pastDays.restrictTo(minDate: june3rd, maxDate: nil, now: kiritimatiNow, calendar: kiritimatiCalendar)
+		XCTAssertEqual(isoDate("2015-06-02T10:00:00Z"), startingJune3rd.startDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-04T09:59:59Z"), startingJune3rd.endDate(now: kiritimatiNow, calendar: kiritimatiCalendar))
+	}
 }

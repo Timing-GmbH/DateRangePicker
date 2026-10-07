@@ -278,14 +278,17 @@ public enum DateRange: Equatable {
 		}
 	}
 	
-	public func restrictTo(minDate: Date?, maxDate: Date?) -> DateRange {
+	public func restrictTo(minDate: Date?, maxDate: Date?,
+	                       now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
+		let startDate = self.startDate(now: now, calendar: calendar)
+		let endDate = self.endDate(now: now, calendar: calendar)
 		var adjustedStartDate = startDate
 		var adjustedEndDate = endDate
-		if let minDate = minDate?.drp_beginning(ofCalendarUnit: .day) {
+		if let minDate = minDate?.drp_beginning(ofCalendarUnit: .day, calendar: calendar) {
 			adjustedStartDate = (minDate as NSDate).laterDate(adjustedStartDate)
 			adjustedEndDate = (minDate as NSDate).laterDate(adjustedEndDate)
 		}
-		if let maxDate = maxDate?.drp_end(ofCalendarUnit: .day) {
+		if let maxDate = maxDate?.drp_end(ofCalendarUnit: .day, calendar: calendar) {
 			adjustedStartDate = (maxDate as NSDate).earlierDate(adjustedStartDate)
 			adjustedEndDate = (maxDate as NSDate).earlierDate(adjustedEndDate)
 		}
