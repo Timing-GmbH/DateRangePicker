@@ -119,6 +119,17 @@ class Date_DateRangePickerTest: XCTestCase {
 		XCTAssertEqual(dateFromStringWithTime("2015-12-31 23:59:59"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month, calendar: calendar))
 	}
 	
+	func testEndOfCalendarUnitInOtherTimeZone() {
+		var kiritimatiCalendar = Calendar(identifier: .gregorian)
+		kiritimatiCalendar.timeZone = TimeZone(identifier: "Pacific/Kiritimati")!
+		
+		// 12:00 UTC on June 3rd is 02:00 on June 4th in Kiritimati (UTC+14).
+		XCTAssertEqual(isoDate("2015-06-04T09:59:59.000Z"),
+		               isoDate("2015-06-03T12:00:00.000Z").drp_end(ofCalendarUnit: .day, calendar: kiritimatiCalendar))
+		XCTAssertEqual(isoDate("2015-06-04T10:00:00.000Z"),
+		               isoDate("2015-06-03T12:00:00.000Z").drp_end(of: .day, calendar: kiritimatiCalendar))
+	}
+	
 	func testEndOfCalendarUnitWithoutAdjusting() {
 		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-01-01").drp_end(ofCalendarUnit: .year, calendar: calendar, adjustByOneSecond: false))
 		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .year, calendar: calendar, adjustByOneSecond: false))
