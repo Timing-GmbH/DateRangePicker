@@ -320,6 +320,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		set { }
 	}
 
+	// The segmented control handles all clicks. Disabled segments pass their mouse-down on to this view, which must not
+	// track it: its cell would highlight the whole view while the mouse button is held and send the action on release.
+	override open func mouseDown(with event: NSEvent) { }
+
 	open func updateSegmentedControlFrame() {
 		let sideButtonWidth: CGFloat = 22
 		if #available(OSX 10.15, *) {
