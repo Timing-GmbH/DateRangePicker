@@ -320,6 +320,17 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		set { }
 	}
 
+	// The segmented control handles all clicks. On macOS 26 and 27 (not 14), a click on a disabled segment reaches this
+	// view, which must not track it: its cell would highlight the whole view while the mouse button is held and send the
+	// action on release.
+	override open func mouseDown(with event: NSEvent) {
+		// On macOS 27, a control-click on a disabled segment arrives here too. Handle it as a right-click, so that e.g.
+		// the toolbar's context menu still opens.
+		if event.modifierFlags.contains(.control) {
+			rightMouseDown(with: event)
+		}
+	}
+
 	open func updateSegmentedControlFrame() {
 		let sideButtonWidth: CGFloat = 22
 		if #available(OSX 10.15, *) {
