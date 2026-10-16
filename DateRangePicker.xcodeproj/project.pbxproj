@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		502DED262A31B3FC000CBCD1 /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502DED252A31B3FC000CBCD1 /* AssetTests.swift */; };
+		7A1C0E022E9A000000D1A001 /* DateRangePickerViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C0E012E9A000000D1A001 /* DateRangePickerViewTest.swift */; };
 		6527FA3D1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6527FA3F1BF11E5C00E0FB5D /* ExpandedDateRangePickerController.xib */; };
 		6527FA431BF11FCA00E0FB5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6527FA411BF11FCA00E0FB5D /* Localizable.strings */; };
 		6527FA471BF1230900E0FB5D /* LocalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527FA461BF1230900E0FB5D /* LocalizationHelper.swift */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		502DED252A31B3FC000CBCD1 /* AssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
+		7A1C0E012E9A000000D1A001 /* DateRangePickerViewTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRangePickerViewTest.swift; sourceTree = "<group>"; };
 		650A03A7213842E50031A1E0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ExpandedDateRangePickerController.strings"; sourceTree = "<group>"; };
 		650A03AF213842E60031A1E0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		6527FA3E1BF11E5C00E0FB5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ExpandedDateRangePickerController.xib; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				502DED252A31B3FC000CBCD1 /* AssetTests.swift */,
+				7A1C0E012E9A000000D1A001 /* DateRangePickerViewTest.swift */,
 				65F7715B1BEF62F70007D80E /* DateRangeTest.swift */,
 				65F7714B1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift */,
 			);
@@ -387,6 +390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				502DED262A31B3FC000CBCD1 /* AssetTests.swift in Sources */,
+				7A1C0E022E9A000000D1A001 /* DateRangePickerViewTest.swift in Sources */,
 				65F7714C1BEE4D910007D80E /* NSDate_DateRangePickerTest.swift in Sources */,
 				65F7715C1BEF62F70007D80E /* DateRangeTest.swift in Sources */,
 			);

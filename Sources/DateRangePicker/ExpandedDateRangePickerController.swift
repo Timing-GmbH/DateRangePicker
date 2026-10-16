@@ -154,7 +154,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 		set {
 			self.willChangeValue(forKey: "endDate")
 			self.willChangeValue(forKey: "startDate")
-			_dateRange = newValue.restrictTo(minDate: minDate, maxDate: maxDate)
+			_dateRange = newValue.restrictTo(minDate: minDate, maxDate: maxDate, now: now(), calendar: calendar)
 			self.didChangeValue(forKey: "endDate")
 			self.didChangeValue(forKey: "startDate")
 
@@ -166,7 +166,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 	// These are needed for the bindings with NSDatePicker
 	@objc open dynamic var startDate: Date {
 		get {
-			return dateRange.startDate
+			return dateRange.startDate(now: now(), calendar: calendar)
 		}
 		
 		set {
@@ -175,7 +175,7 @@ open class ExpandedDateRangePickerController: NSViewController {
 	}
 	@objc open dynamic var endDate: Date {
 		get {
-			return dateRange.endDate
+			return dateRange.endDate(now: now(), calendar: calendar)
 		}
 		
 		set {
@@ -195,6 +195,32 @@ open class ExpandedDateRangePickerController: NSViewController {
 			// Enforces the new date range restriction
 			dateRange = _dateRange
 		}
+	}
+	
+	// The calendar, including its time zone, in which days, weeks, months etc. are computed and the calendar pickers
+	// display their dates.
+	@objc open dynamic var calendar: Calendar {
+		get {
+			return customCalendar ?? Calendar.autoupdatingCurrent
+		}
+		
+		set {
+			customCalendar = newValue
+			applyCalendarToDatePickers()
+			// Enforces the date range restriction for the new calendar
+			dateRange = _dateRange
+		}
+	}
+	fileprivate var customCalendar: Calendar?
+
+	// Returns the current date that relative date ranges like "Past 7 Days" are computed from.
+	@objc open var now: () -> Date = { Date() } {
+		didSet { nowDidChange() }
+	}
+
+	func nowDidChange() {
+		// Enforces the date range restriction relative to the new current date and refreshes the calendar pickers
+		dateRange = _dateRange
 	}
 	
 	open weak var delegate: ExpandedDateRangePickerControllerDelegate?
@@ -277,10 +303,20 @@ open class ExpandedDateRangePickerController: NSViewController {
 		updateButtonStates(selectedRange: self.dateRange)
 	}
 	
+	private func applyCalendarToDatePickers() {
+		// Without a custom calendar, the calendar pickers keep following the system's calendar and time zone.
+		guard let calendar = customCalendar else { return }
+		for datePicker in [startDateCalendarPicker, endDateCalendarPicker] {
+			datePicker?.calendar = calendar
+			datePicker?.timeZone = calendar.timeZone
+		}
+	}
+	
 	open override func awakeFromNib() {
 		super.awakeFromNib()
 
 		self.preparePresetColumnStackView()
+		self.applyCalendarToDatePickers()
 
 		// Allow selecting a single date with a double-click on one of the calendar pickers.
 		self.startDateCalendarPicker?.doubleAction = #selector(startDateDoubleClicked(_:))

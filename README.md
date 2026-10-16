@@ -12,6 +12,26 @@ Just drag the date range picker onto your Storyboard or Nib. It looks particular
 
 You can observe changes in the date range by key-value-observing startDate and endDate and/or setting a target and action on the DateRangePickerView control.
 
+### Supplying "now" and the calendar
+
+By default, relative date ranges like "Past 7 Days" or "This Month" are computed from the current date and time in
+`Calendar.current`. If your app has its own notion of the current date (e.g. for tests or a simulated clock) or works in
+another calendar or time zone, set `now` and `calendar` on the picker:
+
+```swift
+var calendar = Calendar(identifier: .gregorian)
+calendar.timeZone = TimeZone(identifier: "UTC")!
+dateRangePicker.calendar = calendar
+dateRangePicker.now = { myClock.currentDate }
+```
+
+The picker passes both on to the popover and its calendars, and applies the calendar to `dateFormatter`. When the date
+returned by `now` moves on, e.g. to the next day, call `dateRangePicker.nowDidChange()` so that the label, the
+"Back"/"Forward" buttons and `startDate`/`endDate` observers pick up the change.
+
+The same computations are available on `DateRange` itself, e.g. `startDate(now:calendar:)`, `endDate(now:calendar:)`,
+`moveBy(steps:now:calendar:)` and `restrictTo(minDate:maxDate:now:calendar:)`.
+
 ## Features
 
 - Perfect for use in a toolbar, but can also be used anywhere else

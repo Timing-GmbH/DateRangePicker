@@ -30,7 +30,7 @@ public extension Date {
 	
 	func drp_end(ofCalendarUnit unit: NSCalendar.Unit, calendar: Calendar = Calendar.current,
 	                    adjustByOneSecond: Bool = true, returnNextIfAtBoundary: Bool = true) -> Date? {
-		guard let startDate = drp_beginning(ofCalendarUnit: unit, calendar: Calendar.current) else { return nil }
+		guard let startDate = drp_beginning(ofCalendarUnit: unit, calendar: calendar) else { return nil }
 		if startDate == self && !adjustByOneSecond && !returnNextIfAtBoundary { return self }
 		let result = startDate.drp_addCalendarUnits(1, unit: unit, calendar: calendar)
 		return adjustByOneSecond ? result?.addingTimeInterval(-1) : result
@@ -82,7 +82,7 @@ public extension Date {
 	
 	func drp_end(of component: Calendar.Component, calendar: Calendar = Calendar.current,
 	                    returnNextIfAtBoundary: Bool = true) -> Date? {
-		guard let startDate = drp_beginning(of: component, calendar: Calendar.current) else { return nil }
+		guard let startDate = drp_beginning(of: component, calendar: calendar) else { return nil }
 		if startDate == self && !returnNextIfAtBoundary { return self }
 		return startDate.drp_adding(1, component: component, calendar: calendar)
 	}

@@ -33,22 +33,21 @@ extension NSCalendar.Unit {
 }
 
 extension Date {
-	// TR-961: This property tries to avoid a crash when force-unwrapping `drp_settingHour(to: 0)` if there is no
+	// TR-961: This function tries to avoid a crash when force-unwrapping `drp_settingHour(to: 0)` if there is no
 	// 0:00:00, e.g. due to a weird DST switch (e.g. Iran and Brazil switch DST at 0:00).
 	//! TODO(TR-961): Use this (and similar approaches) on more occasions.
-	var dayStart: Date {
+	func dayStart(calendar: Calendar) -> Date {
 		if self.timeIntervalSince1970 < 0 {
 			// This hopefully avoids a crash for "very old" dates.
 			return self
 		}
 		
 		for i in 0...23 {
-			if let hour = self.drp_settingHour(to: i) {
+			if let hour = self.drp_settingHour(to: i, calendar: calendar) {
 				return hour
 			}
 		}
-		globalDateErrorLogger?.logDayStartFailed(for: self, calendar: Calendar.current)
-		let calendar = Calendar.current
+		globalDateErrorLogger?.logDayStartFailed(for: self, calendar: calendar)
 		fatalError("error fetching dayStart for: date='\(self)' timeIntervalSince1970='\(self.timeIntervalSince1970)' calendar='\(calendar), \(calendar.identifier)' locale='\(Locale.current)' timeZone='\(calendar.timeZone)' abbreviation='\(calendar.timeZone.abbreviation() ?? "(nil)")' secondsFromGMT='\(calendar.timeZone.secondsFromGMT())' isDaylightSavingTime='\(calendar.timeZone.isDaylightSavingTime())' daylightSavingTimeOffset='\(calendar.timeZone.daylightSavingTimeOffset())' abbreviationForDate='\(calendar.timeZone.abbreviation(for: self) ?? "(nil)")' secondsFromGMTForDate='\(calendar.timeZone.secondsFromGMT(for: self))' isDaylightSavingTimeForDate='\(calendar.timeZone.isDaylightSavingTime(for: self))' daylightSavingTimeOffsetForDate='\(calendar.timeZone.daylightSavingTimeOffset(for: self))'")
 	}
 }
@@ -62,11 +61,11 @@ public enum DateRange: Equatable {
 	
 	// MARK: - Core properties
 	public var startDate: Date {
-		return getStartDate(now: Date())
+		return startDate(now: Date())
 	}
 	
 	public var endDate: Date {
-		return getEndDate(now: Date())
+		return endDate(now: Date())
 	}
 	
 	public var hourShift: Int {
@@ -87,77 +86,76 @@ public enum DateRange: Equatable {
 		}
 	}
 	
-	// These functions are required for testing getStartDate(withHourShift:) and getEndDate(withHourShift:) for
-	// DateRange.pastDays and DateRange.calendarUnit with a fake "now" without depending on the hour of day the test is
-	// run.
-	func getStartDate(now: Date) -> Date {
+	// The start date relative to `now`, with days, weeks etc. as given by `calendar`.
+	public func startDate(now: Date, calendar: Calendar = Calendar.current) -> Date {
 		switch (self) {
 		case let .custom(startDate, _, _):
 			// Hour shift doesn't need to be taken into account with custom ranges.
-			return startDate.dayStart
+			return startDate.dayStart(calendar: calendar)
 		case let .pastDays(pastDays, hourShift):
 			return now
-				.drp_beginning(of: .day, hourShift: hourShift)?
-				.drp_adding(-pastDays, component: .day)?
-				.dayStart
+				.drp_beginning(of: .day, hourShift: hourShift, calendar: calendar)?
+				.drp_adding(-pastDays, component: .day, calendar: calendar)?
+				.dayStart(calendar: calendar)
 				// This might reduce the likelihood of crashes due to trying to forcibly unwrap nil (also below).
 				?? now
-					.drp_adding(-pastDays, component: .day)?
-					.drp_beginning(of: .day, hourShift: hourShift)?
-					.dayStart
+					.drp_adding(-pastDays, component: .day, calendar: calendar)?
+					.drp_beginning(of: .day, hourShift: hourShift, calendar: calendar)?
+					.dayStart(calendar: calendar)
 				?? now
-					.drp_adding(-pastDays, component: .day)?
-					.dayStart
+					.drp_adding(-pastDays, component: .day, calendar: calendar)?
+					.dayStart(calendar: calendar)
 				?? now
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
-				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
-				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
-				.dayStart
+				.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift, calendar: calendar)?
+				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!, calendar: calendar)?
+				.dayStart(calendar: calendar)
 				?? now
-					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
-					.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
-					.dayStart
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!, calendar: calendar)?
+					.drp_beginning(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift, calendar: calendar)?
+					.dayStart(calendar: calendar)
 				?? now
-					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
-					.dayStart
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!, calendar: calendar)?
+					.dayStart(calendar: calendar)
 				?? now
 		}
 	}
 	
-	func getEndDate(now: Date) -> Date {
+	// The end date relative to `now`, with days, weeks etc. as given by `calendar`.
+	public func endDate(now: Date, calendar: Calendar = Calendar.current) -> Date {
 		switch (self) {
 		case let .custom(_, endDate, _):
 			// Hour shift doesn't need to be taken into account with custom ranges.
 			return endDate
-				.dayStart
-				.drp_adding(1, component: .day)?
+				.dayStart(calendar: calendar)
+				.drp_adding(1, component: .day, calendar: calendar)?
 				.addingTimeInterval(-1)
 				?? endDate
-					.drp_adding(1, component: .day)?
-					.dayStart
+					.drp_adding(1, component: .day, calendar: calendar)?
+					.dayStart(calendar: calendar)
 					.addingTimeInterval(-1)
 				?? now
 		case let .pastDays(_, hourShift):
 			return now
-				.drp_end(of: .day, hourShift: hourShift)?
-				.dayStart
+				.drp_end(of: .day, hourShift: hourShift, calendar: calendar)?
+				.dayStart(calendar: calendar)
 				.addingTimeInterval(-1)
 				?? now
-					.dayStart
-					.drp_end(of: .day, hourShift: hourShift)?
+					.dayStart(calendar: calendar)
+					.drp_end(of: .day, hourShift: hourShift, calendar: calendar)?
 					.addingTimeInterval(-1)
 				?? now
 		case let .calendarUnit(offset, unit, hourShift):
 			return now
-				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
-				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
-				.dayStart
+				.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift, calendar: calendar)?
+				.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!, calendar: calendar)?
+				.dayStart(calendar: calendar)
 				.addingTimeInterval(-1)
 				?? now
-					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!)?
-					.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift)?
-					.dayStart
+					.drp_adding(offset, component: unit.drp_correspondingCalendarComponent!, calendar: calendar)?
+					.drp_end(of: unit.drp_correspondingCalendarComponent!, hourShift: hourShift, calendar: calendar)?
+					.dayStart(calendar: calendar)
 					.addingTimeInterval(-1)
 				?? now
 		}
@@ -228,7 +226,10 @@ public enum DateRange: Equatable {
 	// returns either a single date (if startDate.day == endDate.day) or a date range in the form of
 	// "Formatted Start Date - Formatted End Date" (e.g. "05.10.15 - 10.03.15").
 	public func dateRangeDescription(withFormatter dateFormatter: DateFormatter,
-									 relativeDescriptionsAllowed: Bool = true) -> String {
+									 relativeDescriptionsAllowed: Bool = true,
+									 now: Date = Date(), calendar: Calendar = Calendar.current) -> String {
+		let startDate = self.startDate(now: now, calendar: calendar)
+		let endDate = self.endDate(now: now, calendar: calendar)
 		switch self {
 		case .custom: break
 		case .calendarUnit(let offset, let unit, _) where unit == .month && (!relativeDescriptionsAllowed || offset != 0):
@@ -237,12 +238,15 @@ public enum DateRange: Equatable {
 			let fullMonthDateFormatter = DateFormatter()
 			fullMonthDateFormatter.timeStyle = .none
 			fullMonthDateFormatter.dateFormat = monthDayFormat
+			fullMonthDateFormatter.calendar = calendar
+			fullMonthDateFormatter.timeZone = calendar.timeZone
 			return fullMonthDateFormatter.string(from: startDate)
 		case .pastDays: fallthrough
 		case .calendarUnit: if relativeDescriptionsAllowed, let title = title { return title }
 		}
 		
-		if startDate.drp_beginning(ofCalendarUnit: .day) == endDate.drp_beginning(ofCalendarUnit: .day) {
+		if startDate.drp_beginning(ofCalendarUnit: .day, calendar: calendar)
+			== endDate.drp_beginning(ofCalendarUnit: .day, calendar: calendar) {
 			return dateFormatter.string(from: endDate)
 		}
 		//! TODO: Use DateIntervalFormatter here.
@@ -250,24 +254,26 @@ public enum DateRange: Equatable {
 	}
 	
 	// MARK: - Obtaining related ranges
-	public func previous() -> DateRange {
-		return moveBy(steps: -1)
+	public func previous(now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
+		return moveBy(steps: -1, now: now, calendar: calendar)
 	}
 	
-	public func next() -> DateRange {
-		return moveBy(steps: 1)
+	public func next(now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
+		return moveBy(steps: 1, now: now, calendar: calendar)
 	}
 	
-	public func moveBy(steps: Int) -> DateRange {
+	public func moveBy(steps: Int, now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
 		switch self {
 		case .custom, .pastDays:
+			let startDate = self.startDate(now: now, calendar: calendar)
+			let endDate = self.endDate(now: now, calendar: calendar)
 			// Add one to the distance between start and end date so that for steps = 1, the date ranges do not overlap.
-			let dayDifference = (endDate.drp_daysSince(startDate) ?? 0) + 1
-			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day) ?? startDate
-			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day) ?? endDate
+			let dayDifference = (endDate.drp_daysSince(startDate, calendar: calendar) ?? 0) + 1
+			let newStartDate = startDate.drp_addCalendarUnits(dayDifference * steps, unit: .day, calendar: calendar) ?? startDate
+			let newEndDate = endDate.drp_addCalendarUnits(dayDifference * steps, unit: .day, calendar: calendar) ?? endDate
 			let todayRange = DateRange.calendarUnit(0, .day, hourShift: self.hourShift)
-			if newEndDate == todayRange.endDate {
-				if newStartDate == todayRange.startDate {
+			if newEndDate == todayRange.endDate(now: now, calendar: calendar) {
+				if newStartDate == todayRange.startDate(now: now, calendar: calendar) {
 					return todayRange
 				}
 				return .pastDays(dayDifference - 1, hourShift: self.hourShift)
@@ -278,14 +284,17 @@ public enum DateRange: Equatable {
 		}
 	}
 	
-	public func restrictTo(minDate: Date?, maxDate: Date?) -> DateRange {
+	public func restrictTo(minDate: Date?, maxDate: Date?,
+	                       now: Date = Date(), calendar: Calendar = Calendar.current) -> DateRange {
+		let startDate = self.startDate(now: now, calendar: calendar)
+		let endDate = self.endDate(now: now, calendar: calendar)
 		var adjustedStartDate = startDate
 		var adjustedEndDate = endDate
-		if let minDate = minDate?.drp_beginning(ofCalendarUnit: .day) {
+		if let minDate = minDate?.drp_beginning(ofCalendarUnit: .day, calendar: calendar) {
 			adjustedStartDate = (minDate as NSDate).laterDate(adjustedStartDate)
 			adjustedEndDate = (minDate as NSDate).laterDate(adjustedEndDate)
 		}
-		if let maxDate = maxDate?.drp_end(ofCalendarUnit: .day) {
+		if let maxDate = maxDate?.drp_end(ofCalendarUnit: .day, calendar: calendar) {
 			adjustedStartDate = (maxDate as NSDate).earlierDate(adjustedStartDate)
 			adjustedEndDate = (maxDate as NSDate).earlierDate(adjustedEndDate)
 		}

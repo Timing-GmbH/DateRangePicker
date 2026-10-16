@@ -36,7 +36,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 
 		set {
-			var restrictedValue = newValue.restrictTo(minDate: minDate, maxDate: maxDate)
+			var restrictedValue = newValue.restrictTo(minDate: minDate, maxDate: maxDate, now: now(), calendar: calendar)
 			restrictedValue.hourShift = self.hourShift
 			if _dateRange != restrictedValue {
 				self.willChangeValue(forKey: #keyPath(endDate))
@@ -62,7 +62,49 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		}
 	}
 
+	// The calendar, including its time zone, in which days, weeks, months etc. are computed. Also applied to
+	// `dateFormatter` when set.
+	@objc open dynamic var calendar: Calendar {
+		get {
+			return customCalendar ?? Calendar.autoupdatingCurrent
+		}
+
+		set {
+			customCalendar = newValue
+			dateFormatter.calendar = newValue
+			dateFormatter.timeZone = newValue.timeZone
+			dateRangePickerController?.calendar = newValue
+			dateRangeComputationsDidChange()
+		}
+	}
+	fileprivate var customCalendar: Calendar?
+
+	// Returns the current date that relative date ranges like "Past 7 Days" are computed from.
+	@objc open var now: () -> Date = { Date() } {
+		didSet {
+			dateRangePickerController?.now = now
+			dateRangeComputationsDidChange()
+		}
+	}
+
+	// Call when the date returned by `now` has moved on, e.g. to the next day, so that relative date ranges like
+	// "Past 7 Days" are recomputed. The system's day changes are observed regardless.
+	@objc open func nowDidChange() {
+		dateRangePickerController?.nowDidChange()
+		dateRangeComputationsDidChange()
+	}
+
+	private func dateRangeComputationsDidChange() {
+		// Enforces the date range restrictions for the new computations
+		dateRange = _dateRange
+		relativeDateRangeDidChange()
+	}
+
 	@objc open func dayChanged(_ notification: Notification) {
+		relativeDateRangeDidChange()
+	}
+
+	private func relativeDateRangeDidChange() {
 		// If the current date ranged is specified in a relative fashion,
 		// it might change on actual day changes, so make sure to notify any observers.
 		self.willChangeValue(forKey: #keyPath(endDate))
@@ -109,13 +151,13 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		if let delegate = delegate as? DateRangePickerViewDelegateSwiftOnly {
 			return delegate.dateRangePickerView(self, descriptionFor: dateRange, formatter: dateFormatter)
 		}
-		return dateRange.dateRangeDescription(withFormatter: dateFormatter)
+		return dateRange.dateRangeDescription(withFormatter: dateFormatter, now: now(), calendar: calendar)
 	}
 
 	// MARK: - Objective-C interoperability
 	@objc open dynamic var startDate: Date {
 		get {
-			return dateRange.startDate
+			return dateRange.startDate(now: now(), calendar: calendar)
 		}
 
 		set {
@@ -124,7 +166,7 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 	@objc open dynamic var endDate: Date {
 		get {
-			return dateRange.endDate
+			return dateRange.endDate(now: now(), calendar: calendar)
 		}
 
 		set {
@@ -178,11 +220,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 	}
 
 	@IBAction open func selectPreviousDateRange(_ sender: Any?) {
-		dateRange = dateRange.previous()
+		dateRange = dateRange.previous(now: now(), calendar: calendar)
 	}
 
 	@IBAction open func selectNextDateRange(_ sender: Any?) {
-		dateRange = dateRange.next()
+		dateRange = dateRange.next(now: now(), calendar: calendar)
 	}
 
 	@IBAction open func selectToday(_ sender: AnyObject?) {
@@ -228,6 +270,10 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 
 		let popover = makePopover()
 		let controller = ExpandedDateRangePickerController(dateRange: dateRange, hourShift: hourShift)
+		if let customCalendar = customCalendar {
+			controller.calendar = customCalendar
+		}
+		controller.now = now
 		controller.minDate = minDate
 		controller.maxDate = maxDate
 		controller.delegate = self
@@ -386,11 +432,11 @@ open class DateRangePickerView: NSControl, ExpandedDateRangePickerControllerDele
 		touchBarSegment?.setLabel(dateRangeString, forSegment: 1)
 
 		// Only enable the previous/next buttons if they do not touch outside the date restrictions range already.
-		let previousAllowed = minDate != nil ? dateRange.startDate != minDate?.drp_beginning(ofCalendarUnit: .day) : true
+		let previousAllowed = minDate != nil ? startDate != minDate?.drp_beginning(ofCalendarUnit: .day, calendar: calendar) : true
 		segmentedControl.setEnabled(previousAllowed, forSegment: 0)
 		touchBarSegment?.setEnabled(previousAllowed, forSegment: 0)
 
-		let nextAllowed = maxDate != nil ? dateRange.endDate != maxDate?.drp_end(ofCalendarUnit: .day) : true
+		let nextAllowed = maxDate != nil ? endDate != maxDate?.drp_end(ofCalendarUnit: .day, calendar: calendar) : true
 		segmentedControl.setEnabled(nextAllowed, forSegment: 2)
 		touchBarSegment?.setEnabled(nextAllowed, forSegment: 2)
 
@@ -465,9 +511,9 @@ extension DateRangePickerView: NSTouchBarDelegate {
 
 	@objc func touchBarSegmentPressed(_ sender: NSSegmentedControl) {
 		switch sender.selectedSegment {
-		case 0: dateRange = dateRange.previous()
+		case 0: dateRange = dateRange.previous(now: now(), calendar: calendar)
 		case 1: touchBarItem.showPopover(sender)
-		case 2: dateRange = dateRange.next()
+		case 2: dateRange = dateRange.next(now: now(), calendar: calendar)
 		default: break
 		}
 	}
