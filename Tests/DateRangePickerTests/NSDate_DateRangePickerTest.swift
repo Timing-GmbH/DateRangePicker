@@ -660,4 +660,104 @@ class NSDate_DateRangePickerTest: XCTestCase {
 		XCTAssertEqual(dateFromStringWithTime("2015-01-31 23:59:59"), dateFromString("2015-01-01").drp_end(ofCalendarUnit: .month))
 		XCTAssertEqual(dateFromStringWithTime("2015-12-31 23:59:59"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .month))
 	}
+	
+	// MARK: - Hour shift 0
+	
+	private func calendar(inTimeZone identifier: String) -> Calendar {
+		var calendar = Calendar(identifier: .gregorian)
+		calendar.locale = Locale(identifier: "en_DE")
+		calendar.timeZone = TimeZone(identifier: identifier)!
+		return calendar
+	}
+	
+	// What `drp_beginning(of:hourShift:calendar:)` does for a nonzero shift.
+	private func beginningThroughShiftedDay(_ date: Date, of component: Calendar.Component, hourShift: Int,
+	                                        calendar: Calendar) -> Date? {
+		return date
+			.drp_beginningOfShiftedDay(by: hourShift, calendar: calendar)?
+			.drp_beginning(of: component, calendar: calendar)?
+			.drp_settingHour(to: hourShift, calendar: calendar)
+	}
+	
+	// Walks four days around `day`, so that both sides of a transition on that day are covered.
+	private func assertHourShiftZeroMatchesShiftedDayPath(_ timeZone: String, around day: String,
+	                                                      file: StaticString = #filePath, line: UInt = #line) {
+		let calendar = self.calendar(inTimeZone: timeZone)
+		let formatter = DateFormatter()
+		formatter.dateFormat = "yyyy-MM-dd HH:mm"
+		formatter.locale = Locale(identifier: "en_US_POSIX")
+		formatter.timeZone = TimeZone(secondsFromGMT: 0)
+		let start = formatter.date(from: day + " 12:00")!.addingTimeInterval(-2 * 86400)
+		for minutes in stride(from: 0, to: 4 * 24 * 60, by: 45) {
+			let date = start.addingTimeInterval(TimeInterval(minutes * 60))
+			for component: Calendar.Component in [.day, .weekOfYear, .month, .quarter, .year] {
+				let expected = beginningThroughShiftedDay(date, of: component, hourShift: 0, calendar: calendar)
+				XCTAssertEqual(expected, date.drp_beginning(of: component, hourShift: 0, calendar: calendar),
+				               "\(timeZone), \(component), \(date)", file: file, line: line)
+				XCTAssertEqual(expected?.drp_adding(1, component: component, calendar: calendar),
+				               date.drp_end(of: component, hourShift: 0, calendar: calendar),
+				               "\(timeZone), \(component), \(date)", file: file, line: line)
+			}
+		}
+	}
+	
+	func testHourShiftZeroOnPlainDays() {
+		assertHourShiftZeroMatchesShiftedDayPath("Europe/Berlin", around: "2025-06-18")
+		assertHourShiftZeroMatchesShiftedDayPath("Europe/Berlin", around: "2025-01-01")
+		assertHourShiftZeroMatchesShiftedDayPath("America/Havana", around: "2025-06-30")
+		assertHourShiftZeroMatchesShiftedDayPath("Pacific/Kiritimati", around: "2025-12-31")
+	}
+	
+	func testHourShiftZeroAcrossDaylightSavingTransitions() {
+		// The clocks change during the night, away from midnight.
+		assertHourShiftZeroMatchesShiftedDayPath("Europe/Berlin", around: "2025-03-30")
+		assertHourShiftZeroMatchesShiftedDayPath("Europe/Berlin", around: "2025-10-26")
+		assertHourShiftZeroMatchesShiftedDayPath("America/New_York", around: "2025-03-09")
+		assertHourShiftZeroMatchesShiftedDayPath("America/New_York", around: "2025-11-02")
+		
+		// The clocks go back across midnight: Havana repeats the hour after it, the others the hour before it.
+		assertHourShiftZeroMatchesShiftedDayPath("America/Havana", around: "2025-11-02")
+		assertHourShiftZeroMatchesShiftedDayPath("Asia/Beirut", around: "2025-10-26")
+		assertHourShiftZeroMatchesShiftedDayPath("Africa/Cairo", around: "2025-10-31")
+		assertHourShiftZeroMatchesShiftedDayPath("America/Santiago", around: "2025-04-06")
+	}
+	
+	func testHourShiftZeroWhenDaylightSavingTimeSkipsMidnight() {
+		// Each of these days starts at 01:00.
+		let days: [(timeZone: String, day: String, start: TimeInterval)] = [
+			("America/Havana", "2025-03-09", 1741496400), // 05:00 UTC
+			("Asia/Beirut", "2025-03-30", 1743285600), // 22:00 UTC the day before
+			("Africa/Cairo", "2025-04-25", 1745532000), // 22:00 UTC the day before
+			("America/Santiago", "2025-09-07", 1757217600), // 04:00 UTC
+		]
+		for (timeZone, day, start) in days {
+			let calendar = self.calendar(inTimeZone: timeZone)
+			let dayStart = Date(timeIntervalSince1970: start)
+			XCTAssertEqual(1, calendar.component(.hour, from: dayStart), timeZone)
+			XCTAssertEqual(dayStart, calendar.startOfDay(for: dayStart), timeZone)
+			
+			assertHourShiftZeroMatchesShiftedDayPath(timeZone, around: day)
+			let noon = dayStart.addingTimeInterval(11 * 3600)
+			XCTAssertEqual(dayStart, dayStart.drp_beginning(of: .day, hourShift: 0, calendar: calendar), timeZone)
+			XCTAssertEqual(dayStart, noon.drp_beginning(of: .day, hourShift: 0, calendar: calendar), timeZone)
+		}
+	}
+	
+	func testNonzeroHourShiftOnADayThatSkipsMidnight() {
+		let calendar = self.calendar(inTimeZone: "America/Havana")
+		// 2025-03-09 05:00 local time, which is 09:00 UTC. The day before lost no hour.
+		let shiftedDayStart = Date(timeIntervalSince1970: 1741510800)
+		let beforeShift = shiftedDayStart.addingTimeInterval(-1)
+		let afterShift = shiftedDayStart.addingTimeInterval(1)
+		
+		XCTAssertEqual(shiftedDayStart, afterShift.drp_beginning(of: .day, hourShift: 5, calendar: calendar))
+		XCTAssertEqual(shiftedDayStart.addingTimeInterval(-23 * 3600),
+		               beforeShift.drp_beginning(of: .day, hourShift: 5, calendar: calendar))
+		for date in [beforeShift, shiftedDayStart, afterShift] {
+			for component: Calendar.Component in [.day, .weekOfYear, .month, .quarter, .year] {
+				XCTAssertEqual(beginningThroughShiftedDay(date, of: component, hourShift: 5, calendar: calendar),
+				               date.drp_beginning(of: component, hourShift: 5, calendar: calendar))
+			}
+		}
+	}
 }
