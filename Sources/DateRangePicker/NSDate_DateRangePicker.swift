@@ -106,7 +106,8 @@ public extension Date {
 	}
 	
 	func drp_beginning(of component: Calendar.Component, hourShift: Int, calendar: Calendar = Calendar.current) -> Date? {
-		if !component.isAffectedByHourShift {
+		// Without a shift there is no hour to set, and `date(bySettingHour:...)` is slow enough to show up in grouping.
+		if hourShift == 0 || !component.isAffectedByHourShift {
 			return self.drp_beginning(of: component, calendar: calendar)
 		}
 		
