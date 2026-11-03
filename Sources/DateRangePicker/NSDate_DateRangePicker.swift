@@ -32,7 +32,9 @@ public extension Date {
 	                    adjustByOneSecond: Bool = true, returnNextIfAtBoundary: Bool = true) -> Date? {
 		guard let startDate = drp_beginning(ofCalendarUnit: unit, calendar: calendar) else { return nil }
 		if startDate == self && !adjustByOneSecond && !returnNextIfAtBoundary { return self }
-		let result = startDate.drp_addCalendarUnits(1, unit: unit, calendar: calendar)
+		let result = self.drp_endOfUnit(dateInNextUnit: startDate.drp_addCalendarUnits(1, unit: unit, calendar: calendar)) {
+			$0.drp_beginning(ofCalendarUnit: unit, calendar: calendar)
+		}
 		return adjustByOneSecond ? result?.addingTimeInterval(-1) : result
 	}
 	
@@ -84,7 +86,9 @@ public extension Date {
 	                    returnNextIfAtBoundary: Bool = true) -> Date? {
 		guard let startDate = drp_beginning(of: component, calendar: calendar) else { return nil }
 		if startDate == self && !returnNextIfAtBoundary { return self }
-		return startDate.drp_adding(1, component: component, calendar: calendar)
+		return self.drp_endOfUnit(dateInNextUnit: startDate.drp_adding(1, component: component, calendar: calendar)) {
+			$0.drp_beginning(of: component, calendar: calendar)
+		}
 	}
 	
 	func drp_settingHour(to value: Int, calendar: Calendar = Calendar.current) -> Date? {
@@ -117,9 +121,10 @@ public extension Date {
 			return self.drp_end(of: component, calendar: calendar)
 		}
 		
-		return self
-			.drp_beginning(of: component, hourShift: hourShift, calendar: calendar)?
-			.drp_adding(1, component: component, calendar: calendar)
+		guard let startDate = self.drp_beginning(of: component, hourShift: hourShift, calendar: calendar) else { return nil }
+		return self.drp_endOfUnit(dateInNextUnit: startDate.drp_adding(1, component: component, calendar: calendar)) {
+			$0.drp_beginning(of: component, hourShift: hourShift, calendar: calendar)
+		}
 	}
 	
 	func drp_components(_ component: Calendar.Component, since startDate: Date, calendar: Calendar = Calendar.current) -> Int? {
@@ -127,6 +132,19 @@ public extension Date {
 			let toDate = self.drp_beginning(of: component, calendar: calendar) else { return nil }
 		return calendar.dateComponents(Set(arrayLiteral: component), from: fromDate, to: toDate)
 			.value(for: component)
+	}
+}
+
+private extension Date {
+	/// The end of the unit that holds `self`: where the next unit begins, given `dateInNextUnit`, one unit after this unit's
+	/// unit after `start`. That is not always `dateInNextUnit` itself: on a day whose midnight the clocks skip
+	/// (America/Havana in March), the day begins at 01:00, one day later is 01:00 again, and the next day begins at 00:00.
+	/// A looked-up end that is not after `self`, or later than `dateInNextUnit`, falls back to `dateInNextUnit`. Both
+	/// happen at Australia/Lord_Howe's 30-minute shifts: an hour in the repeated half hour looks up an earlier hour, and an
+	/// hour shift of 2 on the day 02:00 is skipped looks up the day after next.
+	func drp_endOfUnit(dateInNextUnit: Date?, beginning: (Date) -> Date?) -> Date? {
+		guard let dateInNextUnit = dateInNextUnit else { return nil }
+		return beginning(dateInNextUnit).flatMap { $0 > self && $0 <= dateInNextUnit ? $0 : nil } ?? dateInNextUnit
 	}
 }
 
