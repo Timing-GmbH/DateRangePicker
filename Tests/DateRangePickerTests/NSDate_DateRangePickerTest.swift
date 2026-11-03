@@ -130,6 +130,48 @@ class Date_DateRangePickerTest: XCTestCase {
 		               isoDate("2015-06-03T12:00:00.000Z").drp_end(of: .day, calendar: kiritimatiCalendar))
 	}
 	
+	/// America/Havana skips midnight on 8 March 2026 (00:00 becomes 01:00), so that day and the week it starts begin at
+	/// 01:00, while the next day and week begin at 00:00 again. One unit after the start would end them an hour late.
+	func testEndOfUnitThatBeginsAfterASkippedMidnight() {
+		var havanaCalendar = Calendar(identifier: .gregorian)
+		havanaCalendar.timeZone = TimeZone(identifier: "America/Havana")!
+		havanaCalendar.firstWeekday = 1
+		let noon = isoDate("2026-03-08T17:00:00.000Z")
+
+		XCTAssertEqual(isoDate("2026-03-08T05:00:00.000Z"), noon.drp_beginning(of: .day, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-09T04:00:00.000Z"), noon.drp_end(of: .day, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-09T04:00:00.000Z"), noon.drp_end(of: .day, hourShift: 0, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-09T03:59:59.000Z"), noon.drp_end(ofCalendarUnit: .day, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-09T04:00:00.000Z"),
+		               noon.drp_end(ofCalendarUnit: .day, calendar: havanaCalendar, adjustByOneSecond: false))
+
+		XCTAssertEqual(isoDate("2026-03-15T04:00:00.000Z"), noon.drp_end(of: .weekOfYear, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-15T04:00:00.000Z"), noon.drp_end(of: .weekOfYear, hourShift: 0, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-15T03:59:59.000Z"), noon.drp_end(ofCalendarUnit: .weekOfYear, calendar: havanaCalendar))
+
+		// The day before ends where March 8 begins, at 01:00 local time.
+		let dayBefore = isoDate("2026-03-07T17:00:00.000Z")
+		XCTAssertEqual(isoDate("2026-03-08T05:00:00.000Z"), dayBefore.drp_end(of: .day, calendar: havanaCalendar))
+		XCTAssertEqual(isoDate("2026-03-08T05:00:00.000Z"), dayBefore.drp_end(of: .day, hourShift: 0, calendar: havanaCalendar))
+	}
+
+	/// Australia/Lord_Howe shifts by 30 minutes, where looking up the beginning of the next unit can overshoot or come
+	/// out before the input. The end then stays one unit after the beginning, as before.
+	func testEndOfUnitAtAThirtyMinuteShift() {
+		var lordHoweCalendar = Calendar(identifier: .gregorian)
+		lordHoweCalendar.timeZone = TimeZone(identifier: "Australia/Lord_Howe")!
+
+		// 3 October 2027 skips 02:00 to 02:30, so its days with an hour shift of 2 begin at 02:30. Noon on 2 October
+		// belongs to the day that ends there, not to one that ends a day later.
+		XCTAssertEqual(isoDate("2027-10-02T15:30:00.000Z"),
+		               isoDate("2027-10-02T01:30:00.000Z").drp_end(of: .day, hourShift: 2, calendar: lordHoweCalendar))
+
+		// 5 April 2015 repeats 01:30 to 02:00. An instant in the first pass ends its hour at the end of the first pass.
+		XCTAssertEqual(isoDate("2015-04-04T15:00:00.000Z"),
+		               isoDate("2015-04-04T14:48:53.000Z").drp_end(ofCalendarUnit: .hour, calendar: lordHoweCalendar,
+		                                                           adjustByOneSecond: false))
+	}
+
 	func testEndOfCalendarUnitWithoutAdjusting() {
 		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-01-01").drp_end(ofCalendarUnit: .year, calendar: calendar, adjustByOneSecond: false))
 		XCTAssertEqual(dateFromStringWithTime("2016-01-01 00:00:00"), dateFromString("2015-12-31").drp_end(ofCalendarUnit: .year, calendar: calendar, adjustByOneSecond: false))
